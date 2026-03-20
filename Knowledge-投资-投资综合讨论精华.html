@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资综合讨论精华 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">MOC</div>
+<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-投资.html">投资</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">投资综合讨论精华</span></div>
+  <div class="article-header">
+    <h1>投资综合讨论精华</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <h1>投资综合讨论精华</h1>
+<blockquote>
+<p>来源：Discord #讨论贴 (thread_id: 1475844833733116127, 约1301条)
+提取时间：2026-03-20</p>
+</blockquote>
+<hr />
+<h2>一、投资体系与Skill建设</h2>
+<h3>investment-masters Skill</h3>
+<ul>
+<li>由查理·芒格、霍华德·马克斯、段永平、斯坦利·德鲁肯米勒、詹姆斯·西蒙斯五位大师数字分身组成</li>
+<li>对任意标的进行多维度独立分析，输出委员会裁决报告</li>
+<li>已从VPS复制到Fiona节点：<code>~/.openclaw/workspace/skills/investment-masters/</code></li>
+</ul>
+<h3>stock-research Skill（两阶段投研系统）</h3>
+<ul>
+<li><strong>一阶段</strong>：Ajinomoto Filter快速筛选</li>
+<li>候选公司必须满足：下游"不得不买"、壁垒来自长期积累、市场未充分定价、需求处于从可选→刚需的物理拐点</li>
+<li>直接排除：纯平台/流量公司、市值&gt;$500亿、无营收的故事期公司</li>
+<li>输出买入评级：🟢强买入 / 🟡关注买入 / 🟠等待 / 🔴回避</li>
+<li><strong>二阶段</strong>：14维度深度审计（技术护城河、商业模式、收入增长、盈利能力、现金流、市场地位、管理团队、股东结构、估值合理性、政策监管、产品迭代、客户基础、供应链自主、分析师共识）</li>
+<li><strong>港股专用版</strong>（phase1-hk-agent-prompt.md）：区分直接受益/映射受益/情绪龙头，新增港股通/配售/减持/流动性/做空审计</li>
+</ul>
+<h3>Discord发帖模板</h3>
+<ul>
+<li>不支持正文彩色字体</li>
+<li>最佳方案：Markdown + Emoji语义着色（🟢🟡🟠🔴）+ Embed卡片</li>
+</ul>
+<hr />
+<h2>二、美股重点标的研究</h2>
+<h3>CAMT（半导体设备）</h3>
+<ul>
+<li><strong>状态</strong>：强烈建议吸纳</li>
+<li><strong>定位</strong>：HBM4门票供应商</li>
+<li><strong>操作</strong>：入场$122-125，止损$112</li>
+<li><strong>赛道</strong>：AI先进测试&amp;玻璃基板</li>
+</ul>
+<h3>ONTO（半导体量测）</h3>
+<ul>
+<li><strong>状态</strong>：关注</li>
+</ul>
+<h3>AEHR</h3>
+<ul>
+<li><strong>状态</strong>：等待合适位置</li>
+</ul>
+<h3>BABA（阿里巴巴）</h3>
+<ul>
+<li>详见《美股研究笔记》</li>
+</ul>
+<hr />
+<h2>三、港股AI Agent赛道研究</h2>
+<h3>港股AI Agent一阶段筛选结果（2026-03-11）</h3>
+<table>
+<thead>
+<tr>
+<th>排名</th>
+<th>代码</th>
+<th>公司</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>06682.HK</td>
+<td>第四范式</td>
+<td>合理分批，回调买</td>
+</tr>
+<tr>
+<td>2</td>
+<td>03896.HK</td>
+<td>金山云</td>
+<td>观察盈利延续</td>
+</tr>
+<tr>
+<td>3</td>
+<td>00020.HK</td>
+<td>商汤</td>
+<td>等待扭亏验证</td>
+</tr>
+<tr>
+<td>4</td>
+<td>09880.HK</td>
+<td>优必选</td>
+<td>高弹性主题票</td>
+</tr>
+<tr>
+<td>5</td>
+<td>09660.HK</td>
+<td>地平线机器人</td>
+<td>回避</td>
+</tr>
+</tbody>
+</table>
+<h3>第四范式（06682.HK）深度研究</h3>
+<ul>
+<li><strong>综合评分</strong>：7.2/10（Alpha，但不是无脑Alpha）</li>
+<li><strong>投资建议</strong>：合理分批，等回调买，不追高</li>
+<li><strong>核心逻辑</strong>：港股里少数"AI Agent已落到企业收入里"的票，企业付费验证更硬</li>
+<li><strong>风险</strong>：港股资金面情绪化，估值容易先跑；无物理门控级别绝对垄断</li>
+<li><strong>熔断条件</strong>：收入增速降至20%以下/亏损再次扩大/大客户续费不增/股价被情绪打到远高于基本面</li>
+</ul>
+<h3>金山云（03896.HK）</h3>
+<ul>
+<li><strong>逻辑</strong>：智算云增长+小米/金山生态绑定+首次盈利是关键拐点</li>
+<li><strong>风险</strong>：客户集中度风险，近期涨幅大</li>
+</ul>
+<hr />
+<h2>四、地缘政治预测市场（Polymarket）</h2>
+<ul>
+<li>美伊停火NO价$0.750，靖安综合判断蛰伏观察</li>
+</ul>
+<hr />
+<h2>五、操作规范与教训</h2>
+<h3>投研SOP</h3>
+<ol>
+<li>新项目必须完成竞品调研+技术路径对比+Buy vs Build</li>
+<li>两阶段流程：GLM快筛→深度审计→CEO裁决</li>
+<li>研报必须在线部署（不用问，每次自动部署）</li>
+<li>所有输出默认使用中文</li>
+</ol>
+<h3>工具规范</h3>
+<ul>
+<li>研报HTML部署：Serveo临时隧道（关闭终端后失效），推荐永久托管</li>
+<li>PPT生成：使用<code>ppt-nano</code> Skill或python-pptx</li>
+<li>研报格式：完整HTML交互网页 + 摘要Discord发送</li>
+</ul>
+<hr />
+<h2>六、阶段复盘（2026-03-04 ~ 2026-03-18）</h2>
+<h3>完成产出</h3>
+<ul>
+<li>CAMT：强烈建议吸纳（HBM4门票供应商）</li>
+<li>第四范式：港股AI Agent落地最真实，合理分批回调买</li>
+<li>金山云：生态绑定型Alpha，首次盈利是关键拐点</li>
+<li>investment-masters skill完整落地</li>
+</ul>
+<h3>未完成遗留</h3>
+<ul>
+<li>金山云二阶段研报未输出</li>
+<li>第四范式 vs 金山云双票对打版未完成</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

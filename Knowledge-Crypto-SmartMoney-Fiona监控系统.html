@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartMoney-Fiona监控系统 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">MOC</div>
+<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-Crypto.html">Crypto</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">SmartMoney-Fiona监控系统</span></div>
+  <div class="article-header">
+    <h1>SmartMoney-Fiona监控系统</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <h1>SmartMoney-Fiona监控系统</h1>
+<blockquote>
+<p>来源：Discord #SmartMone-Fiona (thread_id: 1482721690751467694, 420条)
+提取时间：2026-03-20</p>
+</blockquote>
+<hr />
+<h2>一、项目定位</h2>
+<p><strong>核心赚钱逻辑</strong>：
+1. 从GMGN获取热门Meme币的盈利地址进行统计
+2. 把高盈利地址抓取入库，形成自己的Smart Money地址库
+3. 监控这些地址的买币情况，作为跟单信号</p>
+<p><strong>三阶段目标</strong>：
+1. Phase 1：先做监控，通过监控获取信息信号并发送Discord提醒（自用）
+2. Phase 2：实现跟单
+3. Phase 3：未来是否做付费群另行决定</p>
+<hr />
+<h2>二、调研结论（2026-03-19 Opus调研报告）</h2>
+<h3>竞品全景</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>产品</th>
+<th>价格</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一体化平台</td>
+<td>GMGN</td>
+<td>免费</td>
+<td>Meme专精，Solana最强</td>
+</tr>
+<tr>
+<td>一体化平台</td>
+<td>Cielo</td>
+<td>$59-199/月</td>
+<td>多链</td>
+</tr>
+<tr>
+<td>TG Bot</td>
+<td>BullX/Trojan/Photon</td>
+<td>0.9-1%手续费</td>
+<td>免费订阅</td>
+</tr>
+<tr>
+<td>链上分析</td>
+<td>Nansen/Arkham</td>
+<td>$150+/月</td>
+<td>分析为主无跟单</td>
+</tr>
+<tr>
+<td>开源项目</td>
+<td>ChainBuff/open-sol-bot</td>
+<td>免费</td>
+<td>404⭐ Python，Apache-2.0</td>
+</tr>
+</tbody>
+</table>
+<h3>赛道判断</h3>
+<ul>
+<li><strong>红海</strong>：GitHub 230+ 个开源项目，成熟商业工具全覆盖</li>
+<li><strong>SM跟单实际胜率</strong>：社区反馈约30-40%（Meme币90%归零）</li>
+<li><strong>GMGN爬取</strong>：不稳定，Cloudflare严防，随时可能失效</li>
+</ul>
+<h3>建议路径</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>动作</th>
+<th>成本</th>
+<th>条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase 0</td>
+<td>手动用GMGN+BullX跟单2周，记录胜率</td>
+<td>$0</td>
+<td>立即</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>基于open-sol-bot搭MVP + Helius Starter + Discord信号</td>
+<td>$49/月</td>
+<td>Phase 0胜率&gt;45%</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Helius gRPC实时 + AI SM评分引擎</td>
+<td>$999/月</td>
+<td>Phase 1 ROI为正</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>三、技术架构</h2>
+<h3>数据采集层</h3>
+<ul>
+<li><strong>采集主体</strong>：Fiona节点（macOS，住宅IP，永远在线）</li>
+<li><strong>方式</strong>：Playwright headed模式（绕过Cloudflare）</li>
+<li><strong>频率</strong>：1h/次（全部统一为1小时）</li>
+<li><strong>关键API</strong>：
+  ```
+  # 热门代币列表
+  GET /defi/quotation/v1/rank/sol/swaps/1h</li>
+</ul>
+<p># 代币持有者+盈亏
+  GET /vas/api/v1/token_holders/sol/{token}</p>
+<p># 钱包交易记录
+  GET /vas/api/v1/wallet_activity/sol?wallet={addr}&amp;token={token}
+  ```
+- <strong>⚠️ 重要</strong>：GMGN必须在页面上下文中调用API，需Playwright带cookie访问，不能直接curl</p>
+<h3>数据传输</h3>
+<ul>
+<li>Fiona采集 → HTTP同步 → VPS存储</li>
+</ul>
+<h3>存储层（VPS SQLite）</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">tokens</span><span class="w">          </span><span class="c1">-- 热门代币列表</span>
+<span class="n">wallets</span><span class="w">         </span><span class="c1">-- SM钱包地址库</span>
+<span class="n">wallet_token_profits</span><span class="w">  </span><span class="c1">-- 每个钱包在各代币上的盈亏</span>
+<span class="n">signals</span><span class="w">         </span><span class="c1">-- 跟单信号推送记录</span>
+</code></pre></div>
+
+<h3>展示层</h3>
+<ul>
+<li>本地Dashboard：<code>http://127.0.0.1:1980</code></li>
+</ul>
+<hr />
+<h2>四、SM评分体系</h2>
+<h3>入库标准</h3>
+<ul>
+<li>跨3+代币盈利</li>
+<li>非bot</li>
+<li>累计盈利 &gt; $10K</li>
+</ul>
+<h3>评分维度（权重）</h3>
+<ol>
+<li>跨币盈利数（30%）</li>
+<li>累计利润（25%）</li>
+<li>胜率（20%）</li>
+<li>活跃度（15%）</li>
+<li>标签信誉（10%）</li>
+</ol>
+<hr />
+<h2>五、首批数据验证（2026-03-19，Fiona实测）</h2>
+<h3>100代币规模扫描结果</h3>
+<ul>
+<li><strong>扫描代币</strong>：69个（API实际返回）</li>
+<li><strong>唯一盈利钱包</strong>：1,851个</li>
+<li><strong>出现在2+代币</strong>：129个</li>
+<li><strong>出现在3+代币（真SM）</strong>：23个</li>
+</ul>
+<h3>Top 5真正Smart Money地址</h3>
+<table>
+<thead>
+<tr>
+<th>排名</th>
+<th>地址</th>
+<th>出现代币数</th>
+<th>总盈利</th>
+<th>标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>VJSDW6S7...Usy1</td>
+<td><strong>6币</strong></td>
+<td>$93,250</td>
+<td>axiom</td>
+</tr>
+<tr>
+<td>2</td>
+<td>54Pz1e35...dsuy</td>
+<td>5币</td>
+<td>$20,847</td>
+<td>sandwich_bot⚠️</td>
+</tr>
+<tr>
+<td>3</td>
+<td>yEmJ3iQX...uMM</td>
+<td>4币</td>
+<td>$35,107</td>
+<td>padre</td>
+</tr>
+<tr>
+<td>4</td>
+<td>BJwRYVBp...7X7x</td>
+<td>3币</td>
+<td>$160,168</td>
+<td>—</td>
+</tr>
+<tr>
+<td>5</td>
+<td>A5hEhg36...5jg1</td>
+<td>3币</td>
+<td>$46,128</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>规律分析</h3>
+<ol>
+<li><strong>真正跨币盈利SM极少</strong>：69币中仅23个钱包在3+币上盈利</li>
+<li><strong>标签是金矿</strong>：<code>axiom</code>、<code>photon</code>等是交易工具标签，标记专业交易者</li>
+<li><strong>fresh_wallet大量出现</strong>：新钱包赚大钱 = 可能是内部人/狙击手</li>
+<li><strong>需扩大样本</strong>：100+代币×多个时间段才能筛出稳定盈利地址</li>
+</ol>
+<hr />
+<h2>六、风控策略</h2>
+<h3>资金安排（初期）</h3>
+<ul>
+<li>初期试仓：10U-100U规模</li>
+<li>仓位上限：~100U左右试验</li>
+</ul>
+<h3>跟单方式</h3>
+<ul>
+<li>手动决策（先期）</li>
+<li>信号容忍度：分钟级（GMGN轮询方案）</li>
+<li>止损：入场价-25%~30%硬止损</li>
+</ul>
+<hr />
+<h2>七、系统配置与规范</h2>
+<h3>Fiona节点分工</h3>
+<ul>
+<li><strong>执行层</strong>：采集脚本、定时任务、数据同步</li>
+<li><strong>不做决策</strong>：规则争议、错价识别、交易判断由Reese负责</li>
+</ul>
+<h3>禁止事项</h3>
+<ul>
+<li>严禁不做竞品调研就启动项目</li>
+<li>禁止使用Chrome GUI，必须用脚本方式</li>
+<li>严禁先写代码再做需求分析</li>
+</ul>
+<h3>其他系统背景（从此频道归档，2026-03-15~17）</h3>
+<ul>
+<li>飞书Agent体系（鼠鼠/奇奇/芝麻）配置完成</li>
+<li>OpenViking记忆库修复（火山引擎doubao-seed-2.0-lite）</li>
+<li>飞书语音识别、生图、公众号技能全部上线</li>
+<li>Fiona Discord bot干扰已关闭</li>
+</ul>
+<hr />
+<h2>八、项目文件</h2>
+<div class="codehilite"><pre><span></span><code>projects/smart-money/
+├── RESEARCH.md    # 完整竞品调研报告
+├── PRD.md         # 产品需求文档v0.2
+└── ...
+</code></pre></div>
+
+<p><strong>数据备份</strong>：Fiona <code>/tmp/smart_money_analysis.json</code></p>
+  </div>
+</div>
+</body>
+</html>

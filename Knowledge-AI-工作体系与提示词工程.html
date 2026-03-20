@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作体系与提示词工程 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">MOC</div>
+<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-AI.html">AI</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">工作体系与提示词工程</span></div>
+  <div class="article-header">
+    <h1>工作体系与提示词工程</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <h1>工作体系与提示词工程</h1>
+<blockquote>
+<p>来源：Discord Thread #工作体系/提示词完善 (1482904446588555367, 498条)
+提取日期：2026-03-20</p>
+</blockquote>
+<hr />
+<h2>一、AI工作体系设计哲学</h2>
+<h3>核心文件架构</h3>
+<p>OpenClaw的工作体系由4个核心文件驱动：
+- <strong>SOUL.md</strong> — CEO状态机，定义角色、决策逻辑、STATE 0→3
+- <strong>AGENTS.md</strong> — 执行法则，分支A(CEO模式)/分支B(执行节点)
+- <strong>TOOLS.md</strong> — 工具规范，检索优先级、子智能体防污染协议
+- <strong>USER.md</strong> — 用户设定，不作为方法论修改</p>
+<h3>双环境架构</h3>
+<ul>
+<li><strong>OpenClaw环境</strong>（Discord对话）：skill作为"专家知识"指导AI行为模式</li>
+<li><strong>Claude Code环境</strong>（终端编程）：skill作为plugin提供Hook和工具</li>
+<li>两个环境共享同一份skill代码，网关重启后自动生效</li>
+</ul>
+<hr />
+<h2>二、三套外部体系对比分析</h2>
+<h3>gstack（Garry Tan）</h3>
+<ul>
+<li><strong>核心哲学</strong>："Boil the Lake"——AI让完整性边际成本→0</li>
+<li><strong>优势</strong>：13个角色矩阵(CEO/EM/Designer/QA/RE)，双刻度ROI估算，100ms/命令的真实Chromium浏览器</li>
+<li><strong>劣势</strong>："Boil the Lake"与ROI优先哲学冲突；无长期记忆系统；仅适合编程场景</li>
+<li><strong>OpenClaw适配度</strong>：🥈 次之（编程专用）</li>
+</ul>
+<h3>Planning-with-Files（OthmanAdi）</h3>
+<ul>
+<li><strong>核心哲学</strong>：Context=RAM(易失)，Filesystem=Disk(持久)</li>
+<li><strong>优势</strong>：三文件模式(task_plan/findings/progress)通用任何任务类型；Hook持久化机制；96.7%的pass rate提升</li>
+<li><strong>劣势</strong>：无角色分工，与SOUL.md状态机概念重叠</li>
+<li><strong>OpenClaw适配度</strong>：🥇 最高</li>
+</ul>
+<h3>Superpowers（14个skill）</h3>
+<ul>
+<li><strong>核心哲学</strong>：TDD优先、证据&gt;声称</li>
+<li><strong>优势</strong>：TDD闭环内置，git-worktree隔离，14个独立skill模块化</li>
+<li><strong>劣势</strong>：过度工程化，7步流程仅适合纯编程场景</li>
+<li><strong>OpenClaw适配度</strong>：🥉 最低（仅编程子任务）</li>
+</ul>
+<h3>吸收策略</h3>
+<ul>
+<li><strong>Planning-with-Files</strong>：只引入Hook持久化机制，叠加在现有task.md之上</li>
+<li><strong>gstack</strong>：借用双刻度时间估算（人类vs AI时间），工具层复用</li>
+<li><strong>Superpowers</strong>：仅在编程场景触发（brainstorming→writing-plans→TDD闭环）</li>
+</ul>
+<hr />
+<h2>三、Skill系统设计与管理</h2>
+<h3>Skill加载机制</h3>
+<ul>
+<li>OpenClaw扫描<code>workspace/skills/**/SKILL.md</code>路径</li>
+<li><strong>不跟随symlink</strong>（需要真实拷贝）</li>
+<li>system prompt字符上限：~30,000字符</li>
+<li>57个eligible skill中只有约23-42个进入system prompt</li>
+</ul>
+<h3>Skill自动匹配原理</h3>
+<p>用户正常发需求，AI根据skill的<code>description</code>字段自动匹配：</p>
+<div class="codehilite"><pre><span></span><code><span class="ss">&quot;分析一下特斯拉&quot;</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">investment</span><span class="o">-</span><span class="n">masters</span>
+<span class="ss">&quot;帮我抓@VitalikButerin的推文&quot;</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">twitter</span><span class="o">-</span><span class="n">crawler</span>
+<span class="ss">&quot;做一个价格监控&quot;</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">sp</span><span class="o">-</span><span class="n">brainstorming</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">sp</span><span class="o">-</span><span class="n">writing</span><span class="o">-</span><span class="n">plans</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">planning</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">files</span><span class="w"> </span><span class="n">链式触发</span>
+</code></pre></div>
+
+<h3>Skill归档策略</h3>
+<p><strong>归档到<code>_archive/</code>目录的原则：</strong>
+1. 低频使用（polymarket-fast-loop, polymarket-weather-trader）
+2. 不适配当前环境（stt, wechat）
+3. 仅Claude Code有效（sp-using-superpowers, sp-subagent-driven-development）
+4. 子skill本应按需加载而非全量展开（gstack的14个子skill）</p>
+<p><strong>恢复方式</strong>：<code>mv _archive/xxx skills/</code> + 网关重启</p>
+<p><strong>在TOOLS.md维护归档索引</strong>，确保知道有什么可用。</p>
+<h3>gstack子skill问题</h3>
+<ul>
+<li>gstack 14个子skill占~700 token</li>
+<li>触发条件极其特定（"review a PR"、"ship to production"），日常不命中</li>
+<li>解决方案：归档gstack子skill，只保留主skill</li>
+</ul>
+<hr />
+<h2>四、Context优化实践</h2>
+<h3>优化前后对比（2026-03-20）</h3>
+<ul>
+<li>AGENTS.md：4,379B → 1,009B（-77%）</li>
+<li>TOOLS.md：2,902B → 638B（-78%）</li>
+<li>活跃skill：26 → 18个</li>
+<li><strong>总压缩率：-30%</strong></li>
+</ul>
+<h3>删除的内容类型</h3>
+<ol>
+<li><strong>AGENTS.md中删除</strong>：与SOUL.md重复的verification铁律、TDD流程、brainstorming细节</li>
+<li><strong>TOOLS.md中删除</strong>：Skill使用场景指南表（与skill description完全重复）</li>
+<li><strong>归档的8个skill</strong>：polymarket-fast-loop/weather-trader、stt、wechat、twitter-browser-harvest、obsidian-sync、sp-using-superpowers、sp-subagent-driven-development</li>
+</ol>
+<h3>优化原则</h3>
+<ul>
+<li><strong>不重复</strong>：同一规则不出现在2-3个地方</li>
+<li><strong>技术细节由skill自身承载</strong>，核心文件只做高层决策</li>
+<li><strong>SOUL.md暂不动</strong>：6KB是大头，状态机是核心逻辑</li>
+</ul>
+<hr />
+<h2>五、Superpowers Skill使用场景</h2>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>触发场景</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sp-brainstorming</td>
+<td>任何创造性工作前</td>
+<td>需求澄清+设计</td>
+</tr>
+<tr>
+<td>sp-writing-plans</td>
+<td>多步骤任务拆解</td>
+<td>生成原子化任务列表</td>
+</tr>
+<tr>
+<td>sp-test-driven-development</td>
+<td>写代码前</td>
+<td>RED→GREEN→REFACTOR</td>
+</tr>
+<tr>
+<td>sp-systematic-debugging</td>
+<td>遇到bug时</td>
+<td>复现→假设→验证→修复→回归</td>
+</tr>
+<tr>
+<td>sp-verification-before-completion</td>
+<td>宣称完成前</td>
+<td>强制跑验证命令，拿到证据才能说完成</td>
+</tr>
+<tr>
+<td>planning-with-files</td>
+<td>复杂项目(&gt;5步)</td>
+<td>自动创建三文件追踪进度</td>
+</tr>
+</tbody>
+</table>
+<h3>编程任务标准流程</h3>
+<div class="codehilite"><pre><span></span><code>新功能：gstack /plan-ceo-review + superpowers TDD
+Bug修复：sp-systematic-debugging + sp-verification-before-completion
+跨天研究：planning-with-files 三文件
+代码审查：gstack /review
+QA测试：gstack /qa (真实Chromium)
+发布：gstack /ship
+</code></pre></div>
+
+<hr />
+<h2>六、验证铁律</h2>
+<div class="codehilite"><pre><span></span><code>NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+</code></pre></div>
+
+<p><strong>验证5步：</strong>
+1. IDENTIFY — 确认验证命令
+2. RUN — 执行命令
+3. READ — 检查输出
+4. VERIFY — 确认结果
+5. DONE — 标记完成附证据</p>
+<p><strong>红旗词汇</strong>（见到立即停下跑验证）：
+- "应该没问题"
+- "大概可以"
+- "看起来正确"</p>
+<hr />
+<h2>七、关键教训</h2>
+<ol>
+<li><strong>symlink问题</strong>：OpenClaw不跟随symlink，必须用真实目录拷贝</li>
+<li><strong>gstack体积问题</strong>：browse/dist/占199MB编译产物，需清理</li>
+<li><strong>context污染</strong>：规则重复出现在多个文件=token浪费</li>
+<li><strong>skill加载限制</strong>：字符上限导致超出部分被截断，归档低频skill是正解</li>
+</ol>
+<hr />
+<h2>八、完整Skill清单（截至2026-03-20）</h2>
+<h3>投研金融类</h3>
+<ul>
+<li>investment-masters：大师委员会分析（芒格/马克斯/段永平/德鲁肯米勒/西蒙斯）</li>
+<li>stock-research：美/港/A股研报</li>
+<li>finance-toolkit：研报/行情/量化工具</li>
+</ul>
+<h3>Twitter系列</h3>
+<ul>
+<li>twitter-crawler：按月分片抓取历史推文</li>
+<li>twitter-kol-digital-persona：批量抓取+建模，生成KOL数字分身</li>
+<li>twitter-browser-harvest：浏览器深度采集（反爬降级方案）</li>
+</ul>
+<h3>搜索研究类</h3>
+<ul>
+<li>agent-reach：14平台搜索（Twitter/Reddit/YouTube/B站/小红书/抖音等）</li>
+<li>last30days：近30天话题研究</li>
+<li>digital-twin-advisor：从KOL公开内容构建数字分身顾问</li>
+</ul>
+<h3>开发工具类</h3>
+<ul>
+<li>gstack：全栈开发脚手架（13个角色命令）</li>
+<li>coding-agent：编程任务委托</li>
+</ul>
+<h3>笔记知识类</h3>
+<ul>
+<li>obsidian-direct：读写Obsidian笔记库</li>
+<li>mao-task：毛选式任务拆解</li>
+</ul>
+<h3>内容发布类</h3>
+<ul>
+<li>wechat：Markdown→微信公众号草稿（已归档）</li>
+<li>stt：本地语音转文字（已归档）</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

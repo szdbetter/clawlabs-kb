@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude-Code编程实践笔记 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">MOC</div>
+<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">Claude-Code编程实践笔记</span></div>
+  <div class="article-header">
+    <h1>Claude-Code编程实践笔记</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <h1>Claude Code 编程实践笔记</h1>
+<h2>背景</h2>
+<p>记录使用 Claude Code 进行自动化开发的关键实践，包括配置方法、实际项目案例和踩坑记录。</p>
+<h2>一、Claude Code 配置</h2>
+<h3>Dangerous模式（绕过所有权限确认）</h3>
+<p>Claude Code 默认每次工具调用都要确认，<code>--dangerously-skip-permissions</code> 模式可跳过所有确认。</p>
+<p><strong>配置方法一：命令行启动</strong></p>
+<div class="codehilite"><pre><span></span><code>claude<span class="w"> </span>--dangerously-skip-permissions
+</code></pre></div>
+
+<p><strong>配置方法二：settings.json（推荐，持久化）</strong></p>
+<p>文件位置：<code>~/.claude/settings.json</code> 或项目级 <code>.claude/settings.json</code></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;dangerouslySkipPermissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-opus-4-6&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>配置方法三：OpenClaw启动参数</strong></p>
+<div class="codehilite"><pre><span></span><code>--permission-mode bypassPermissions
+</code></pre></div>
+
+<h3>常用启动方式</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 非交互模式（适合自动化/subagent）</span>
+claude<span class="w"> </span>--print<span class="w"> </span>--permission-mode<span class="w"> </span>bypassPermissions<span class="w"> </span><span class="s2">&quot;任务描述&quot;</span>
+
+<span class="c1"># PTY模式（Codex/OpenCode需要）</span>
+<span class="c1"># 通过exec工具: pty=true</span>
+</code></pre></div>
+
+<h3>模型选择建议</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐模型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复杂规划/架构</td>
+<td>claude-opus-4-6</td>
+</tr>
+<tr>
+<td>日常编码</td>
+<td>claude-sonnet-4-6</td>
+</tr>
+<tr>
+<td>快速OCR/Vision</td>
+<td>claude-haiku-4-5-20251001</td>
+</tr>
+<tr>
+<td>廉价数据处理</td>
+<td>claude-haiku-4-5-20251001</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>：<code>claude-sonnet-4-6-thinking</code> 在某些环境下不可用，会报 "model does not exist" 错误，降级使用 <code>claude-sonnet-4-6</code>。</p>
+<h2>二、悟空邀请码5秒抢码方案</h2>
+<h3>场景</h3>
+<p>钉钉悟空邀请码发放后需要在5秒内完成：检测→OCR→自动输入到钉钉桌面客户端。</p>
+<h3>整体架构（服务端+Mac客户端）</h3>
+<div class="codehilite"><pre><span></span><code>fiona服务端(port 1980)          Mac客户端
+┌─────────────────────┐        ┌──────────────────────┐
+│ wukong-monitor.js   │        │ wukong-grab.sh       │
+│  ├── fetchInviteImageUrl()  │◄──│  每2秒 curl /api/wukong/poll│
+│  ├── ocrInviteCode()        │   │  检测到新码 → AppleScript │
+│  └── pollCheck()    │        │  自动输入钉钉+回车    │
+│                     │        └──────────────────────┘
+│ server.js           │
+│  └── POST /api/wukong/poll │
+└─────────────────────┘
+</code></pre></div>
+
+<h3>时序（&lt; 5秒）</h3>
+<div class="codehilite"><pre><span></span><code>轮询间隔 0-2s + API请求 0.3s + Anthropic Vision OCR 1-1.5s + AppleScript 0.5s = 2-4.5s
+</code></pre></div>
+
+<h3>OCR实现（服务端，Node.js）</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1">// wukong-monitor.js</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">ocrInviteCode</span><span class="p">(</span><span class="nx">imageUrl</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// 使用 Anthropic Vision API，用 https 模块直接调（不加依赖）</span>
+<span class="w">  </span><span class="c1">// 模型: claude-haiku-4-5-20251001（快+便宜，Vision足够）</span>
+<span class="w">  </span><span class="c1">// prompt: &quot;提取图片中的邀请码，只返回邀请码文本，无则返回空&quot;</span>
+<span class="p">}</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">pollCheck</span><span class="p">(</span><span class="nx">clientUrlId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">imageUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">urlId</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetchInviteImageUrl</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">urlId</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">clientUrlId</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nx">state</span><span class="p">.</span><span class="nx">cachedOcr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">inviteCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">ocrInviteCode</span><span class="p">(</span><span class="nx">imageUrl</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">changed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">imageUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">urlId</span><span class="p">,</span><span class="w"> </span><span class="nx">inviteCode</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">changed</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nx">imageUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">urlId</span><span class="p">,</span><span class="w"> </span><span class="nx">inviteCode</span><span class="o">:</span><span class="w"> </span><span class="nx">state</span><span class="p">.</span><span class="nx">cachedOcr</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3>Mac客户端脚本（纯bash，零依赖）</h3>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="c1"># wukong-grab.sh</span>
+<span class="nv">LAST_URL_ID</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nv">RESP</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://fiona:1980/api/wukong/poll<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s2">&quot;{\&quot;lastUrlId\&quot;:\&quot;</span><span class="nv">$LAST_URL_ID</span><span class="s2">\&quot;}&quot;</span><span class="k">)</span>
+
+<span class="w">  </span><span class="nv">CHANGED</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="nv">$RESP</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json,sys; d=json.load(sys.stdin); print(d.get(&#39;changed&#39;,&#39;&#39;))&quot;</span><span class="k">)</span>
+<span class="w">  </span><span class="nv">CODE</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="nv">$RESP</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json,sys; d=json.load(sys.stdin); print(d.get(&#39;inviteCode&#39;,&#39;&#39;))&quot;</span><span class="k">)</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHANGED</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;True&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CODE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="c1"># AppleScript自动输入</span>
+<span class="w">    </span>osascript<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">tell application &quot;DingTalk&quot; to activate</span>
+<span class="s">delay 0.3</span>
+<span class="s">tell application &quot;System Events&quot;</span>
+<span class="s">  keystroke &quot;a&quot; using command down</span>
+<span class="s">  keystroke &quot;$CODE&quot;</span>
+<span class="s">  delay 0.2</span>
+<span class="s">  keystroke return</span>
+<span class="s">end tell</span>
+<span class="s">EOF</span>
+<span class="w">    </span>afplay<span class="w"> </span>/System/Library/Sounds/Glass.aiff
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ 抢码成功: </span><span class="nv">$CODE</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="w">  </span><span class="k">fi</span>
+<span class="w">  </span>sleep<span class="w"> </span><span class="m">2</span>
+<span class="k">done</span>
+</code></pre></div>
+
+<h3>测试命令</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 验证服务端OCR</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:1980/api/wukong/poll<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;lastUrlId&quot;:&quot;fake&quot;}&#39;</span>
+</code></pre></div>
+
+<h2>三、项目实践：美伊套利监控系统</h2>
+<h3>技术栈</h3>
+<ul>
+<li><strong>后端</strong>：Express.js（<code>/root/.openclaw/workspace/dashboard-mvp/server.js</code>）</li>
+<li><strong>前端</strong>：纯HTML+JS（暗色主题，antd风格）</li>
+<li><strong>数据源</strong>：Polymarket Gamma API（无需Auth）</li>
+<li><strong>LLM</strong>：Anthropic API（盘口规则语义解析）</li>
+</ul>
+<h3>server.js 路由模式</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1">// Express路由最简模式</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/iran-arb&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="s1">&#39;public/iran-arb.html&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">root</span><span class="o">:</span><span class="w"> </span><span class="nx">__dirname</span><span class="p">}));</span>
+
+<span class="c1">// ANTHROPIC_API_KEY读取方式（无dotenv依赖）</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">envContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;/root/.openclaw/.env&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">apiKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">envContent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/ANTHROPIC_API_KEY=(.+)/</span><span class="p">)</span><span class="o">?</span><span class="p">.[</span><span class="mf">1</span><span class="p">]</span><span class="o">?</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+</code></pre></div>
+
+<h3>LLM缓存模式</h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">CACHE_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/tmp/iran_rules_cache.json&#39;</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">CACHE_TTL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3600</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1小时</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getRulesWithCache</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">CACHE_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">CACHE_FILE</span><span class="p">));</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">cache</span><span class="p">.</span><span class="nx">ts</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">CACHE_TTL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">cache</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">callClaudeAPI</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="nx">CACHE_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">ts</span><span class="o">:</span><span class="w"> </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">(),</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="p">}));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">data</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2>四、常见问题与解决方案</h2>
+<h3>Agent子进程模型不可用</h3>
+<p><strong>现象</strong>：Claude Code 内部 Agent subagent 报 "There's an issue with the selected model (claude-sonnet-4-6-thinking)"</p>
+<p><strong>原因</strong>：旧版本Claude Code使用thinking模型作为默认子agent模型，但该模型在该环境不可用</p>
+<p><strong>解决</strong>：直接使用 Bash/Read 工具替代 Agent 子进程；或更新Claude Code版本</p>
+<h3>大文件读取策略</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># JSONL文件（每行一个JSON对象）分批读取</span>
+<span class="c1"># 优先读前500行（含计划/架构信息）+ 最后200行（含结果/验证）</span>
+<span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">500</span>
+<span class="n">offset</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="mi">200</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">200</span>
+</code></pre></div>
+
+<h3>httpx vs requests（Python异步场景）</h3>
+<ul>
+<li>asyncio环境必须用 <code>httpx.AsyncClient</code>，不能用 <code>requests</code>（同步阻塞）</li>
+<li><code>aiosqlite</code> 对应 <code>sqlite3</code> 的异步版本</li>
+</ul>
+<h2>五、工具调用最佳实践</h2>
+<h3>Claude Code作为子代理</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 最佳调用方式（非交互，bypass权限）</span>
+claude<span class="w"> </span>--print<span class="w"> </span>--permission-mode<span class="w"> </span>bypassPermissions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>claude-opus-4-6<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;任务描述&quot;</span>
+</code></pre></div>
+
+<h3>项目文件结构约定</h3>
+<div class="codehilite"><pre><span></span><code>projects/&lt;name&gt;/
+├── roadmap.md    # 整体目标与里程碑
+├── task.md       # 原子化任务清单（含验证步骤）
+├── findings.md   # 关键发现
+├── issue.md      # 异常记录
+├── LEARNING.md   # 教训总结
+└── SOP.md        # 可复用标准流程
+</code></pre></div>
+
+<h2>教训</h2>
+<ol>
+<li><strong>Node.js调Claude API不需要SDK</strong>：直接用 <code>https</code> 模块，避免依赖问题</li>
+<li><strong>AppleScript是Mac自动化银弹</strong>：零依赖，能控制任何有界面的应用</li>
+<li><strong>OCR选轻量模型</strong>：haiku级别的Vision能力足够提取邀请码，价格是opus的1/20</li>
+<li><strong>缓存减少API调用</strong>：LLM解读结果缓存1小时，避免每次刷新都调API</li>
+<li><strong>纯bash客户端</strong>：Mac端脚本用纯bash，比Node.js更零依赖、更易分发</li>
+</ol>
+<h2>Tags</h2>
+<h1>Claude-Code #自动化 #OCR #AppleScript #危险模式 #配置 #WebSocket #Python #Node.js #bash</h1>
+  </div>
+</div>
+</body>
+</html>

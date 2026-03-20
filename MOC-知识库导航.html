@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识库导航 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">MOC</div>
+<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="MOC.html">MOC</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">知识库导航</span></div>
+  <div class="article-header">
+    <h1>知识库导航</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags: [MOC, 索引]
+date: 2026-03-17
+updated: 2026-03-19</p>
+<hr />
+<h1>🗺️ 知识库导航 (Map of Content)</h1>
+<h2>📂 分类索引</h2>
+<h3>🤖 AI &amp; 开发工具</h3>
+<ul>
+<li>[[OpenClaw使用笔记]] — 框架概念、开发环境、配置路径</li>
+<li>[[Obsidian知识库管理]] — 架构、目录结构、同步方案</li>
+</ul>
+<h3>🔧 技术笔记</h3>
+<ul>
+<li>[[Obsidian知识库搭建复盘]] — 完整搭建过程、选型决策、踩坑记录</li>
+<li>[[第二大脑架构调研报告]] — 三大方案对比、自动标签/链接/搜索深度调研</li>
+<li>[[电话通知能力调研]] — 国内VMS企业资质限制、个人可用替代方案</li>
+</ul>
+<h3>💰 投资 &amp; 商业</h3>
+<ul>
+<li>[[投资方法论-高精尖制造业分析框架]] — 锁定判断四问、参与者vs赢家框架、光通信应用</li>
+</ul>
+<h3>🔨 项目</h3>
+<ul>
+<li>[[TODO]] — 共享任务看板</li>
+<li>[[zhima-agent-setup]] — 芝麻Agent初始化记录</li>
+</ul>
+<h2>📅 日记索引</h2>
+<ul>
+<li>[[2026-03-17]] — 7战线并行日（套利/知识库/电商视频/代理/CDP/路由/毛选）</li>
+<li>[[2026-03-18]] — 深度思考日（奇奇Agent/公众号规则/TTS/gstack学习/LCM架构）</li>
+<li>[[2026-03-19]] — 知识库补全日（电话通知沉淀/双向链接/全量搜索/Fiona运维）</li>
+</ul>
+<h2>📊 知识库统计</h2>
+<ul>
+<li>总笔记：13篇（含本页）</li>
+<li>知识卡片：6篇</li>
+<li>日记：3天</li>
+<li>项目文档：2篇</li>
+<li>上次更新：2026-03-19</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

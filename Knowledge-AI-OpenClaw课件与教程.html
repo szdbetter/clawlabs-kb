@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw课件与教程 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">MOC</div>
+<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-AI.html">AI</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">OpenClaw课件与教程</span></div>
+  <div class="article-header">
+    <h1>OpenClaw课件与教程</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <h1>OpenClaw课件与教程</h1>
+<blockquote>
+<p>来源：Discord Thread #课件整理 (1481489484796264448, 306条)
+提取日期：2026-03-20</p>
+</blockquote>
+<hr />
+<h2>一、课件概述</h2>
+<h3>项目背景</h3>
+<p>为了推广OpenClaw的企业应用，制作了一套针对企业老板/路演/销售场景的PPT课件。</p>
+<p><strong>核心主题</strong>：AI Agent入门与商业应用
+- 目标受众：企业老板、商业决策者
+- 核心信息：从"会用AI"升级到"拥有数字员工"</p>
+<h3>文件路径</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">projects</span><span class="o">/</span><span class="n">openclaw_course</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">openclaw_agent_course_v1</span><span class="o">.</span><span class="n">pptx</span><span class="w">        </span><span class="c1"># 基础版（12页）</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">openclaw_agent_course_v2_visual</span><span class="o">.</span><span class="n">pptx</span><span class="w"> </span><span class="c1"># 视觉增强版（含10张配图）</span>
+<span class="err">└──</span><span class="w"> </span><span class="n">openclaw_course_constructivism</span><span class="o">.</span><span class="n">pptx</span><span class="w">  </span><span class="c1"># 苏联构成主义风格版（huashu-slides制作）</span>
+</code></pre></div>
+
+<hr />
+<h2>二、课件内容大纲（12页）</h2>
+<table>
+<thead>
+<tr>
+<th>页码</th>
+<th>主题</th>
+<th>核心信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>封面</td>
+<td>AI大脑+机械手臂</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>高级打字机对比</td>
+<td>大多数人只是用了个"更高级的打字机"</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>老板下发任务/数字员工执行</td>
+<td>指令→执行闭环</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>LLM大脑+Agent手脚</td>
+<td>LLM是智力，Agent是执行力</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>夜间自动执行</td>
+<td>你睡觉，AI在工作</td>
+</tr>
+<tr>
+<td>P6</td>
+<td>智力vs执行力</td>
+<td>有智力无执行力=没用</td>
+</tr>
+<tr>
+<td>P9</td>
+<td>三类目标用户</td>
+<td>开创者/追随者/观望者</td>
+</tr>
+<tr>
+<td>P10</td>
+<td>2026 Agent元年</td>
+<td>2026年是Agent元年</td>
+</tr>
+<tr>
+<td>P11</td>
+<td>商业案例</td>
+<td>真实落地案例</td>
+</tr>
+<tr>
+<td>P12</td>
+<td>船票/收口页</td>
+<td>下一个时代你要么拥有数字员工，要么成为别人工具</td>
+</tr>
+</tbody>
+</table>
+<p><strong>核心金句</strong>：</p>
+<blockquote>
+<p>"下一个时代你要么拥有数字员工，要么成为别人的工具"</p>
+</blockquote>
+<hr />
+<h2>三、PPT制作工具与流程</h2>
+<h3>huashu-slides Skill</h3>
+<ul>
+<li><strong>功能</strong>：AI驱动的PPT生成，支持17种风格</li>
+<li><strong>安装路径</strong>：<code>workspace/skills/huashu-slides/</code></li>
+<li><strong>支持格式</strong>：HTML可编辑版 + AI漫画风</li>
+</ul>
+<h4>使用流程</h4>
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">确认课件内容大纲</span><span class="err">（</span><span class="mf">12</span><span class="n">页</span><span class="err">）</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">选择风格</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">生成12张HTML</span><span class="w"> </span><span class="n">slide</span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">组装PPTX</span>
+<span class="mf">5.</span><span class="w"> </span><span class="n">导出4张预览截图发Discord确认</span>
+</code></pre></div>
+
+<h4>已测试的风格</h4>
+<table>
+<thead>
+<tr>
+<th>风格</th>
+<th>特点</th>
+<th>评价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>苏联构成主义 (06)</td>
+<td>红黑强对比，冲击力极强</td>
+<td>★★★★★ 路演首推</td>
+</tr>
+<tr>
+<td>Neo-Pop (04)</td>
+<td>大色块+粗黑线，现代感强</td>
+<td>★★★★ 商务感好</td>
+</tr>
+<tr>
+<td>温暖叙事 (09)</td>
+<td>插画风温暖亲切，故事感强</td>
+<td>★★★ 适合培训</td>
+</tr>
+<tr>
+<td>Snoopy温暖漫画</td>
+<td>米色背景，棕色系排版</td>
+<td>亲切叙事风格</td>
+</tr>
+<tr>
+<td>Ligne Claire清线漫画</td>
+<td>白底精准，Tintin风格</td>
+<td>信息图风</td>
+</tr>
+<tr>
+<td>The Oatmeal信息图漫画</td>
+<td>夸张表情，橙灰配色</td>
+<td>幽默活泼</td>
+</tr>
+</tbody>
+</table>
+<h3>文案制作流程</h3>
+<ol>
+<li>CEO骨架版（定框架）</li>
+<li>并行国产模型出稿（Qwen/GLM双路赛马）</li>
+<li>验收选优</li>
+<li>锁定文案版（<code>ppt_copy_final.md</code> + <code>ppt_pages_final.json</code>）</li>
+<li>生成PPTX</li>
+</ol>
+<hr />
+<h2>四、配图生成方案</h2>
+<h3>火山引擎豆包生图</h3>
+<ul>
+<li><strong>API</strong>：<code>doubao-seedream-3-0-t2i</code>（OpenAI兼容格式）</li>
+<li><strong>配置</strong>：<code>VOLCENGINE_API_KEY</code>（在.env中）</li>
+<li><strong>效果</strong>：科技风AI插图</li>
+</ul>
+<h3>生图配置注意事项</h3>
+<ul>
+<li>Google API免费配额=0，不适合批量生图</li>
+<li>火山引擎豆包是当前推荐方案</li>
+<li>每页标题对应一张配图，共12张</li>
+<li>要求：简明、对比强烈、强内容相关</li>
+</ul>
+<hr />
+<h2>五、工作目录规范（重要经验）</h2>
+<h3>历史问题</h3>
+<p>早期项目文件分散在两个地方：
+- <code>/root/.openclaw/workspace/projects/</code>
+- <code>/root/.openclaw/projects/</code></p>
+<h3>统一规范</h3>
+<p><strong>项目文件统一存放：<code>/root/.openclaw/workspace/projects/</code></strong></p>
+<p>原因：
+- workspace是OpenClaw的主工作区
+- OpenClaw Agent默认访问workspace
+- 避免跨目录混乱</p>
+<h3>记忆管理</h3>
+<ul>
+<li><strong>长期记忆</strong>：OpenViking插件（跨Channel共享）</li>
+<li><strong>项目文件</strong>：<code>workspace/projects/&lt;项目名&gt;/</code></li>
+<li><strong>不再使用</strong>：<code>memory/</code> 目录作为项目主路径（已废弃）</li>
+</ul>
+<hr />
+<h2>六、课件制作踩坑记录</h2>
+<h3>问题1：Sonnet模型不稳定</h3>
+<p><strong>现象</strong>：Sonnet文案输出任务超时失败
+<strong>解决</strong>：切换国产大模型（Qwen/GLM）双路并行</p>
+<h3>问题2：配图无法显示</h3>
+<p><strong>现象</strong>：PPTX成品里没有配图（只有封面）
+<strong>根因</strong>：只传了<code>thumb_media_id</code>，正文HTML里没有嵌入配图
+<strong>解决</strong>：走微信正文图专用上传链路，在HTML正文标签里插入<code>&lt;img&gt;</code></p>
+<h3>问题3：预览截图中文显示方块</h3>
+<p><strong>现象</strong>：VM缺CJK字体，截图中文显示为□□□
+<strong>结论</strong>：PPTX文件本身中文完全正确，截图是VM字体问题，不影响文件</p>
+<h3>问题4：Google生图配额耗尽</h3>
+<p><strong>现象</strong>：GEMINI_API_KEY生图报错（Free Tier quota = 0）
+<strong>解决</strong>：改用火山引擎豆包生图API</p>
+<hr />
+<h2>七、关键文案</h2>
+<h3>封面/主题</h3>
+<div class="codehilite"><pre><span></span><code>AI时代的商业革命：
+从&quot;会用AI&quot;到&quot;拥有数字员工&quot;
+</code></pre></div>
+
+<h3>核心论点</h3>
+<ol>
+<li><strong>LLM是大脑，Agent是手脚</strong> — 光有智力没有执行力等于没用</li>
+<li><strong>2026年是Agent元年</strong> — 现在上船是最好时机</li>
+<li><strong>数字员工vs人工员工</strong> — 7×24小时不休息，无需培训</li>
+<li><strong>船票思维</strong> — 下一个时代你要么拥有数字员工，要么成为别人工具</li>
+</ol>
+<hr />
+<h2>八、后续计划</h2>
+<ul>
+<li>[ ] 更新课件至最新版本（增加更多真实案例）</li>
+<li>[ ] 制作配套公众号文章</li>
+<li>[ ] 完善huashu-slides skill的使用文档</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>
