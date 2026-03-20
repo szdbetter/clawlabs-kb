@@ -138,6 +138,29 @@ body {
 .article-content tr:nth-child(even) { background: #1a1a30; }
 .article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
 .article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 20px; }
@@ -148,6 +171,13 @@ body {
 <div class="sidebar">
   <nav class="sidebar-nav">
 <a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
 <div class="nav-group"><div class="nav-group-title">AI</div>
 <a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
 <a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
@@ -169,9 +199,6 @@ body {
 <a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
 <a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
 <a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
-</div>
-<div class="nav-group"><div class="nav-group-title">MOC</div>
-<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
 </div>
 <div class="nav-group"><div class="nav-group-title">Projects</div>
 <a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
@@ -202,6 +229,7 @@ body {
 <div class="main">
   <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">第二大脑架构调研报告</span></div>
   <div class="article-header">
+    
     <h1>第二大脑架构调研报告</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
@@ -284,7 +312,7 @@ aliases: [Second Brain Architecture Report]</p>
 </tr>
 <tr>
 <td>双向链接</td>
-<td>⚠️ 需 AI 在写入时主动扫描并插入 <code>[[wikilinks]]</code></td>
+<td>⚠️ 需 AI 在写入时主动扫描并插入 <code>&lt;span class="wikilink-missing" title="未找到笔记"&gt;wikilinks&lt;/span&gt;</code></td>
 </tr>
 <tr>
 <td>知识图谱</td>
@@ -383,7 +411,7 @@ aliases: [Second Brain Architecture Report]</p>
 <tbody>
 <tr>
 <td>AI 写入时扫描</td>
-<td>写入前用 <code>rg</code> 搜索 vault 中已有笔记标题，匹配到则插入 <code>[[link]]</code></td>
+<td>写入前用 <code>rg</code> 搜索 vault 中已有笔记标题，匹配到则插入 <code>&lt;span class="wikilink-missing" title="未找到笔记"&gt;link&lt;/span&gt;</code></td>
 <td>⭐⭐⭐⭐⭐</td>
 </tr>
 <tr>
@@ -527,30 +555,30 @@ aliases: [Second Brain Architecture Report]</p>
 </code></pre></div>
 
 <h3>4.3 自动化流程</h3>
-<div class="codehilite"><pre><span></span><code><span class="n">对话</span><span class="o">/</span><span class="n">语音输入</span>
-<span class="w">    </span><span class="err">│</span>
-<span class="w">    </span><span class="err">▼</span>
-<span class="n">OpenClaw</span><span class="w"> </span><span class="n">AI</span><span class="w"> </span><span class="n">提炼</span>
-<span class="w">    </span><span class="err">│</span>
-<span class="w">    </span><span class="err">├─→</span><span class="w"> </span><span class="n">提取要点</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">自动分类</span>
-<span class="w">    </span><span class="err">├─→</span><span class="w"> </span><span class="n">生成</span><span class="w"> </span><span class="n">frontmatter</span><span class="err">（</span><span class="n">tags</span><span class="p">,</span><span class="w"> </span><span class="n">created</span><span class="p">,</span><span class="w"> </span><span class="n">aliases</span><span class="err">）</span>
-<span class="w">    </span><span class="err">├─→</span><span class="w"> </span><span class="n">扫描</span><span class="w"> </span><span class="n">vault</span><span class="w"> </span><span class="n">已有笔记标题</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">插入</span><span class="w"> </span><span class="o">[</span><span class="n">[wikilinks</span><span class="o">]</span><span class="err">]</span>
-<span class="w">    </span><span class="err">│</span>
-<span class="w">    </span><span class="err">▼</span>
-<span class="n">写入</span><span class="w"> </span><span class="n">Inbox</span><span class="o">/</span><span class="w"> </span><span class="n">或直接写入</span><span class="w"> </span><span class="n">Knowledge</span><span class="o">/</span><span class="err">{</span><span class="n">category</span><span class="err">}</span><span class="o">/</span>
-<span class="w">    </span><span class="err">│</span>
-<span class="w">    </span><span class="err">▼</span>
-<span class="n">每晚</span><span class="w"> </span><span class="mi">23</span><span class="err">:</span><span class="mi">00</span><span class="w"> </span><span class="n">归档任务</span>
-<span class="w">    </span><span class="err">├─→</span><span class="w"> </span><span class="n">整理</span><span class="w"> </span><span class="n">Inbox</span><span class="o">/</span><span class="w"> </span><span class="n">中未分类内容</span>
-<span class="w">    </span><span class="err">├─→</span><span class="w"> </span><span class="n">更新</span><span class="w"> </span><span class="n">MOC</span><span class="o">/</span><span class="w"> </span><span class="n">索引页</span>
-<span class="w">    </span><span class="err">├─→</span><span class="w"> </span><span class="n">补充遗漏的双向链接</span>
-<span class="w">    </span><span class="err">└─→</span><span class="w"> </span><span class="n">生成</span><span class="w"> </span><span class="n">Daily</span><span class="o">/</span><span class="w"> </span><span class="n">汇总</span>
-<span class="w">    </span><span class="err">│</span>
-<span class="w">    </span><span class="err">▼</span>
-<span class="n">每小时</span><span class="w"> </span><span class="n">Git</span><span class="w"> </span><span class="n">自动同步</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">GitHub</span>
-<span class="w">    </span><span class="err">│</span>
-<span class="w">    </span><span class="err">▼</span>
-<span class="n">Mac</span><span class="w"> </span><span class="n">Git</span><span class="w"> </span><span class="n">Pull</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">iCloud</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">iPhone</span><span class="w"> </span><span class="n">Obsidian</span>
+<div class="codehilite"><pre><span></span><code>对话/语音输入
+<span class="w">    </span>│
+<span class="w">    </span>▼
+OpenClaw<span class="w"> </span>AI<span class="w"> </span>提炼
+<span class="w">    </span>│
+<span class="w">    </span>├─→<span class="w"> </span>提取要点<span class="w"> </span>+<span class="w"> </span>自动分类
+<span class="w">    </span>├─→<span class="w"> </span>生成<span class="w"> </span>frontmatter（tags,<span class="w"> </span>created,<span class="w"> </span>aliases）
+<span class="w">    </span>├─→<span class="w"> </span>扫描<span class="w"> </span>vault<span class="w"> </span>已有笔记标题<span class="w"> </span>→<span class="w"> </span>插入<span class="w"> </span><span class="nt">&lt;span</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;wikilink-missing&quot;</span><span class="w"> </span><span class="na">title=</span><span class="s">&quot;未找到笔记&quot;</span><span class="nt">&gt;</span>wikilinks<span class="nt">&lt;/span&gt;</span>
+<span class="w">    </span>│
+<span class="w">    </span>▼
+写入<span class="w"> </span>Inbox/<span class="w"> </span>或直接写入<span class="w"> </span>Knowledge/{category}/
+<span class="w">    </span>│
+<span class="w">    </span>▼
+每晚<span class="w"> </span>23:00<span class="w"> </span>归档任务
+<span class="w">    </span>├─→<span class="w"> </span>整理<span class="w"> </span>Inbox/<span class="w"> </span>中未分类内容
+<span class="w">    </span>├─→<span class="w"> </span>更新<span class="w"> </span>MOC/<span class="w"> </span>索引页
+<span class="w">    </span>├─→<span class="w"> </span>补充遗漏的双向链接
+<span class="w">    </span>└─→<span class="w"> </span>生成<span class="w"> </span>Daily/<span class="w"> </span>汇总
+<span class="w">    </span>│
+<span class="w">    </span>▼
+每小时<span class="w"> </span>Git<span class="w"> </span>自动同步<span class="w"> </span>→<span class="w"> </span>GitHub
+<span class="w">    </span>│
+<span class="w">    </span>▼
+Mac<span class="w"> </span>Git<span class="w"> </span>Pull<span class="w"> </span>→<span class="w"> </span>iCloud<span class="w"> </span>→<span class="w"> </span>iPhone<span class="w"> </span>Obsidian
 </code></pre></div>
 
 <h3>4.4 笔记模板规范</h3>
@@ -571,8 +599,8 @@ source: [对话/网页/语音/手动]
 ...
 
 <span class="gu">## 相关笔记</span>
-<span class="k">-</span><span class="w"> </span>[[相关笔记1]]
-<span class="k">-</span><span class="w"> </span>[[相关笔记2]]
+<span class="k">-</span><span class="w"> </span>&lt;span class=&quot;wikilink-missing&quot; title=&quot;未找到笔记&quot;&gt;相关笔记1&lt;/span&gt;
+<span class="k">-</span><span class="w"> </span>&lt;span class=&quot;wikilink-missing&quot; title=&quot;未找到笔记&quot;&gt;相关笔记2&lt;/span&gt;
 </code></pre></div>
 
 <hr />
@@ -656,7 +684,7 @@ source: [对话/网页/语音/手动]
 <h3>P0 — 立即可做（零成本）</h3>
 <ol>
 <li><strong>标准化写入流程</strong>：修改 OpenClaw 的笔记写入逻辑，确保每篇笔记必带 frontmatter（tags, created, source）</li>
-<li><strong>写入时自动链接</strong>：AI 写入前先 <code>rg -l</code> 搜索 vault 中已有笔记标题，匹配到的自动插入 <code>[[wikilinks]]</code></li>
+<li><strong>写入时自动链接</strong>：AI 写入前先 <code>rg -l</code> 搜索 vault 中已有笔记标题，匹配到的自动插入 <code>&lt;span class="wikilink-missing" title="未找到笔记"&gt;wikilinks&lt;/span&gt;</code></li>
 <li><strong>创建 Templates/ 目录</strong>：放入标准化模板，AI 写入时参照</li>
 </ol>
 <h3>P1 — 短期增强（1-2 天）</h3>
@@ -683,12 +711,14 @@ source: [对话/网页/语音/手动]
 <blockquote>
 <p>💡 核心原则：<strong>让 AI 做苦力（标签、链接、分类），让人做决策（审阅、重组、创造）。</strong></p>
 </blockquote>
-<h2>相关笔记</h2>
+<h2>🔗 Related</h2>
 <ul>
-<li>[[Obsidian知识库搭建复盘]]</li>
-<li>[[Obsidian知识库管理]]</li>
-<li>[[OpenClaw使用笔记]]</li>
-<li>[[知识库导航]]</li>
+<li><a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="wikilink">Obsidian知识库搭建复盘</a></li>
+<li><a href="Knowledge-AI-Obsidian知识库管理.html" class="wikilink">Obsidian知识库管理</a></li>
+<li><a href="Knowledge-AI-OpenClaw使用笔记.html" class="wikilink">OpenClaw使用笔记</a></li>
+<li><a href="MOC-知识库导航.html" class="wikilink">知识库导航</a></li>
+<li><a href="Knowledge-AI-第二大脑系统建设笔记.html" class="wikilink">第二大脑系统建设笔记</a></li>
+<li><a href="Knowledge-AI-工作体系与提示词工程.html" class="wikilink">工作体系与提示词工程</a></li>
 </ul>
   </div>
 </div>

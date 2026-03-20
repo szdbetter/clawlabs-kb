@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import re
 import markdown
 import json
 from datetime import datetime
@@ -34,6 +35,8 @@ def get_all_md_files():
     return files
 
 def get_category_info(rel_path):
+    if is_moc_file(rel_path):
+        return "MOC", "MOC"
     parts = rel_path.split(os.sep)
     if len(parts) >= 2 and parts[0] == "Knowledge":
         return "Knowledge", parts[1]
@@ -41,9 +44,42 @@ def get_category_info(rel_path):
         return parts[0], parts[0]
     return "Other", "Other"
 
+def is_moc_file(rel_path):
+    """Check if a file is a MOC (Map of Content) note."""
+    return rel_path.startswith("MOC/") or rel_path.startswith("MOC\\")
+
+# ── Wikilink resolution ────────────────────────────────────────────────────────
+# Build a lookup: note_name -> slug (for all notes in vault)
+_WIKILINK_MAP = {}   # "OpenClaw使用笔记" -> "Knowledge-AI-OpenClaw使用笔记"
+
+def _build_wikilink_map(files):
+    for rel, _ in files:
+        note_name = rel.replace('.md', '').split('/')[-1]
+        slug = slugify(rel.replace('.md', ''))
+        _WIKILINK_MAP[note_name] = slug
+
+def resolve_wikilinks(content):
+    """Convert [[NoteName]] to clickable HTML anchors."""
+    def replacer(match):
+        note_name = match.group(1)
+        slug = _WIKILINK_MAP.get(note_name)
+        if slug:
+            return f'<a href="{slug}.html" class="wikilink">{note_name}</a>'
+        return f'<span class="wikilink-missing" title="未找到笔记">{note_name}</span>'
+    return re.sub(r'\[\[([^\]]+)\]\]', replacer, content)
+
+# ── MOC golden highlighting in nav ───────────────────────────────────────────
+MOC_ICON = "🗺️"
+MOC_STYLE = 'color: #ffd700; font-weight: bold;'   # golden
+
+def _moc_nav_item(title, rel):
+    href = slugify(rel.replace('.md', '')) + '.html'
+    return f'<a href="{href}" class="nav-item nav-moc" style="{MOC_STYLE}">{MOC_ICON} {title}</a>\n'
+
 def build_nav_html():
-    """Build left sidebar nav grouped by category."""
+    """Build left sidebar nav grouped by category. MOC notes get golden treatment."""
     groups = {}
+    moc_items = []
     for root, dirs, files in os.walk(VAULT_DIR):
         dirs[:] = [d for d in dirs if not d.startswith('.')]
         for f in files:
@@ -54,6 +90,10 @@ def build_nav_html():
             cat_folder, cat_name = get_category_info(rel)
             
             title = f.replace('.md', '')
+            if is_moc_file(rel):
+                moc_items.append((title, rel))
+                continue
+            
             if cat_folder == "Knowledge":
                 group_key = cat_name
                 group_label = cat_name
@@ -68,6 +108,13 @@ def build_nav_html():
     html = '<nav class="sidebar-nav">\n'
     html += f'<a href="index.html" class="nav-home">📚 知识库首页</a>\n'
     
+    # MOC section first
+    if moc_items:
+        html += '<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>\n'
+        for title, rel in sorted(moc_items):
+            html += _moc_nav_item(title, rel)
+        html += '</div>\n'
+    
     for group, items in sorted(groups.items()):
         html += f'<div class="nav-group"><div class="nav-group-title">{group}</div>\n'
         for title, rel in sorted(items):
@@ -78,6 +125,8 @@ def build_nav_html():
     return html
 
 def md_to_html(content):
+    # Resolve wikilinks first
+    content = resolve_wikilinks(content)
     return markdown.markdown(content, extensions=['tables', 'fenced_code', 'codehilite'])
 
 def build_breadcrumb(rel_path):
@@ -276,15 +325,15 @@ __FILE_LIST__
     page = page.replace('__NAV__', nav_html)
     return page
 
-def generate_article(rel_path, full_path):
+def generate_article(rel_path, full_path, is_moc=False):
     with open(full_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
     title = rel_path.replace('.md','').split('/')[-1]
     html_content = md_to_html(content)
     breadcrumb = build_breadcrumb(rel_path)
-    
     nav_html = build_nav_html()
+    moc_badge = '<span class="moc-badge">🗺️ MOC</span>' if is_moc else ''
     
     html = f"""<!DOCTYPE html>
 <html lang="zh">
@@ -426,6 +475,29 @@ body {{
 .article-content tr:nth-child(even) {{ background: #1a1a30; }}
 .article-content img {{ max-width: 100%; border-radius: 8px; margin: 12px 0; }}
 .article-content hr {{ border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }}
+.article-content .wikilink {{
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}}
+.article-content .wikilink:hover {{ border-bottom: 1px solid #7fdbca; }}
+.article-content .wikilink-missing {{
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}}
+/* MOC title highlight */
+.article-content .moc-badge {{
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}}
 @media (max-width: 768px) {{
   .sidebar {{ display: none; }}
   .main {{ margin-left: 0; padding: 20px; }}
@@ -439,6 +511,7 @@ body {{
 <div class="main">
   {breadcrumb}
   <div class="article-header">
+    {moc_badge}
     <h1>{title}</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
@@ -452,6 +525,7 @@ body {{
 
 def main():
     files = get_all_md_files()
+    _build_wikilink_map(files)
     
     # Generate index
     index_html = generate_index(files)
@@ -461,7 +535,8 @@ def main():
     
     # Generate article pages
     for rel, full in files:
-        html = generate_article(rel, full)
+        is_moc = is_moc_file(rel)
+        html = generate_article(rel, full, is_moc=is_moc)
         out_name = slugify(rel.replace('.md', '')) + '.html'
         out_path = os.path.join(SITE_DIR, out_name)
         with open(out_path, 'w', encoding='utf-8') as f:
@@ -474,6 +549,7 @@ def main():
         cat_folder, cat_name = get_category_info(rel)
         key = cat_name if cat_folder == "Knowledge" else cat_folder
         groups[key] = groups.get(key, 0) + 1
+        _ = cat_folder  # unused but keep for clarity
     
     print(f"\nTotal: {len(files)} notes")
     for cat, count in sorted(groups.items()):

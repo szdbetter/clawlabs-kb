@@ -138,6 +138,29 @@ body {
 .article-content tr:nth-child(even) { background: #1a1a30; }
 .article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
 .article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 20px; }
@@ -148,6 +171,13 @@ body {
 <div class="sidebar">
   <nav class="sidebar-nav">
 <a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
 <div class="nav-group"><div class="nav-group-title">AI</div>
 <a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
 <a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
@@ -169,9 +199,6 @@ body {
 <a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
 <a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
 <a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
-</div>
-<div class="nav-group"><div class="nav-group-title">MOC</div>
-<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
 </div>
 <div class="nav-group"><div class="nav-group-title">Projects</div>
 <a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
@@ -202,6 +229,7 @@ body {
 <div class="main">
   <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Projects.html">Projects</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">zhima-agent-setup</span></div>
   <div class="article-header">
+    
     <h1>zhima-agent-setup</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
@@ -241,10 +269,12 @@ body {
 <li><strong>飞书</strong>: 独立账号绑定（<code>zhima</code> 条目）</li>
 <li><strong>与 Reese 主 Agent 关系</strong>: 完全独立，不共享 workspace 和人设</li>
 </ul>
-<h2>相关笔记</h2>
+<h2>🔗 Related</h2>
 <ul>
-<li>[[OpenClaw使用笔记]]</li>
-<li>[[TODO]]</li>
+<li><a href="Knowledge-AI-OpenClaw使用笔记.html" class="wikilink">OpenClaw使用笔记</a></li>
+<li><a href="Projects-TODO.html" class="wikilink">TODO</a></li>
+<li><a href="Knowledge-AI-工作体系与提示词工程.html" class="wikilink">工作体系与提示词工程</a></li>
+<li><a href="Knowledge-AI-第二大脑系统建设笔记.html" class="wikilink">第二大脑系统建设笔记</a></li>
 </ul>
   </div>
 </div>

@@ -138,6 +138,29 @@ body {
 .article-content tr:nth-child(even) { background: #1a1a30; }
 .article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
 .article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 20px; }
@@ -148,6 +171,13 @@ body {
 <div class="sidebar">
   <nav class="sidebar-nav">
 <a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
 <div class="nav-group"><div class="nav-group-title">AI</div>
 <a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
 <a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
@@ -169,9 +199,6 @@ body {
 <a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
 <a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
 <a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
-</div>
-<div class="nav-group"><div class="nav-group-title">MOC</div>
-<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
 </div>
 <div class="nav-group"><div class="nav-group-title">Projects</div>
 <a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
@@ -202,6 +229,7 @@ body {
 <div class="main">
   <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Daily.html">Daily</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">2026-03-19</span></div>
   <div class="article-header">
+    
     <h1>2026-03-19</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
@@ -222,14 +250,14 @@ tags: [日记, 知识库, 运维]</p>
 <li><strong>调研笔记沉淀</strong>：完整方案对比写入 <code>Knowledge/Tech/电话通知能力调研.md</code></li>
 <li><strong>替代方案排序</strong>：OpenClaw Node timeSensitive推送（免费）&gt; Bark &gt; Server酱电话版（¥0.1/次）</li>
 <li><strong>待验证</strong>：timeSensitive推送能否在勿扰模式下突破响铃</li>
-<li>详见 → [[电话通知能力调研]]</li>
+<li>详见 → <a href="Knowledge-Tech-电话通知能力调研.html" class="wikilink">电话通知能力调研</a></li>
 </ul>
 <h3>🔗 知识库双向链接补全</h3>
 <ul>
 <li><strong>问题</strong>：12篇笔记之间几乎没有互链，Obsidian Graph View跑不起来</li>
-<li><strong>修复</strong>：全量扫描所有笔记，按内容关联性补充 <code>[[wikilinks]]</code></li>
-<li>涉及笔记：[[OpenClaw使用笔记]]、[[Obsidian知识库管理]]、[[Obsidian知识库搭建复盘]]、[[第二大脑架构调研报告]]、[[电话通知能力调研]]、[[投资方法论-高精尖制造业分析框架]]、[[zhima-agent-setup]]</li>
-<li><strong>MOC索引页重建</strong>：[[知识库导航]] 从空壳更新为完整索引，含分类和日记索引</li>
+<li><strong>修复</strong>：全量扫描所有笔记，按内容关联性补充 <code>&lt;span class="wikilink-missing" title="未找到笔记"&gt;wikilinks&lt;/span&gt;</code></li>
+<li>涉及笔记：<a href="Knowledge-AI-OpenClaw使用笔记.html" class="wikilink">OpenClaw使用笔记</a>、<a href="Knowledge-AI-Obsidian知识库管理.html" class="wikilink">Obsidian知识库管理</a>、<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="wikilink">Obsidian知识库搭建复盘</a>、<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="wikilink">第二大脑架构调研报告</a>、<a href="Knowledge-Tech-电话通知能力调研.html" class="wikilink">电话通知能力调研</a>、<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="wikilink">投资方法论-高精尖制造业分析框架</a>、<a href="Projects-zhima-agent-setup.html" class="wikilink">zhima-agent-setup</a></li>
+<li><strong>MOC索引页重建</strong>：<a href="MOC-知识库导航.html" class="wikilink">知识库导航</a> 从空壳更新为完整索引，含分类和日记索引</li>
 </ul>
 <h3>📂 知识库全量盘点</h3>
 <ul>
@@ -241,12 +269,12 @@ tags: [日记, 知识库, 运维]</p>
 <ul>
 <li>Discord配置修复：<code>groupPolicy: "allowlist"</code> 缺少白名单导致全频道被拒</li>
 <li>launchd废弃服务清理：guardian已停止，evolver/channel-guard/model-router/qmd-sync待清</li>
-<li>详见 → [[2026-03-19]] 自动归档部分</li>
+<li>详见 → <a href="Daily-2026-03-19.html" class="wikilink">2026-03-19</a> 自动归档部分</li>
 </ul>
 <hr />
 <h2>💡 今日思考</h2>
 <h3>知识库的价值不在笔记数量，在连接密度</h3>
-<p>今天做双向链接才真正理解：12篇笔记各自孤立时，只是一个文件夹；有了 <code>[[wikilinks]]</code> 后，它们变成了一张网。Obsidian 的 Graph View 需要链接才能画出知识图谱——<strong>没有链接的知识库就是个高级记事本</strong>。</p>
+<p>今天做双向链接才真正理解：12篇笔记各自孤立时，只是一个文件夹；有了 <code>&lt;span class="wikilink-missing" title="未找到笔记"&gt;wikilinks&lt;/span&gt;</code> 后，它们变成了一张网。Obsidian 的 Graph View 需要链接才能画出知识图谱——<strong>没有链接的知识库就是个高级记事本</strong>。</p>
 <p>以后每篇笔记写入时，必须扫描已有笔记标题并自动插入链接。这不是可选项，是必做项。</p>
 <hr />
 <h2>✅ 待跟进</h2>
@@ -257,12 +285,17 @@ tags: [日记, 知识库, 运维]</p>
 <li>[ ] qmd 索引建立（对 vault 目录做语义搜索索引）</li>
 </ul>
 <hr />
-<h2>相关笔记</h2>
+<h2>🔗 Related</h2>
 <ul>
-<li>[[电话通知能力调研]]</li>
-<li>[[知识库导航]]</li>
-<li>[[Obsidian知识库管理]]</li>
-<li>[[TODO]]</li>
+<li><a href="Knowledge-Tech-电话通知能力调研.html" class="wikilink">电话通知能力调研</a></li>
+<li><a href="MOC-知识库导航.html" class="wikilink">知识库导航</a></li>
+<li><a href="Knowledge-AI-Obsidian知识库管理.html" class="wikilink">Obsidian知识库管理</a></li>
+<li><a href="Projects-TODO.html" class="wikilink">TODO</a></li>
+<li><a href="Knowledge-Tech-第二大脑架构调研报告.html" class="wikilink">第二大脑架构调研报告</a></li>
+<li><a href="Knowledge-AI-第二大脑系统建设笔记.html" class="wikilink">第二大脑系统建设笔记</a></li>
+<li><a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a></li>
+<li><a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="wikilink">Polymarket套利策略研究</a></li>
+<li><a href="Knowledge-AI-工作体系与提示词工程.html" class="wikilink">工作体系与提示词工程</a></li>
 </ul>
 <hr />
 <p><em>今日关键词：补债 · 连接 · 从文件夹到知识网络</em></p>

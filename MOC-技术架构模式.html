@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cards-CryptoCollect项目 - ClawLabs KB</title>
+<title>技术架构模式 - ClawLabs KB</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -227,214 +227,217 @@ body {
 </nav>
 </div>
 <div class="main">
-  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-Crypto.html">Crypto</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">Cards-CryptoCollect项目</span></div>
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="MOC.html">MOC</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">技术架构模式</span></div>
   <div class="article-header">
-    
-    <h1>Cards-CryptoCollect项目</h1>
+    <span class="moc-badge">🗺️ MOC</span>
+    <h1>技术架构模式</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
   <div class="article-content">
-    <h1>$Cards/CryptoCollect 项目研究</h1>
-<blockquote>
-<p>来源：Discord #$Cards/CryptoCollect (thread_id: 1476048581004890252, 97条)
-提取时间：2026-03-20</p>
+    <blockquote>
+<p>[!abstract] 核心洞察
+协议逆向 &gt; 模拟浏览器：每一次"从CDP迁移到WebSocket"都是同一个教训——直接对接底层协议，比依赖前端DOM稳定100倍。</p>
 </blockquote>
+<h1>技术架构 #自动化 #设计模式 #CDP #WebSocket #轮询 #事件驱动</h1>
 <hr />
-<h2>一、项目基础信息</h2>
-<p><strong>项目名称</strong>：Collector Crypt（$CARDS）
-<strong>链</strong>：Solana
-<strong>代币合约</strong>：<code>CARDSccUMFKoPRZxt5vt3ksUbxEFEcnZ3H2pd3dKxYjp</code></p>
-<p><strong>官方渠道</strong>：
-- 官网：https://collectorcrypt.com/
-- Twitter：@Collector_Crypt（~8万粉）
-- Telegram群：https://t.me/CollectorChat
-- Telegram公告：https://t.me/CollectorAnn
-- Discord：https://discord.gg/uCrguzJfM5
-- Newsletter：https://collector-crypt.beehiiv.com/</p>
-<hr />
-<h2>二、项目核心机制</h2>
-<h3>商业模式</h3>
-<ul>
-<li><strong>RWA实体卡牌Gacha机制</strong>：将实体Pokemon/One Piece等IP卡牌代币化，用户购买链上Gacha包（盲盒），实体卡牌NFC验证+物理发货到全球</li>
-<li><strong>代币持有权益</strong>：每月免费抽包 + 未来Vault回购</li>
-<li><strong>Vault回购</strong>：计划将收入注入Vault，通过链上机制回购$CARDS代币（尚未落地）</li>
-</ul>
-<h3>关键数据（2026-03-19）</h3>
-<ul>
-<li><strong>价格</strong>：$0.0355（前一日数据$0.0384）</li>
-<li><strong>市值</strong>：~$910万（MC）</li>
-<li><strong>FDV</strong>：~$7100万（⚠️ FDV/MC = 7.8x，当前流通仅约13%）</li>
-<li><strong>主力池流动性</strong>：$740K（Raydium CLMM）</li>
-<li><strong>24h成交量</strong>：$232K</li>
-<li><strong>买卖比</strong>：864:633（净买压）</li>
-</ul>
-<hr />
-<h2>三、KOL五人委员会裁决（2026-03-19）</h2>
-<h3>评分汇总</h3>
+<h2>一、自动化三条路径：CDP vs WebSocket vs API</h2>
+<h3>路径对比</h3>
 <table>
 <thead>
 <tr>
-<th>KOL</th>
-<th>核心视角</th>
-<th>价值判断</th>
-<th>交易结论</th>
-<th>评分</th>
+<th>路径</th>
+<th>代表项目</th>
+<th>优势</th>
+<th>劣势</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>@0xsunnft</td>
-<td>叙事/周期</td>
-<td>有潜在价值，需观望</td>
-<td>轻仓分批埋伏，止损$0.90</td>
-<td>62/100</td>
+<td><strong>CDP（Chrome DevTools Protocol）</strong></td>
+<td><a href="Projects-闲鱼电影票自动化项目.html" class="wikilink">闲鱼电影票自动化项目</a> v1</td>
+<td>零API申请，复用登录态</td>
+<td>依赖浏览器进程，前端更新即崩溃</td>
 </tr>
 <tr>
-<td>@kiki520_eth</td>
-<td>产品力/RWA</td>
-<td>有潜在价值，需观望</td>
-<td>观望，设条件单</td>
-<td>产品8.5/10</td>
+<td><strong>WebSocket（逆向协议）</strong></td>
+<td><a href="Projects-闲鱼系统技术演进.html" class="wikilink">闲鱼系统技术演进</a> v2</td>
+<td>实时推送，稳定，低延迟</td>
+<td>需逆向协议，图片消息处理复杂</td>
 </tr>
 <tr>
-<td>@haze0x</td>
-<td>链上执行</td>
-<td>有真实价值，适合轻仓</td>
-<td>可追踪可执行，轻仓+事件驱动</td>
-<td>—</td>
-</tr>
-<tr>
-<td>@KuiGas</td>
-<td>赛道叙事/代币结构</td>
-<td>需观望，有条件转有价值</td>
-<td>底仓现货，不锁vePENDLE</td>
-<td>72/100</td>
-</tr>
-<tr>
-<td>@0xcryptowizard</td>
-<td>宏观/多情景</td>
-<td>有潜在价值，需观望</td>
-<td>当前观望，等第二波</td>
-<td>—</td>
+<td><strong>官方API</strong></td>
+<td>理想情况</td>
+<td>最稳定，有文档</td>
+<td>闲鱼对个人开发者不开放</td>
 </tr>
 </tbody>
 </table>
-<p><strong>五人共识：100%一致 → 有潜在价值，但当前观望</strong></p>
-<h3>大师委员会裁决（五大师版）</h3>
-<ul>
-<li><strong>综合评分：4.5/10</strong></li>
-<li>德鲁肯米勒（6.5）vs 芒格/段永平（3.5）分歧最大</li>
-<li>现金流有真实基础，但护城河几乎为零</li>
-</ul>
+<h3>闲鱼的迁移路径</h3>
+<div class="codehilite"><pre><span></span><code>CDP方案（旧）→ WebSocket方案（新）
+原因：
+1. DOM scraping依赖class名 = 定时炸弹，闲鱼前端一更新即崩
+2. 图片识别通过fetchImgBase64有URL key匹配bug
+3. 30秒轮询 = 响应延迟，用户体验差
+4. 依赖Fiona Mac + Chrome物理在线，运维成本极高
+
+迁移收益：
+- 实时消息推送（WebSocket心跳循环）
+- VPS单进程运行，脱离物理节点依赖
+- 协议稳定：wss://wss-goofish.dingtalk.com/ 比DOM可靠
+</code></pre></div>
+
+<p><strong>核心教训</strong>：DOM scraping是反模式。任何依赖前端class名的方案都是定时炸弹。
+→ 详见 <a href="Projects-闲鱼系统技术演进.html" class="wikilink">闲鱼系统技术演进</a></p>
 <hr />
-<h2>四、核心亮点</h2>
-<ol>
-<li><strong>$170万真实链上GMV</strong>（4-5个月），Solana最大实物铸造，链上可查</li>
-<li><strong>PMF已验证</strong>，TVL历史峰值，协议运行无重大安全事故</li>
-<li><strong>Nobody Sausage合作</strong>（TikTok 2200万粉+Netflix/Adidas背书，真实IP）</li>
-<li><strong>NFC链上链下打通</strong>，真实技术落地</li>
-<li><strong>链上流动性健康</strong>，$740K主池，净买压</li>
-</ol>
-<hr />
-<h2>五、核心风险</h2>
-<h3>最高优先级 🔴</h3>
-<ul>
-<li><strong>FDV/MC = 7.8x</strong>：当前仅13%代币流通，解锁节奏不透明，必须查vesting schedule</li>
-<li><strong>IP授权法律地雷</strong>：Pokemon/One Piece是顶级IP，Web3授权历史多次被撤回，授权条款未披露</li>
-</ul>
-<h3>重要风险 🟠</h3>
-<ul>
-<li><strong>Vault/回购是空头支票</strong>：Vault尚未开设，回购零执行</li>
-<li><strong>合约安全未审计</strong>：无公开审计报告</li>
-<li><strong>小市值流动性陷阱</strong>：95%流动性集中在单一Raydium CLMM池</li>
-</ul>
-<hr />
-<h2>六、止损框架（@haze0x 实盘）</h2>
+<h2>二、轮询 vs 事件驱动</h2>
+<h3>两种模式对比</h3>
 <table>
 <thead>
 <tr>
-<th>触发条件</th>
-<th>动作</th>
+<th>场景</th>
+<th>方案</th>
+<th>频率</th>
+<th>适用条件</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>主池流动性单日降幅&gt;20%</td>
-<td>立即减半仓</td>
+<td>闲鱼消息（旧）</td>
+<td>30秒轮询</td>
+<td>0.033Hz</td>
+<td>低时效要求，快速MVP</td>
 </tr>
 <tr>
-<td>24h卖单笔数连续2日超买单</td>
-<td>警戒，查团队钱包</td>
+<td>闲鱼消息（新）</td>
+<td>WebSocket事件驱动</td>
+<td>毫秒级</td>
+<td>需要实时响应，协议可逆向</td>
 </tr>
 <tr>
-<td>解锁事件到来前48h</td>
-<td>提前减至1/3仓</td>
+<td>美伊套利监控</td>
+<td>30秒前端自动刷新</td>
+<td>0.033Hz</td>
+<td>盘口变化缓慢，30秒足够</td>
 </tr>
 <tr>
-<td>Top10持仓&gt;60%且大户开始转出</td>
-<td>清仓</td>
-</tr>
-<tr>
-<td>项目方沉默&gt;7天</td>
-<td>清仓</td>
-</tr>
-<tr>
-<td>价格跌破$0.028</td>
-<td>机械止损</td>
+<td>SmartMoney链上监控</td>
+<td>1小时轮询</td>
+<td>0.000277Hz</td>
+<td>Cloudflare限制，需Playwright规避</td>
 </tr>
 </tbody>
 </table>
+<h3>选型原则</h3>
+<div class="codehilite"><pre><span></span><code>实时性要求高 + 协议可逆向 → WebSocket事件驱动
+实时性要求中 + 有官方API → API轮询（合理频率）
+有Cloudflare防护 → Playwright headed模式（住宅IP节点）
+数据变化缓慢 → 降频轮询，节省资源
+</code></pre></div>
+
+<p>→ SmartMoney监控用Fiona节点（住宅IP）规避Cloudflare，1小时/次：<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a>
+→ 美伊套利用30秒前端轮询已满足需求：<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="wikilink">美伊套利监控系统架构</a></p>
 <hr />
-<h2>七、建仓框架</h2>
-<p><strong>总仓位上限：组合的2-3%</strong>（高风险，不超5%）</p>
+<h2>三、OCR + 自动化的极限：悟空抢码5秒方案</h2>
+<h3>架构设计</h3>
+<div class="codehilite"><pre><span></span><code>VPS fiona服务端(port 1980)
+├── wukong-monitor.js
+│   ├── fetchInviteImageUrl()   ← 检测新码
+│   ├── ocrInviteCode()         ← Claude Haiku Vision（1-1.5秒）
+│   └── pollCheck()             ← 客户端查询接口
+
+Mac客户端 wukong-grab.sh
+└── 每2秒 curl /api/wukong/poll
+    └── 检测到新码 → AppleScript → 钉钉自动输入
+
+总时序：轮询0-2s + API 0.3s + OCR 1-1.5s + AppleScript 0.5s = 2-4.5s ✅
+</code></pre></div>
+
+<h3>关键设计决策</h3>
+<ul>
+<li><strong>OCR用Haiku级别</strong>：Vision能力足够提取邀请码，价格是Opus的1/20</li>
+<li><strong>AppleScript是Mac自动化银弹</strong>：零依赖，能控制任何有界面的应用</li>
+<li><strong>纯bash客户端</strong>：Mac端脚本零依赖，比Node.js更易分发</li>
+<li><strong>服务端OCR + 客户端执行</strong>：计算在VPS，操作在Mac，架构清晰</li>
+</ul>
+<p>→ 详见 <a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="wikilink">Claude-Code编程实践笔记</a></p>
+<hr />
+<h2>四、Dashboard架构模式</h2>
+<h3>统一监控面板模式</h3>
+<p>ClawLabs所有项目监控都收归同一个Dashboard（port 1980）：</p>
+<div class="codehilite"><pre><span></span><code>dashboard-mvp (Express.js, port 1980)
+├── /api/iran-markets      ← 美伊盘口数据（Polymarket Gamma API）
+├── /api/iran-arbitrage    ← 套利机会扫描（纯计算，无外部依赖）
+├── /api/iran-rules        ← LLM规则解读（带1h缓存）
+├── /api/runtime           ← 系统运行状态（cron/OpenViking/daemon）
+└── public/
+    ├── iran-arb.html      ← 美伊套利监控页面
+    └── macro.html         ← 霍尔木兹宏观引擎
+</code></pre></div>
+
+<h3>两个监控系统对比</h3>
 <table>
 <thead>
 <tr>
-<th>阶段</th>
-<th>操作</th>
-<th>触发条件</th>
+<th>系统</th>
+<th>数据源</th>
+<th>刷新策略</th>
+<th>LLM调用</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>第1批</td>
-<td>入场40%</td>
-<td>$1.0-1.3区间</td>
+<td><strong>美伊套利监控</strong></td>
+<td>Polymarket Gamma API</td>
+<td>30秒前端轮询</td>
+<td>规则解读，1h缓存</td>
 </tr>
 <tr>
-<td>第2批</td>
-<td>再加40%</td>
-<td>TVL止跌反弹信号</td>
-</tr>
-<tr>
-<td>第3批</td>
-<td>最后20%</td>
-<td>价格站稳$2.0回踩确认</td>
-</tr>
-<tr>
-<td>止损</td>
-<td>全清</td>
-<td>$0.85-0.90硬止损</td>
+<td><strong>SmartMoney信号</strong></td>
+<td>GMGN（Playwright采集）</td>
+<td>1小时批量</td>
+<td>SM评分引擎</td>
 </tr>
 </tbody>
 </table>
-<p><strong>触发建仓的催化剂（需全部确认）</strong>：
-1. ✅ Vault正式上线+首次链上回购记录可查
-2. ✅ 新3台Gacha机上线后月销售额维持增长(&gt;$50万)
-3. ✅ 解锁计划公开披露，无近期大额解锁压力
-4. ✅ IP授权条款明确为合法授权</p>
+<p><strong>共同模式</strong>：
+1. 纯计算逻辑（套利/SM评分）不调LLM，延迟最低
+2. LLM只做"语义桥梁"（规则解读/意图分析），结果缓存
+3. 前端自动刷新 + Discord告警双通道</p>
+<p>→ 详见 <a href="Knowledge-Tech-美伊套利监控系统架构.html" class="wikilink">美伊套利监控系统架构</a>、<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a></p>
 <hr />
-<h2>八、研究文档</h2>
-<p>Fiona节点已收集项目完整资料：
-- 路径：<code>/Users/ai/.openclaw/workspace/projects/collector-crypt/</code>
-- 包含：README.md、tokenomics.md、community.md、latest-updates.md等共11个文件，约62KB</p>
+<h2>五、跨项目技术决策模式总结</h2>
+<h3>模式一：协议逆向 &gt; DOM Scraping</h3>
+<div class="codehilite"><pre><span></span><code>DOM scraping → 协议逆向（WebSocket/API）
+稳定性：定时炸弹 → 长期可用
+案例：闲鱼CDP → WebSocket迁移
+</code></pre></div>
+
+<h3>模式二：单进程 &gt; 多进程</h3>
+<div class="codehilite"><pre><span></span><code>asyncio task嵌入FastAPI startup
+省去进程间通信
+案例：xianyu_ws.py作为asyncio task嵌入server.py
+</code></pre></div>
+
+<h3>模式三：LLM缓存 &gt; 每次调用</h3>
+<div class="codehilite"><pre><span></span><code>LLM解读结果缓存1小时
+避免每次刷新都调API
+案例：/api/iran-rules缓存到/tmp/iran_rules_cache.json
+</code></pre></div>
+
+<h3>模式四：分层架构（物理节点 + VPS）</h3>
+<div class="codehilite"><pre><span></span><code>Fiona（住宅IP）→ 绕Cloudflare采集
+VPS → 计算/存储/Dashboard
+原则：让物理节点跑脚本，让VPS跑服务
+</code></pre></div>
+
+<hr />
 <h2>🔗 Related</h2>
 <ul>
-<li><a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="wikilink">Polymarket套利策略研究</a></li>
-<li><a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="wikilink">Polymarket-Alpha轮循策略</a></li>
-<li><a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a></li>
-<li><a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></li>
-<li><a href="Knowledge-投资-美股研究笔记.html" class="wikilink">美股研究笔记</a></li>
+<li><a href="Projects-闲鱼系统技术演进.html" class="wikilink">闲鱼系统技术演进</a> — WebSocket协议细节、Cookie管理、单进程集成方案</li>
+<li><a href="Projects-闲鱼电影票自动化项目.html" class="wikilink">闲鱼电影票自动化项目</a> — CDP方案全貌、已完成功能清单</li>
+<li><a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="wikilink">Claude-Code编程实践笔记</a> — 悟空抢码实现、LLM缓存模式、httpx vs requests</li>
+<li><a href="Knowledge-Tech-美伊套利监控系统架构.html" class="wikilink">美伊套利监控系统架构</a> — Dashboard架构、套利识别逻辑、信息源整合</li>
+<li><a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a> — 链上监控架构、Cloudflare规避、SM评分体系</li>
 </ul>
   </div>
 </div>

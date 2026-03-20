@@ -138,6 +138,29 @@ body {
 .article-content tr:nth-child(even) { background: #1a1a30; }
 .article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
 .article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 20px; }
@@ -148,6 +171,13 @@ body {
 <div class="sidebar">
   <nav class="sidebar-nav">
 <a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
 <div class="nav-group"><div class="nav-group-title">AI</div>
 <a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
 <a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
@@ -169,9 +199,6 @@ body {
 <a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
 <a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
 <a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
-</div>
-<div class="nav-group"><div class="nav-group-title">MOC</div>
-<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
 </div>
 <div class="nav-group"><div class="nav-group-title">Projects</div>
 <a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
@@ -202,6 +229,7 @@ body {
 <div class="main">
   <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">投资方法论-高精尖制造业分析框架</span></div>
   <div class="article-header">
+    
     <h1>投资方法论-高精尖制造业分析框架</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
@@ -301,7 +329,7 @@ tags:
 <h2>四、光通信应用实例（2026年3月时点）</h2>
 <ul>
 <li>光通信当前处于<strong>验证期→共识期</strong>过渡窗口</li>
-<li>NVIDIA分别与 [[Coherent]] 和 [[Lumentum]] 签数十亿美元多年合约，各投资$20亿</li>
+<li>NVIDIA分别与 <span class="wikilink-missing" title="未找到笔记">Coherent</span> 和 <span class="wikilink-missing" title="未找到笔记">Lumentum</span> 签数十亿美元多年合约，各投资$20亿</li>
 <li><strong>COHR &gt; LITE</strong>：Coherent走平台型布局，预计2030年$50B+ SAM，CPO $15B+增量</li>
 <li>行业特征：寡头化很强但仍持续洗牌（800G→1.6T、硅光、CPO/NPO/OCS新子赛道）</li>
 <li>光通信不能套用台积电/存储的静态框架——产品定义仍在变化</li>
@@ -314,10 +342,12 @@ tags:
 <li>卖方的局限：愿意推个股，但很少把"参与者"和"赢家"做明确区分</li>
 <li>从行业分析到个股分析只差一步，但需要20倍时间做收入拆分、客户分布和良率数据比对</li>
 </ul>
-<h2>相关笔记</h2>
+<h2>🔗 Related</h2>
 <ul>
-<li>[[知识库导航]]</li>
-<li>[[TODO]]</li>
+<li><a href="MOC-知识库导航.html" class="wikilink">知识库导航</a></li>
+<li><a href="Projects-TODO.html" class="wikilink">TODO</a></li>
+<li><a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></li>
+<li><a href="Knowledge-投资-美股研究笔记.html" class="wikilink">美股研究笔记</a></li>
 </ul>
   </div>
 </div>

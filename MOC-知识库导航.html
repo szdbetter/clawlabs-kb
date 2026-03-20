@@ -138,6 +138,29 @@ body {
 .article-content tr:nth-child(even) { background: #1a1a30; }
 .article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
 .article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 20px; }
@@ -148,6 +171,13 @@ body {
 <div class="sidebar">
   <nav class="sidebar-nav">
 <a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
 <div class="nav-group"><div class="nav-group-title">AI</div>
 <a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
 <a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
@@ -169,9 +199,6 @@ body {
 <a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
 <a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
 <a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
-</div>
-<div class="nav-group"><div class="nav-group-title">MOC</div>
-<a href="MOC-知识库导航.html" class="nav-item">知识库导航</a>
 </div>
 <div class="nav-group"><div class="nav-group-title">Projects</div>
 <a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
@@ -202,6 +229,7 @@ body {
 <div class="main">
   <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="MOC.html">MOC</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">知识库导航</span></div>
   <div class="article-header">
+    <span class="moc-badge">🗺️ MOC</span>
     <h1>知识库导航</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
@@ -215,29 +243,29 @@ updated: 2026-03-19</p>
 <h2>📂 分类索引</h2>
 <h3>🤖 AI &amp; 开发工具</h3>
 <ul>
-<li>[[OpenClaw使用笔记]] — 框架概念、开发环境、配置路径</li>
-<li>[[Obsidian知识库管理]] — 架构、目录结构、同步方案</li>
+<li><a href="Knowledge-AI-OpenClaw使用笔记.html" class="wikilink">OpenClaw使用笔记</a> — 框架概念、开发环境、配置路径</li>
+<li><a href="Knowledge-AI-Obsidian知识库管理.html" class="wikilink">Obsidian知识库管理</a> — 架构、目录结构、同步方案</li>
 </ul>
 <h3>🔧 技术笔记</h3>
 <ul>
-<li>[[Obsidian知识库搭建复盘]] — 完整搭建过程、选型决策、踩坑记录</li>
-<li>[[第二大脑架构调研报告]] — 三大方案对比、自动标签/链接/搜索深度调研</li>
-<li>[[电话通知能力调研]] — 国内VMS企业资质限制、个人可用替代方案</li>
+<li><a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="wikilink">Obsidian知识库搭建复盘</a> — 完整搭建过程、选型决策、踩坑记录</li>
+<li><a href="Knowledge-Tech-第二大脑架构调研报告.html" class="wikilink">第二大脑架构调研报告</a> — 三大方案对比、自动标签/链接/搜索深度调研</li>
+<li><a href="Knowledge-Tech-电话通知能力调研.html" class="wikilink">电话通知能力调研</a> — 国内VMS企业资质限制、个人可用替代方案</li>
 </ul>
 <h3>💰 投资 &amp; 商业</h3>
 <ul>
-<li>[[投资方法论-高精尖制造业分析框架]] — 锁定判断四问、参与者vs赢家框架、光通信应用</li>
+<li><a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="wikilink">投资方法论-高精尖制造业分析框架</a> — 锁定判断四问、参与者vs赢家框架、光通信应用</li>
 </ul>
 <h3>🔨 项目</h3>
 <ul>
-<li>[[TODO]] — 共享任务看板</li>
-<li>[[zhima-agent-setup]] — 芝麻Agent初始化记录</li>
+<li><a href="Projects-TODO.html" class="wikilink">TODO</a> — 共享任务看板</li>
+<li><a href="Projects-zhima-agent-setup.html" class="wikilink">zhima-agent-setup</a> — 芝麻Agent初始化记录</li>
 </ul>
 <h2>📅 日记索引</h2>
 <ul>
-<li>[[2026-03-17]] — 7战线并行日（套利/知识库/电商视频/代理/CDP/路由/毛选）</li>
-<li>[[2026-03-18]] — 深度思考日（奇奇Agent/公众号规则/TTS/gstack学习/LCM架构）</li>
-<li>[[2026-03-19]] — 知识库补全日（电话通知沉淀/双向链接/全量搜索/Fiona运维）</li>
+<li><a href="Daily-2026-03-17.html" class="wikilink">2026-03-17</a> — 7战线并行日（套利/知识库/电商视频/代理/CDP/路由/毛选）</li>
+<li><a href="Daily-2026-03-18.html" class="wikilink">2026-03-18</a> — 深度思考日（奇奇Agent/公众号规则/TTS/gstack学习/LCM架构）</li>
+<li><a href="Daily-2026-03-19.html" class="wikilink">2026-03-19</a> — 知识库补全日（电话通知沉淀/双向链接/全量搜索/Fiona运维）</li>
 </ul>
 <h2>📊 知识库统计</h2>
 <ul>

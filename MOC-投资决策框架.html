@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资决策框架 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑架构调研报告.html" class="nav-item">第二大脑架构调研报告</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资方法论-高精尖制造业分析框架.md</div>
+<a href="Knowledge-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="MOC.html">MOC</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">投资决策框架</span></div>
+  <div class="article-header">
+    <span class="moc-badge">🗺️ MOC</span>
+    <h1>投资决策框架</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <blockquote>
+<p>[!abstract] 核心洞察
+信息优势的三层结构决定alpha的可持续性：规则理解差（高壁垒）&gt; 数据组合差（中壁垒）&gt; 数据速度差（无壁垒，已被bot覆盖）。</p>
+</blockquote>
+<h1>投资 #决策框架 #Polymarket #套利 #信息差 #五大师 #风控</h1>
+<hr />
+<h2>一、五大师框架：各委员的核心视角与应用场景</h2>
+<h3>委员会成员定位</h3>
+<table>
+<thead>
+<tr>
+<th>委员</th>
+<th>核心视角</th>
+<th>最强场景</th>
+<th>杀手问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>芒格</strong></td>
+<td>生意本质/护城河</td>
+<td>判断企业质地，辨别竞争优势的可持续性</td>
+<td>"护城河是什么？10年后还在吗？"</td>
+</tr>
+<tr>
+<td><strong>马克斯</strong></td>
+<td>风险/周期/情绪</td>
+<td>判断市场位置，钟摆理论，第二层次思维</td>
+<td>"当前周期在哪？大家都知道这件事了吗？"</td>
+</tr>
+<tr>
+<td><strong>段永平</strong></td>
+<td>本分/纪律/十年持有</td>
+<td>过滤投机冲动，确认真正理解的生意</td>
+<td>"10年后会不会更好？我愿意持有10年吗？"</td>
+</tr>
+<tr>
+<td><strong>德鲁肯米勒</strong></td>
+<td>时机/催化剂/仓位管理</td>
+<td>确定入场时机，设置止损，管理仓位</td>
+<td>"最关键的催化剂是什么？止损线在哪？"</td>
+</tr>
+<tr>
+<td><strong>西蒙斯</strong></td>
+<td>量化/统计/胜率</td>
+<td>验证技术面支持，计算统计胜率</td>
+<td>"历史形态胜率多少？期望值为正吗？"</td>
+</tr>
+</tbody>
+</table>
+<h3>实战应用案例</h3>
+<p><strong>BABA（2026-03-18，$136.19）</strong>
+→ 西蒙斯动量看空 → 触发软否决 → 分批建仓（不一次重仓）
+→ 五委员综合评分6.0/10，等待财报后$120-125建仓25-30%
+→ 详见 <a href="Knowledge-投资-美股研究笔记.html" class="wikilink">美股研究笔记</a></p>
+<p><strong>贵州茅台（¥1468.8）</strong>
+→ 芒格+段永平高度认同（各8/10），西蒙斯放量收跌信号偏弱（6/10）
+→ 综合7.1/10，⭐⭐⭐⭐可建仓，止损¥1385
+→ 详见 <a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></p>
+<p><strong>EWY韩国ETF（$131.88）</strong>
+→ 五委员罕见高度一致（均4-4.5/10）
+→ 回避/等待，韩元贬值+放量破MA20双重信号
+→ 详见 <a href="Knowledge-投资-美股研究笔记.html" class="wikilink">美股研究笔记</a></p>
+<p><strong>$CARDS（Collector Crypt，Solana）</strong>
+→ 综合评分4.5/10，FDV/MC=7.8x红旗
+→ 有潜在价值但100%一致"当前观望"
+→ 详见 <a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="wikilink">Cards-CryptoCollect项目</a></p>
+<hr />
+<h2>二、信息优势三层理论</h2>
+<p>来自 <a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="wikilink">Polymarket套利策略研究</a> 的核心框架：</p>
+<div class="codehilite"><pre><span></span><code>层级 1 ❌ 数据速度差（低价值）
+├── NOAA等公开数据，已被bot覆盖
+├── BTC 5分钟快市：10% taker费，2-5%信息优势根本覆盖不了
+└── 天气市场已过度竞争，红海形成
+
+层级 2 ⚠️ 数据组合差（中价值）
+├── 3-5个数据源组合算概率
+├── 少数人做，但护城河不深
+└── 案例：EIA原油库存+季节性+期货曲线组合
+
+层级 3 ✅ 规则理解差（高价值）
+├── 解读盘口resolution criteria，90%人不认真读
+├── &quot;年底前&quot;、&quot;官方认定&quot;、&quot;重大&quot;等模糊性词汇
+├── 市场把&quot;叙事上不可能&quot;直接打成&quot;规则上不可能&quot;
+└── 案例：MicroStrategy sells any Bitcoin（1.1% Yes，但规则定义模糊）
+</code></pre></div>
+
+<h3>核心公式</h3>
+<div class="codehilite"><pre><span></span><code>期望收益 = 信息优势 × 市场低效程度 - 手续费
+</code></pre></div>
+
+<h3>四类规则模糊性（Polymarket Alpha框架）</h3>
+<ol>
+<li><strong>时间模糊性</strong> — "年底前"、"选举日后"</li>
+<li><strong>定义模糊性</strong> — "重大"、"官方认定"、"首次"</li>
+<li><strong>来源模糊性</strong> — 结算依赖的"官方来源"未明确</li>
+<li><strong>边界模糊性</strong> — 事件发生的边界条件未覆盖</li>
+</ol>
+<p>→ 详见 <a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="wikilink">Polymarket-Alpha轮循策略</a>、<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="wikilink">Polymarket套利策略研究</a></p>
+<hr />
+<h2>三、Buy vs Build决策模式</h2>
+<h3>Polymarket案例：自建引擎 vs 现成工具</h3>
+<table>
+<thead>
+<tr>
+<th>决策点</th>
+<th>选择</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>盘口数据获取</td>
+<td>直接调Gamma API</td>
+<td>完全开放，无需Auth，无需Build</td>
+</tr>
+<tr>
+<td>套利识别逻辑</td>
+<td>自建（纯计算）</td>
+<td>竞争优势在算法，不在工具</td>
+</tr>
+<tr>
+<td>规则语义解析</td>
+<td>LLM（Claude API）</td>
+<td>Buy：现有能力足够，比自建NLP省10倍时间</td>
+</tr>
+<tr>
+<td>SmartMoney监控</td>
+<td>基于open-sol-bot</td>
+<td>Phase 0先手动验证胜率，再决定自建</td>
+</tr>
+<tr>
+<td>链上数据</td>
+<td>Helius API</td>
+<td>专业节点数据，¥49/月划算</td>
+</tr>
+</tbody>
+</table>
+<h3>Buy vs Build判断框架</h3>
+<div class="codehilite"><pre><span></span><code>Buy（用现成工具）：
+✓ 通用能力（数据API/LLM/基础设施）
+✓ 非核心竞争力
+✓ 市场上有成熟解决方案
+
+Build（自建）：
+✓ 核心竞争力所在
+✓ 现成工具不存在或成本过高
+✓ 规模化后单位成本会显著下降
+</code></pre></div>
+
+<p><strong>教训</strong>：SmartMoney跟单是红海（GitHub 230+开源项目），先Phase 0手动验证胜率&gt;45%再投入开发。
+→ 详见 <a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a> 调研结论</p>
+<hr />
+<h2>四、风控共性框架</h2>
+<h3>止损SOP（跨所有项目共识）</h3>
+<div class="codehilite"><pre><span></span><code>进入任何仓位前必须定义：
+1. 止损线（价格/事件触发）
+2. 加仓条件（具体可量化的催化剂）
+3. 止盈目标（避免贪婪）
+4. 仓位上限（占组合比例）
+</code></pre></div>
+
+<h3>各资产类型止损参考</h3>
+<table>
+<thead>
+<tr>
+<th>资产</th>
+<th>止损设置</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>美股标的</td>
+<td>ATR法（1-1.5×ATR）</td>
+<td><a href="Knowledge-投资-美股研究笔记.html" class="wikilink">美股研究笔记</a> 德鲁肯米勒</td>
+</tr>
+<tr>
+<td>A股茅台</td>
+<td>MA20下方-4%（¥1385）</td>
+<td><a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></td>
+</tr>
+<tr>
+<td>Solana小盘</td>
+<td>入场价-25%~30%机械止损</td>
+<td><a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a></td>
+</tr>
+<tr>
+<td>$CARDS</td>
+<td>$0.028硬止损 + 链上流动性监控</td>
+<td><a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="wikilink">Cards-CryptoCollect项目</a></td>
+</tr>
+</tbody>
+</table>
+<h3>时效性判断（Polymarket专项）</h3>
+<div class="codehilite"><pre><span></span><code>越临近结算 → 规则模糊性价值越高
+时间模糊性盘口 → 优先选3月内结束的
+流动性检查：大盘口 ≠ 好流动性（volume高但liquidity低=无法执行）
+</code></pre></div>
+
+<h3>仓位管理原则</h3>
+<div class="codehilite"><pre><span></span><code>高风险资产（Solana Meme/小市值）：组合2-3%，不超5%
+中风险资产（港股/ETF）：3-8%，分批建仓
+低风险资产（茅台/确定性高）：最高15%，分批买入
+预测市场（Polymarket）：规则理解差策略，单笔控制
+</code></pre></div>
+
+<hr />
+<h2>五、两阶段投研SOP</h2>
+<p>来自 <a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a> stock-research Skill：</p>
+<div class="codehilite"><pre><span></span><code>阶段一：Ajinomoto Filter快速筛选
+├── 直接排除：纯平台/流量公司、市值&gt;$500亿、无营收故事期
+├── 核心条件：下游&quot;不得不买&quot;、壁垒来自长期积累、需求从可选→刚需
+└── 输出：🟢强买入 / 🟡关注 / 🟠等待 / 🔴回避
+
+阶段二：14维度深度审计
+技术护城河 | 商业模式 | 收入增长 | 盈利能力 | 现金流
+市场地位 | 管理团队 | 股东结构 | 估值 | 政策监管
+产品迭代 | 客户基础 | 供应链 | 分析师共识
+</code></pre></div>
+
+<hr />
+<h2>🔗 Related</h2>
+<ul>
+<li><a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a> — investment-masters Skill、港股AI Agent筛选、操作规范</li>
+<li><a href="Knowledge-投资-美股研究笔记.html" class="wikilink">美股研究笔记</a> — BABA深度研究、AI Agent赛道、大师裁决完整报告</li>
+<li><a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="wikilink">Polymarket-Alpha轮循策略</a> — 规则模糊性四类、3月候选盘口、执行架构</li>
+<li><a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="wikilink">Cards-CryptoCollect项目</a> — 五大师裁决、止损框架、建仓条件</li>
+<li><a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="wikilink">Polymarket套利策略研究</a> — 信息差三层理论、赛道优先级、美伊监控</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>
