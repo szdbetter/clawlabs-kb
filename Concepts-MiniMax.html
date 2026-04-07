@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniMax - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-dbetter个人画像与认知分析.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ dbetter个人画像与认知分析</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">CLAUDE.md</div>
+<a href="CLAUDE.html" class="nav-item">CLAUDE</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+<a href="Daily-2026-03-21.html" class="nav-item">2026-03-21</a>
+<a href="Daily-2026-03-22.html" class="nav-item">2026-03-22</a>
+<a href="Daily-2026-03-23.html" class="nav-item">2026-03-23</a>
+<a href="Daily-2026-03-24.html" class="nav-item">2026-03-24</a>
+<a href="Daily-2026-03-25.html" class="nav-item">2026-03-25</a>
+<a href="Daily-2026-03-26.html" class="nav-item">2026-03-26</a>
+<a href="Daily-2026-03-27.html" class="nav-item">2026-03-27</a>
+<a href="Daily-2026-03-28.html" class="nav-item">2026-03-28</a>
+<a href="Daily-2026-03-29.html" class="nav-item">2026-03-29</a>
+<a href="Daily-2026-03-30.html" class="nav-item">2026-03-30</a>
+<a href="Daily-2026-03-31.html" class="nav-item">2026-03-31</a>
+<a href="Daily-2026-04-01.html" class="nav-item">2026-04-01</a>
+<a href="Daily-2026-04-02.html" class="nav-item">2026-04-02</a>
+<a href="Daily-2026-04-03.html" class="nav-item">2026-04-03</a>
+<a href="Daily-2026-04-04.html" class="nav-item">2026-04-04</a>
+<a href="Daily-2026-04-05.html" class="nav-item">2026-04-05</a>
+<a href="Daily-2026-04-06.html" class="nav-item">2026-04-06</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="Projects-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="Projects-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Concepts.html">Concepts</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">MiniMax</span></div>
+  <div class="article-header">
+    
+    <h1>MiniMax</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <h1>MiniMax</h1>
+<h1>type/concept #domain/ai #stage/evergreen</h1>
+<h2>定义</h2>
+<p>ClawLabs 主力 AI 内容生成工具，支持视频/音乐/图片生成。同时也是 OpenClaw 的备用云 AI（当 Ollama 离线时降级使用）。</p>
+<h2>核心能力</h2>
+<ul>
+<li><strong>视频生成</strong>：竖屏 9:16，手机实拍质感，多产品转场</li>
+<li><strong>音乐生成</strong>：90秒上限，分段 + crossfade 拼接</li>
+<li><strong>文本对话</strong>：MiniMax-M2.7 模型，Sonnet 快15倍（215ms vs 3.4s）</li>
+</ul>
+<h2>API 配置</h2>
+<ul>
+<li><strong>端点</strong>：<code>https://api.minimax.chat</code>（必须用国内端点）</li>
+<li><strong>前缀</strong>：<code>sk-cp-</code> 开头的 Token Plan Key</li>
+<li><strong>限额</strong>：4500次/5小时滑动窗口</li>
+<li><strong>缓存策略</strong>：写 <code>/tmp/minimax_remains.json</code>，在回复 footer 显示剩余</li>
+</ul>
+<h2>ClawLabs VI 规范</h2>
+<ul>
+<li>主色：VI 红 <code>#D2231E</code></li>
+<li>深红：<code>#A00F0F</code></li>
+<li>背景：<code>#141416</code></li>
+</ul>
+<h2>内容分发（永久化）</h2>
+<ul>
+<li>OSS 链接 24小时过期 + 签名限制</li>
+<li>永久方案：上传到 GitHub gh-pages 分支，raw 链接即时可用</li>
+<li>小红书：无公开 API，当前最优 = GitHub Pages 发布页 + 一键复制</li>
+</ul>
+<h2>在 Research 系统中的角色</h2>
+<ul>
+<li>当 Ollama（<code>100.74.49.115:11434</code>）离线时自动切换</li>
+<li>模型：<code>MiniMax-M2.7</code></li>
+<li>超时：90秒</li>
+</ul>
+<h2>引用此概念的文章</h2>
+<ul>
+<li><a href="Knowledge-AI-MiniMax-AI内容生成工作流.html" class="wikilink">MiniMax-AI内容生成工作流</a></li>
+<li><a href="Knowledge-Tech-MiniMax-API与模型策略.html" class="wikilink">MiniMax-API与模型策略</a></li>
+<li><a href="Knowledge-Tech-ClawLabs情报站系统架构.html" class="wikilink">ClawLabs情报站系统架构</a></li>
+<li><a href="Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="wikilink">AI赚钱引擎-Sprint进度</a></li>
+<li><a href="Projects-KOL数字分身项目.html" class="wikilink">KOL数字分身项目</a></li>
+</ul>
+<h2>相关概念</h2>
+<ul>
+<li><a href="Concepts-OpenClaw.html" class="wikilink">OpenClaw</a> — 调用框架</li>
+<li><a href="Concepts-Claude-Code.html" class="wikilink">Claude-Code</a> — 协同使用</li>
+<li><span class="wikilink-missing" title="未找到笔记">Ollama</span> — 本地 AI 替代</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

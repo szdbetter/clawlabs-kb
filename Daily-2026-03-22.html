@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-03-22 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-dbetter个人画像与认知分析.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ dbetter个人画像与认知分析</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">CLAUDE.md</div>
+<a href="CLAUDE.html" class="nav-item">CLAUDE</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+<a href="Daily-2026-03-21.html" class="nav-item">2026-03-21</a>
+<a href="Daily-2026-03-22.html" class="nav-item">2026-03-22</a>
+<a href="Daily-2026-03-23.html" class="nav-item">2026-03-23</a>
+<a href="Daily-2026-03-24.html" class="nav-item">2026-03-24</a>
+<a href="Daily-2026-03-25.html" class="nav-item">2026-03-25</a>
+<a href="Daily-2026-03-26.html" class="nav-item">2026-03-26</a>
+<a href="Daily-2026-03-27.html" class="nav-item">2026-03-27</a>
+<a href="Daily-2026-03-28.html" class="nav-item">2026-03-28</a>
+<a href="Daily-2026-03-29.html" class="nav-item">2026-03-29</a>
+<a href="Daily-2026-03-30.html" class="nav-item">2026-03-30</a>
+<a href="Daily-2026-03-31.html" class="nav-item">2026-03-31</a>
+<a href="Daily-2026-04-01.html" class="nav-item">2026-04-01</a>
+<a href="Daily-2026-04-02.html" class="nav-item">2026-04-02</a>
+<a href="Daily-2026-04-03.html" class="nav-item">2026-04-03</a>
+<a href="Daily-2026-04-04.html" class="nav-item">2026-04-04</a>
+<a href="Daily-2026-04-05.html" class="nav-item">2026-04-05</a>
+<a href="Daily-2026-04-06.html" class="nav-item">2026-04-06</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="Projects-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="Projects-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Daily.html">Daily</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">2026-03-22</span></div>
+  <div class="article-header">
+    
+    <h1>2026-03-22</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>date: 2026-03-22
+tags: [日记]</p>
+<hr />
+<h1>2026-03-22 日记</h1>
+<hr />
+<h2>📥 自动归档 — 2026-03-22</h2>
+<blockquote>
+<p>由 <code>memory_to_obsidian.py</code> 自动合并，共 1 个记录文件</p>
+</blockquote>
+<h3>📄 2026-03-22.md</h3>
+<h1>Memory Flush — 2026-03-22</h1>
+<h2>节点与基础设施</h2>
+<h3>win 节点新增 (2026-03-21)</h3>
+<ul>
+<li>新增节点 "win"：Windows主机上的WSL2 Ubuntu，Tailscale IP <code>100.84.3.25</code></li>
+<li>能力：browser, system；bash/python3/node/curl均可用</li>
+<li><code>system.run</code> 需要审批（安全机制）</li>
+<li><strong>待办</strong>：将 win 节点加入 <code>exec.allowlist</code>（config schema path 报错未解决）</li>
+</ul>
+<h3>WSL2 Ollama 迁移计划 (2026-03-21)</h3>
+<ul>
+<li>迁移方案：将 Ollama 从 fiona（2C/8G 瓶颈）迁至 WSL2 Ubuntu（56GB内存 + RTX 2060）</li>
+<li>WSL2 需启用 systemd + 安装 Tailscale 获取固定 IP</li>
+<li>Embedding 升级：nomic-embed-text → bge-m3（1024维，多语言）</li>
+<li>ov.conf 需更新：api_base 改为 WSL2 Tailscale IP，model 改为 bge-m3，dimension 改为 1024</li>
+<li>VLM 保持云端 API（火山云 doubao-seed-2.0-lite）不变</li>
+</ul>
+<h3>VPS 清理 (2026-03-21)</h3>
+<ul>
+<li>清理5个孤儿 Claude Code 实例（~1.1GB）+ 4个 stray bun 进程（~48MB）→ 释放 ~800MB</li>
+<li>删除重复 git 备份定时器：<code>github-backup.timer</code>（2h）保留 <code>openclaw-git-backup.timer</code>（1h）</li>
+<li>Fiona launchd plist 计划接管 GitHub 备份（VPS git操作太慢）</li>
+<li>当前 VPS 内存：3.5GB 总，2.8GB 在用（80%）</li>
+</ul>
+<h3>Fiona 进程问题 (2026-03-21)</h3>
+<ul>
+<li><code>ai.openclaw.node</code> 产生孤儿 <code>openclaw</code> 子进程（VPS连接时无清理）</li>
+<li>SSH tunnel (<code>ai.openclaw.ssh-tunnel</code>) 中断，exit code 255</li>
+<li>解决：<code>pkill -9 -f "^openclaw$"</code> + <code>launchctl kickstart</code> 重启 SSH tunnel</li>
+</ul>
+<h2>项目：Kimi 成长记 MV</h2>
+<h3>背景</h3>
+<ul>
+<li>Kimi 是 dbetter（用户）的12岁儿子，自律成长故事</li>
+<li>相关文档：<code>/root/.openclaw/workspace-shushu/docs/</code>（kimi_advisor_profile.md, kimi_avatar_prompt.md, kimi_raw.md, 爸爸的话.md, 公众号.md）</li>
+</ul>
+<h3>成果 (2026-03-21)</h3>
+<ul>
+<li>生成11张场景图（MiniMax text_to_image，batch3因配额2056耗尽未完成3张）</li>
+<li>使用 Ken Burns zoom-pan 动画 + xfade 转场合成完整 MV</li>
+<li>歌曲 v2：2:30时长（150.7s MP3, 2.4MB），MiniMax music_generation</li>
+<li><strong>最终 MV v2</strong>：2:24时长，压缩后 6.6MB WebM（VP9 两遍编码 378.7kbits/s）</li>
+<li>已上传至 Discord #main：<code>Kimi成长记-动画MV-v2.webm</code></li>
+<li>文件路径：<code>/root/.openclaw/workspace/Kimi成长记-动画MV-v2.webm</code></li>
+<li><code>/tmp/kimi-mv-v2/</code>：11张场景图、11个Ken Burns视频、song-v2.mp3</li>
+</ul>
+<h3>待办</h3>
+<ul>
+<li>缺失3个场景（Cos/s05, 乒乓/s13, 同学相册/s14）因API配额耗尽</li>
+<li>周深声线版本歌曲待生成（需确认 MiniMax voice clone 是否支持周深）</li>
+</ul>
+<h2>项目：xianyuticket 闲鱼电影票</h2>
+<ul>
+<li>FastAPI backend，端口 8765，路径：<code>/root/.openclaw/projects/xianyuticket/</code></li>
+<li>用户要求将 uvicorn 重命名为 <code>xianyuticket</code> systemd 服务</li>
+<li><strong>待办</strong>：创建 systemd service <code>xianyuticket</code> 并重启（零代码改动，仅服务包装）</li>
+</ul>
+<h2>Bot Monitor 升级需求</h2>
+<ul>
+<li>bot-monitor.py 当前 regex 只匹配：FailoverError, lane task error, lane wait exceeded, discord inbound worker timed out</li>
+<li>Reese 超时事件未被捕获（阈值5次/频道才告警）</li>
+<li>用户批准升级：扩展 regex 包含 <code>timeout</code>, <code>429</code>, 连接断开；或改为"N分钟无响应"模型</li>
+<li><strong>待办</strong>：实现 bot-monitor.py 检测逻辑升级</li>
+</ul>
+<h2>OpenClaw 配置现状 (2026-03-21快照)</h2>
+<ul>
+<li>Gateway：端口1979，本地模式，LAN bind，Tailscale 禁用</li>
+<li>节点：fiona-mbp2015（已配置），win（新增，待加入allowlist）</li>
+<li>频道：telegram, discord, feishu</li>
+<li>主模型：claude-sonnet-4-6</li>
+<li>多Agent：primary, sonnet, opus, shushu, qiqi, zhima, research, codex, doubao</li>
+<li>模型提供商：volcengine-plan（doubao/glm/deepseek），mixian（dall-e-3），minimax-portal，minimax-m27</li>
+<li>Compaction 安全模式：doubao-seed-2.0-lite</li>
+<li>Hooks：boot-md, bootstrap-extra-files, command-logger, session-memory</li>
+</ul>
+<h2>Skills 状态 (2026-03-21)</h2>
+<ul>
+<li>superpowers skill：源目录仍缺失（<code>~/.claude/skills/</code>），symlink 已注册但需源码安装 + gateway 重启</li>
+<li>6个待验证 symlink skill：sp-brainstorming, sp-subagent-driven-development, sp-systematic-debugging, sp-test-driven-development, sp-verification-before-completion, sp-writing-plans</li>
+<li>已确认加载：gstack ✅, planning-with-files ✅</li>
+</ul>
+<h2>系统健康</h2>
+<ul>
+<li>自动备份：~0.6次/小时密度，30+提交，稳定运行</li>
+<li>数据库：data/ops.db 稳定在 3.7-3.8MB</li>
+<li>HEARTBEAT_OK 均通过（2026-03-20~21）</li>
+</ul>
+<h2>2026-03-22 对话记录摘要</h2>
+<h3>系统维护</h3>
+<ul>
+<li>清理了3天前的session文件，释放约55MB空间</li>
+<li>当前活跃agent: primary, sonnet, shushu, qiqi, codex</li>
+<li>VPS内存：3.5GB总量，2.3GB已用，Swap使用2.4GB（内存偏紧）</li>
+<li>openclaw-weixin 插件内存开销轻量，gateway进程约占21%内存</li>
+</ul>
+<h3>微信接入相关</h3>
+<ul>
+<li>老板使用个人微信接入 openclaw-weixin 插件</li>
+<li>讨论了多用户路由不同Agent的方案：userAgentMap配置</li>
+<li>流程：让对方先发消息 → 从日志获取微信ID → 配置users.wxid映射 → 重启gateway</li>
+<li>当前Bot账号: 9e49b62d32d0-im-bot（ilinkai.weixin.qq.com）</li>
+</ul>
+<h3>MiniMax 音乐生成</h3>
+<ul>
+<li>成功使用 MiniMax-Full.music_generation 生成歌曲</li>
+<li>模型：music-2.0，超时需设置 MCPORTER_CALL_TIMEOUT=300000</li>
+<li>生成了《烈焰长征》两个版本：</li>
+<li>史诗军旅电子风（偏主旋律/春晚风格，老板不满意）</li>
+<li>C-Pop流行版（吉他+钢琴+轻电子，男声，2.3MB/1.5MB）</li>
+<li>发送音频需先下载到本地 /tmp/*.mp3 再通过 message 工具发送</li>
+<li>CDN直链发送会超时，需先 curl 下载</li>
+</ul>
+<h3>老板偏好</h3>
+<ul>
+<li>不喜欢过于主旋律/史诗感的歌曲风格（"太像春晚"）</li>
+<li>偏好现代流行C-Pop风格</li>
+</ul>
+<hr />
+<h2>📚 Daily Digest — 2026-03-22（由 obsidian-daily-digest cron 生成）</h2>
+<p><strong>今日高价值知识沉淀：</strong></p>
+<h3>新建/更新笔记</h3>
+<table>
+<thead>
+<tr>
+<th>笔记</th>
+<th>动作</th>
+<th>一句话总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="Knowledge-Tech-美伊套利监控系统架构.html" class="wikilink">美伊套利监控系统架构</a></td>
+<td>追加</td>
+<td>clawlabs.top 域名+nginx路径路由上线，腾讯云安全组需手动放行80/443</td>
+</tr>
+<tr>
+<td><a href="Projects-KOL数字分身项目.html" class="wikilink">KOL数字分身项目</a></td>
+<td>追加</td>
+<td>X Hunt系统70账号987条推文采集完成，进程稳定性待优化</td>
+</tr>
+<tr>
+<td><a href="Knowledge-AI-MiniMax-AI内容生成工作流.html" class="wikilink">MiniMax-AI内容生成工作流</a></td>
+<td>新建</td>
+<td>整合视频/音乐/图片生成工作流 + ClawLabs VI规范 + 小红书发布SOP</td>
+</tr>
+</tbody>
+</table>
+<h3>今日关键洞察</h3>
+<ol>
+<li><strong>clawlabs.top 正式上线</strong> — 域名绑定 + nginx 路径路由完成，结束临时 Cloudflare Tunnel 时代。下一步：配 Let's Encrypt HTTPS</li>
+<li><strong>小红书MCP安装但暂不可用</strong> — VPS IP 被风控，需要用户提供本地浏览器 cookie 才能激活</li>
+<li><strong>内容发布SOP锁定</strong> — 小红书字数 ≤1000字、GitHub Pages发布页+一键复制是当前最优发布方案</li>
+<li><strong>生产规范更新</strong> — 所有 AI 生成媒体文件统一到 <code>/tmp/&lt;项目名&gt;/</code>，workspace 严禁写媒体文件</li>
+</ol>
+  </div>
+</div>
+</body>
+</html>

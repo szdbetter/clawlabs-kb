@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二大脑系统建设笔记 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-dbetter个人画像与认知分析.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ dbetter个人画像与认知分析</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">CLAUDE.md</div>
+<a href="CLAUDE.html" class="nav-item">CLAUDE</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+<a href="Daily-2026-03-21.html" class="nav-item">2026-03-21</a>
+<a href="Daily-2026-03-22.html" class="nav-item">2026-03-22</a>
+<a href="Daily-2026-03-23.html" class="nav-item">2026-03-23</a>
+<a href="Daily-2026-03-24.html" class="nav-item">2026-03-24</a>
+<a href="Daily-2026-03-25.html" class="nav-item">2026-03-25</a>
+<a href="Daily-2026-03-26.html" class="nav-item">2026-03-26</a>
+<a href="Daily-2026-03-27.html" class="nav-item">2026-03-27</a>
+<a href="Daily-2026-03-28.html" class="nav-item">2026-03-28</a>
+<a href="Daily-2026-03-29.html" class="nav-item">2026-03-29</a>
+<a href="Daily-2026-03-30.html" class="nav-item">2026-03-30</a>
+<a href="Daily-2026-03-31.html" class="nav-item">2026-03-31</a>
+<a href="Daily-2026-04-01.html" class="nav-item">2026-04-01</a>
+<a href="Daily-2026-04-02.html" class="nav-item">2026-04-02</a>
+<a href="Daily-2026-04-03.html" class="nav-item">2026-04-03</a>
+<a href="Daily-2026-04-04.html" class="nav-item">2026-04-04</a>
+<a href="Daily-2026-04-05.html" class="nav-item">2026-04-05</a>
+<a href="Daily-2026-04-06.html" class="nav-item">2026-04-06</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="Projects-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="Projects-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">第二大脑系统建设笔记</span></div>
+  <div class="article-header">
+    
+    <h1>第二大脑系统建设笔记</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags: [知识管理, Obsidian, AI, 第二大脑, 架构设计, 自动化]
+  stage: evergreen
+created: 2026-03-17
+updated: 2026-03-22
+aliases: [Second Brain Architecture Report, 第二大脑架构调研报告]
+source: Discord #思过崖</p>
+<h1>第二大脑系统建设笔记</h1>
+<p><strong>时间跨度</strong>：2026-03-17 ~ 2026-03-22
+<strong>来源</strong>：Discord #思过崖 + 系统架构调研</p>
+<hr />
+<h2>一、核心问题诊断</h2>
+<ol>
+<li><strong>AI被动性根源</strong>：没有持久化任务状态，每次session从零开始</li>
+<li><strong>创造性缺失</strong>：AI在等用户定义问题，而不是主动发现问题</li>
+<li><strong>信息散落</strong>：各频道对话内容没有自动沉淀到知识库</li>
+</ol>
+<hr />
+<h2>二、已落地架构</h2>
+<div class="codehilite"><pre><span></span><code>单条 crontab（每分钟）
+  └── scheduler.py 
+       ├── memory_to_obsidian  每60min  归档日记
+       ├── github_backup       每2h     备份workspace
+       ├── context_briefing    每6h     生成BRIEFING.md
+       └── morning_briefing    每日8:00 推晨报到Discord
+</code></pre></div>
+
+<p>管理方式：编辑 <code>scripts/dashboard/registry.json</code></p>
+<h3>三个核心解法</h3>
+<ol>
+<li><strong>Projects/TODO.md 共享任务看板</strong>：AI每次响应前先扫一遍，主动推进</li>
+<li><strong>HEARTBEAT主动推进</strong>：每天早8点晨报，扫昨日TODO + 建议优先级</li>
+<li><strong>CEO简报上下文注入</strong>：每次生成200字摘要，包含进行中项目/未完成TODO/近3天决策</li>
+</ol>
+<h3>知识库归档流程</h3>
+<ul>
+<li>workspace/memory/ 每日文件 → Python脚本提取 → 追加到 Obsidian Daily</li>
+<li>幂等执行，同一天跑多次不重复写</li>
+<li>零LLM消耗（纯文件操作）</li>
+</ul>
+<h3>奇奇Agent增强</h3>
+<ul>
+<li>安装 investment-masters skill 到 workspace-qiqi</li>
+<li>深度调研触发五大师委员会（芒格+马克斯+段永平+德鲁肯米勒+西蒙斯）</li>
+<li>A股搜索工具：新浪财经API（tools/a_stock_search.py）</li>
+</ul>
+<h3>运维规则</h3>
+<ul>
+<li>运行频率&lt;6小时 → 脚本；≥6小时或事件驱动 → cron</li>
+<li>所有脚本统一注册到dashboard管理</li>
+<li>公众号规则：ClawLabs号默认发，小ki碎碎念严禁动</li>
+</ul>
+<hr />
+<h2>三、技术方案对比</h2>
+<h3>方案 A：Obsidian + AI 插件（GUI 依赖）</h3>
+<ul>
+<li><strong>致命缺陷</strong>：必须运行 Obsidian GUI，VPS 无头环境无法使用</li>
+<li>结论：不适合 VPS，作为 Mac 端辅助浏览工具</li>
+</ul>
+<h3>方案 B：纯文件系统 + CLI（当前方案）✅</h3>
+<ul>
+<li>核心优势：完美适配无 GUI VPS，零依赖，AI 完全可控</li>
+<li>需增强：语义搜索和自动链接能力</li>
+</ul>
+<h3>方案 C：Obsidian + MCP Server</h3>
+<ul>
+<li><strong>mcpvault</strong>（912⭐，Node.js）：直接操作文件系统，无需 Obsidian 运行 → 适合 VPS</li>
+<li>结论：可作为 obsidian-direct 的补充或替代</li>
+</ul>
+<hr />
+<h2>四、核心能力实现</h2>
+<h3>自动标签（Auto-Tagging）</h3>
+<ul>
+<li>AI 写入时生成：在 prompt 中要求 AI 分析内容并在 frontmatter tags 字段写入</li>
+<li>推荐度：⭐⭐⭐⭐⭐</li>
+</ul>
+<h3>自动双向链接（Auto-Linking）</h3>
+<ul>
+<li>AI 写入时扫描：写入前用 <code>rg</code> 搜索 vault 中已有笔记标题，匹配到则插入 <code>&lt;span class="wikilink-missing" title="未找到笔记"&gt;link&lt;/span&gt;</code></li>
+<li>MOC 索引页维护：AI 定期扫描 Knowledge/ 目录，更新各领域 MOC 页的链接列表</li>
+<li>推荐度：⭐⭐⭐⭐⭐</li>
+</ul>
+<h3>语义搜索（Semantic Search）</h3>
+<ul>
+<li>qmd skill（已安装）：本地 BM25 + 向量 + rerank，MCP 模式可用</li>
+<li>rg + AI 重排序：先 ripgrep 关键词，再用 AI 排序相关性</li>
+<li>推荐度：⭐⭐⭐⭐⭐</li>
+</ul>
+<hr />
+<h2>五、推荐架构</h2>
+<div class="codehilite"><pre><span></span><code>obsidian-vault/
+├── Inbox/              # 待整理素材
+├── Knowledge/          # 分类知识卡片
+│   ├── AI/
+│   ├── Crypto/
+│   ├── Business/
+│   └── Tech/
+├── Projects/           # 项目笔记
+├── Daily/              # 每日汇总
+├── MOC/                # 索引导航页
+└── Templates/          # 笔记模板
+</code></pre></div>
+
+<h3>自动化流程</h3>
+<div class="codehilite"><pre><span></span><code>对话/语音输入
+<span class="w">    </span>│
+<span class="w">    </span>▼
+OpenClaw<span class="w"> </span>AI<span class="w"> </span>提炼<span class="w"> </span>→<span class="w"> </span>提取要点<span class="w"> </span>+<span class="w"> </span>自动分类
+<span class="w">    </span>│
+<span class="w">    </span>├─→<span class="w"> </span>生成<span class="w"> </span>frontmatter（tags,<span class="w"> </span>created,<span class="w"> </span>aliases）
+<span class="w">    </span>├─→<span class="w"> </span>扫描<span class="w"> </span>vault<span class="w"> </span>已有笔记标题<span class="w"> </span>→<span class="w"> </span>插入<span class="w"> </span><span class="nt">&lt;span</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;wikilink-missing&quot;</span><span class="w"> </span><span class="na">title=</span><span class="s">&quot;未找到笔记&quot;</span><span class="nt">&gt;</span>wikilinks<span class="nt">&lt;/span&gt;</span>
+<span class="w">    </span>│
+<span class="w">    </span>▼
+写入<span class="w"> </span>Inbox/<span class="w"> </span>或直接写入<span class="w"> </span>Knowledge/{category}/
+<span class="w">    </span>│
+<span class="w">    </span>▼
+每晚<span class="w"> </span>23:00<span class="w"> </span>归档任务
+<span class="w">    </span>├─→<span class="w"> </span>整理<span class="w"> </span>Inbox/<span class="w"> </span>中未分类内容
+<span class="w">    </span>├─→<span class="w"> </span>更新<span class="w"> </span>MOC/<span class="w"> </span>索引页
+<span class="w">    </span>└─→<span class="w"> </span>补充遗漏的双向链接
+<span class="w">    </span>│
+<span class="w">    </span>▼
+每小时<span class="w"> </span>Git<span class="w"> </span>自动同步<span class="w"> </span>→<span class="w"> </span>GitHub
+</code></pre></div>
+
+<hr />
+<h2>六、关键思考</h2>
+<ul>
+<li>"工具的边界比工具本身重要"</li>
+<li>"知识库是生长出来的，不是整理出来的"</li>
+<li>"不只是垃圾桶要落地，工具是给对的人用的"</li>
+<li><strong>核心原则</strong>：让 AI 做苦力（标签、链接、分类），让人做决策（审阅、重组、创造）</li>
+</ul>
+<hr />
+<h2>七、行动建议</h2>
+<h3>P0 — 立即可做（零成本）</h3>
+<ol>
+<li>标准化写入流程：确保每篇笔记必带 frontmatter（tags, created, source）</li>
+<li>写入时自动链接：AI 写入前先 <code>rg -l</code> 搜索 vault 中已有笔记标题</li>
+<li>创建 Templates/ 目录：放入标准化模板</li>
+</ol>
+<h3>P1 — 短期增强（1-2 天）</h3>
+<ol>
+<li>启用 qmd 索引：对 obsidian-vault 目录建立 qmd 索引</li>
+<li>增强归档任务：每晚 23:00 归档时增加 MOC 自动更新</li>
+<li>Mac 端安装推荐插件：Dataview + Calendar + Tag Wrangler</li>
+</ol>
+<h3>P2 — 中期优化（按需）</h3>
+<ol>
+<li>安装 mcpvault：标准化 MCP 接口供更多 AI 工具接入</li>
+<li>AI 生成知识图谱摘要：每周生成一次 Mermaid 关系图写入 MOC</li>
+</ol>
+<hr />
+<h2>🔗 Related</h2>
+<ul>
+<li><a href="Knowledge-AI-Obsidian知识库管理.html" class="wikilink">Obsidian知识库管理</a></li>
+<li><a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="wikilink">Obsidian知识库搭建复盘</a></li>
+<li><a href="Knowledge-AI-OpenClaw使用笔记.html" class="wikilink">OpenClaw使用笔记</a></li>
+<li><a href="Knowledge-AI-工作体系与提示词工程.html" class="wikilink">工作体系与提示词工程</a></li>
+<li><a href="Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></li>
+<li><a href="Projects-TODO.html" class="wikilink">TODO</a></li>
+<li><a href="MOC-知识库导航.html" class="wikilink">知识库导航</a></li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-03-23 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>
+<a href="MOC-ClawLabs战略复盘.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ ClawLabs战略复盘</a>
+<a href="MOC-dbetter个人画像与认知分析.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ dbetter个人画像与认知分析</a>
+<a href="MOC-产品方法论.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 产品方法论</a>
+<a href="MOC-技术架构模式.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 技术架构模式</a>
+<a href="MOC-投资决策框架.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 投资决策框架</a>
+<a href="MOC-知识库导航.html" class="nav-item nav-moc" style="color: #ffd700; font-weight: bold;">🗺️ 知识库导航</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">CLAUDE.md</div>
+<a href="CLAUDE.html" class="nav-item">CLAUDE</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Daily</div>
+<a href="Daily-2026-03-17.html" class="nav-item">2026-03-17</a>
+<a href="Daily-2026-03-18.html" class="nav-item">2026-03-18</a>
+<a href="Daily-2026-03-19.html" class="nav-item">2026-03-19</a>
+<a href="Daily-2026-03-20.html" class="nav-item">2026-03-20</a>
+<a href="Daily-2026-03-21.html" class="nav-item">2026-03-21</a>
+<a href="Daily-2026-03-22.html" class="nav-item">2026-03-22</a>
+<a href="Daily-2026-03-23.html" class="nav-item">2026-03-23</a>
+<a href="Daily-2026-03-24.html" class="nav-item">2026-03-24</a>
+<a href="Daily-2026-03-25.html" class="nav-item">2026-03-25</a>
+<a href="Daily-2026-03-26.html" class="nav-item">2026-03-26</a>
+<a href="Daily-2026-03-27.html" class="nav-item">2026-03-27</a>
+<a href="Daily-2026-03-28.html" class="nav-item">2026-03-28</a>
+<a href="Daily-2026-03-29.html" class="nav-item">2026-03-29</a>
+<a href="Daily-2026-03-30.html" class="nav-item">2026-03-30</a>
+<a href="Daily-2026-03-31.html" class="nav-item">2026-03-31</a>
+<a href="Daily-2026-04-01.html" class="nav-item">2026-04-01</a>
+<a href="Daily-2026-04-02.html" class="nav-item">2026-04-02</a>
+<a href="Daily-2026-04-03.html" class="nav-item">2026-04-03</a>
+<a href="Daily-2026-04-04.html" class="nav-item">2026-04-04</a>
+<a href="Daily-2026-04-05.html" class="nav-item">2026-04-05</a>
+<a href="Daily-2026-04-06.html" class="nav-item">2026-04-06</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Projects</div>
+<a href="Projects-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="Projects-TODO.html" class="nav-item">TODO</a>
+<a href="Projects-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="Projects-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="Projects-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="Projects-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="Projects-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="Projects-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Welcome.md</div>
+<a href="Welcome.html" class="nav-item">Welcome</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Daily.html">Daily</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">2026-03-23</span></div>
+  <div class="article-header">
+    
+    <h1>2026-03-23</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>date: 2026-03-23
+tags: [日记, clawlabs, elon-poly, 数字分身, 微信bot]</p>
+<hr />
+<h1>2026-03-23 日报摘要</h1>
+<blockquote>
+<p>由 <code>obsidian-daily-digest</code> 自动归档</p>
+</blockquote>
+<hr />
+<h2>🏗️ 今日重要工作</h2>
+<h3>1. clawlabs.top 仪表板部署</h3>
+<ul>
+<li>nginx路径路由配置完成：<code>/dashboard</code>、<code>/elon</code>、<code>/report</code>、<code>/iran</code></li>
+<li>遇到<strong>腾讯云安全组</strong>拦截，80/443未放行导致无法访问</li>
+<li>临时用 Cloudflare Tunnel 提供备用访问链接</li>
+<li>待老板操作：腾讯云控制台 → 安全组 → 放行 TCP 80/443</li>
+<li>[来源: Discord#Polymarket]</li>
+</ul>
+<h3>2. Elon推文专项项目正式启动</h3>
+<ul>
+<li>研报结论：<strong>GO — 有条件执行</strong></li>
+<li>核心数据：Day6入场，三因子模型净边际 10-16%，$5K本金期望年化 200-400%</li>
+<li>回测达标（Sharpe 1.51, P&amp;L +$4,819）</li>
+<li>下一步：接入 xtracker 实时监控、X Cookie 直连、仪表板部署</li>
+<li>相关文件：<code>projects/elon-poly/progress.md</code></li>
+<li>[来源: Discord#Polymarket]</li>
+</ul>
+<h3>3. 刘润数字分身 System Prompt 优化完成</h3>
+<ul>
+<li>5轮迭代，从 17/50 优化到 <strong>50/50（100%）</strong></li>
+<li>关键发现：工作区上下文污染是最大敌人，需在Prompt中明确隔离</li>
+<li>禁止元语言（"我来帮你"、"你想讨论什么"）是关键改进点</li>
+<li>文件：<code>projects/digital-twin-advisor/cases/liurun/</code></li>
+<li>[来源: Claude Code]</li>
+</ul>
+<h3>4. 奇奇微信Bot调试</h3>
+<ul>
+<li>二维码频繁过期问题，网关重启超时被SIGTERM杀掉</li>
+<li>配置新账号 <code>e697d3faa325-im-bot</code> 未正确加载监听</li>
+<li>待解决：网关重启稳定性问题</li>
+<li>[来源: openclaw-weixin]</li>
+</ul>
+<hr />
+<h2>👨‍👩‍👧 家人动态</h2>
+<p><strong>平姐（奶奶）</strong>：
+- 身体状况：通过飞书与奇奇正常对话，精神状态良好
+- 请求为孙子Kimi创作两首歌（爱读书、爱学习），奇奇已完成创作
+- 确认：两个儿子都知道其投资相关事宜，不必担心</p>
+<p><strong>Kimi（儿子）</strong>：
+- 奶奶主动关心Kimi学习，创作激励歌曲</p>
+<hr />
+<h2>💾 GitHub 备份</h2>
+<ul>
+<li>主工作区：<code>0949d51f</code> — auto-backup: 2026-03-23 19:00 UTC</li>
+<li>Obsidian vault：<code>a5de2e3</code> — 新增 Luna/UST崩盘复盘笔记</li>
+</ul>
+<hr />
+<h2>🔧 待办事项</h2>
+<ul>
+<li>[ ] 腾讯云安全组放行 443/80（老板操作）</li>
+<li>[ ] Elon推文专项：接入 xtracker + clawlabs.top 部署</li>
+<li>[ ] 奇奇微信Bot网关重启稳定性修复</li>
+<li>[ ] 奇奇A股工具 + investment-masters 调用链测试</li>
+</ul>
+<hr />
+<h2>💡 洞察与反思</h2>
+<p><strong>风险警示</strong>：clawlabs.top 临时 Cloudflare 链接数小时内失效，需尽快让老板开安全组，否则研报无法访问。</p>
+<p><strong>机会判断</strong>：Elon推文策略回测达标，实盘条件已成熟，Alpha窗口6-12个月，建议尽快充值启动。</p>
+<p><strong>SOP缺口</strong>：微信bot配置流程缺少"网关重启后自动恢复监听"的机制，需补充到FIONA-SKILLS.md。</p>
+<hr />
+<h2>🔗 相关笔记</h2>
+<p><a href="Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="wikilink">Polymarket-Alpha轮循策略</a> | <a href="Projects-KOL数字分身项目.html" class="wikilink">KOL数字分身项目</a> | <a href="Knowledge-Tech-Claude-Code编程实践笔记.html" class="wikilink">Claude-Code编程实践笔记</a> | <a href="Knowledge-Tech-美伊套利监控系统架构.html" class="wikilink">美伊套利监控系统架构</a></p>
+  </div>
+</div>
+</body>
+</html>
