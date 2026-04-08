@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="wiki-Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="wiki-Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="wiki-Knowledge-AI-Graphify-LLM知识图谱工具.html" class="nav-item">Graphify-LLM知识图谱工具</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki-方法论.html" class="nav-item">Karpathy-LLM-Wiki-方法论</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki深度解析.html" class="nav-item">Karpathy-LLM-Wiki深度解析</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki知识管理方法论.html" class="nav-item">Karpathy-LLM-Wiki知识管理方法论</a>
+<a href="wiki-Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="wiki-Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="wiki-Knowledge-AI-Obsidian-NotebookLM-Gemini学习压缩系统.html" class="nav-item">Obsidian-NotebookLM-Gemini学习压缩系统</a>
+<a href="wiki-Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="wiki-Knowledge-AI-OpenCLI-浏览器平台采集工具.html" class="nav-item">OpenCLI-浏览器平台采集工具</a>
+<a href="wiki-Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="wiki-Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="wiki-Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="wiki-Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="wiki-Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="wiki-Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="wiki-Knowledge-AI-知识库导航.html" class="nav-item">知识库导航</a>
+<a href="wiki-Knowledge-AI-视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen.html" class="nav-item">视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</a>
+<a href="wiki-Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="wiki-Knowledge-Business-AI企业服务-传统行业采购AI落地案例.html" class="nav-item">AI企业服务-传统行业采购AI落地案例</a>
+<a href="wiki-Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="wiki-Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="wiki-Knowledge-Business-ClawLabs战略复盘.html" class="nav-item">ClawLabs战略复盘</a>
+<a href="wiki-Knowledge-Business-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="wiki-Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="wiki-Knowledge-Business-dbetter个人画像与认知分析.html" class="nav-item">dbetter个人画像与认知分析</a>
+<a href="wiki-Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="wiki-Knowledge-Business-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="wiki-Knowledge-Business-产品方法论.html" class="nav-item">产品方法论</a>
+<a href="wiki-Knowledge-Business-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="wiki-Knowledge-Business-内容创业-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="wiki-Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="wiki-Knowledge-Business-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="wiki-Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="wiki-Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="wiki-Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="wiki-Concepts-Graphify.html" class="nav-item">Graphify</a>
+<a href="wiki-Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="wiki-Concepts-LLM-Wiki.html" class="nav-item">LLM-Wiki</a>
+<a href="wiki-Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="wiki-Concepts-NotebookLM.html" class="nav-item">NotebookLM</a>
+<a href="wiki-Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="wiki-Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="wiki-Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="wiki-Concepts-PySceneDetect.html" class="nav-item">PySceneDetect</a>
+<a href="wiki-Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="wiki-Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="wiki-Concepts-Tailscale.html" class="nav-item">Tailscale</a>
+<a href="wiki-Concepts-Termius.html" class="nav-item">Termius</a>
+<a href="wiki-Concepts-faster-whisper.html" class="nav-item">faster-whisper</a>
+<a href="wiki-Concepts-tmux.html" class="nav-item">tmux</a>
+<a href="wiki-Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="wiki-Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="wiki-Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="wiki-Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="wiki-Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="wiki-Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="wiki-Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="wiki-Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="wiki-Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="wiki-Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="wiki-Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="wiki-Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="wiki-Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="wiki-Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="wiki-Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="wiki-Knowledge-Tech-iPhone-Mac-远程命令行开发工作流.html" class="nav-item">iPhone-Mac-远程命令行开发工作流</a>
+<a href="wiki-Knowledge-Tech-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="wiki-Knowledge-Tech-技术架构模式.html" class="nav-item">技术架构模式</a>
+<a href="wiki-Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="wiki-Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="wiki-Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+<a href="wiki-Knowledge-Tech-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">wiki</div>
+<a href="wiki-index.html" class="nav-item">index</a>
+<a href="wiki-log.html" class="nav-item">log</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="wiki-Knowledge-投资-投资决策框架.html" class="nav-item">投资决策框架</a>
+<a href="wiki-Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="wiki-Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-AI.html">AI</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</span></div>
+  <div class="article-header">
+    
+    <h1>视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags:
+  - stage:evergreen
+  - domain:ai
+  - type:summary
+created: 2026-04-08
+updated: 2026-04-08
+sources:
+  - "https://www.youtube.com/watch?v=7_jKMLQNN7k"
+  - "reese:~/video-analysis-test/"
+  - "reese:~/knowledge-base/video-analysis/youtube-7_jKMLQNN7k-analysis.md"</p>
+<hr />
+<h1>视频分析流水线：yt-dlp → Whisper → PySceneDetect → Qwen2.5VL</h1>
+<blockquote>
+<p>在 M3 Max (128GB) 上验证通过的完整视频深度分析工具链。
+首次测试用例：1.5小时 YouTube 喜剧小品合集，产出 6.9KB 结构化分析报告。</p>
+</blockquote>
+<hr />
+<h2>核心结论</h2>
+<ol>
+<li><strong>全流程本地化可行</strong>：575MB 视频在 M3 Max 上 40-50 分钟完成全链路分析，无需 API 调用</li>
+<li><strong>多维度交叉分析</strong>：语音转写 + 视觉场景检测 + LLM 综合推理，比单一模态分析深入数倍</li>
+<li><strong>产出丰富</strong>：一次分析产出 2759 行对白、1093 个场景、1346 张关键帧、6.9KB 结构化报告</li>
+<li><strong>可复制性强</strong>：工具链全开源，流程标准化，适合批量分析</li>
+</ol>
+<hr />
+<h2>工具链架构</h2>
+<div class="codehilite"><pre><span></span><code>YouTube URL
+  │
+  ├─ yt-dlp ──────────── 下载视频 (webm/mp4)     ~5min
+  │
+  ├─ ffmpeg ──────────── 提取音频 (wav)           ~2min
+  │
+  ├─ faster-whisper ──── 语音转写 (JSON/SRT)      ~15-20min
+  │   └─ CPU int8 量化，模型：tiny/base/small
+  │
+  ├─ PySceneDetect ───── 场景切割 + CSV 报告      ~10min
+  │   ├─ 关键帧提取 (keyframes/)
+  │   └─ 场景截图 (scenes/, 每场景3张)
+  │
+  └─ Qwen2.5VL ────────── 视觉理解 + 综合分析     LLM 推理
+      └─ 输入：转写文本 + 关键帧 + 场景数据
+      └─ 输出：结构化分析报告
+</code></pre></div>
+
+<h3>各工具职责</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>版本/模型</th>
+<th>输入</th>
+<th>输出</th>
+<th>耗时(1.5h视频)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="wikilink-missing" title="未找到笔记">yt-dlp</span></td>
+<td>最新</td>
+<td>YouTube URL</td>
+<td>webm/mp4</td>
+<td>~5min</td>
+</tr>
+<tr>
+<td><span class="wikilink-missing" title="未找到笔记">ffmpeg</span></td>
+<td>系统版</td>
+<td>视频文件</td>
+<td>WAV 音频</td>
+<td>~2min</td>
+</tr>
+<tr>
+<td><a href="wiki-Concepts-faster-whisper.html" class="wikilink">faster-whisper</a></td>
+<td>base/int8</td>
+<td>WAV 音频</td>
+<td>JSON(segments+text)</td>
+<td>~15-20min</td>
+</tr>
+<tr>
+<td><a href="wiki-Concepts-PySceneDetect.html" class="wikilink">PySceneDetect</a></td>
+<td>最新</td>
+<td>视频文件</td>
+<td>CSV + 帧图片</td>
+<td>~10min</td>
+</tr>
+<tr>
+<td>Qwen2.5VL</td>
+<td>vl-max</td>
+<td>文本+图片</td>
+<td>Markdown 报告</td>
+<td>LLM 依赖</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>分析报告结构（已验证模板）</h2>
+<p>通过首次测试验证的报告输出结构：</p>
+<h3>1. 内容结构分析</h3>
+<ul>
+<li>整体架构识别（多段式/单线/多线）</li>
+<li>每段的核心设定、冲突、笑点技巧</li>
+</ul>
+<h3>2. 节奏分析（量化）</h3>
+<ul>
+<li>总场景数、平均场景时长、切换频率</li>
+<li>对白密度（行/分钟）</li>
+<li>节奏特征总结</li>
+</ul>
+<h3>3. 台词风格分析</h3>
+<ul>
+<li>语言特色（句长、口语化程度）</li>
+<li>金句摘录</li>
+<li>幽默/叙事技巧分类</li>
+</ul>
+<h3>4. 视觉特征分析</h3>
+<ul>
+<li>基于关键帧的风格识别</li>
+<li>镜头运用模式</li>
+</ul>
+<h3>5. 爆款规律总结</h3>
+<ul>
+<li>可复制的方法论提炼</li>
+<li>对短剧制作的启示（结构、节奏、台词、叙事、视觉）</li>
+</ul>
+<hr />
+<h2>首次测试数据</h2>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>视频时长</td>
+<td>1h30m32s (5432s)</td>
+</tr>
+<tr>
+<td>文件大小</td>
+<td>575MB (webm)</td>
+</tr>
+<tr>
+<td>Whisper 转写行数</td>
+<td>2759 行</td>
+</tr>
+<tr>
+<td>场景数</td>
+<td>1093 个</td>
+</tr>
+<tr>
+<td>平均场景时长</td>
+<td>5.0 秒</td>
+</tr>
+<tr>
+<td>关键帧</td>
+<td>1346 张 (~93MB)</td>
+</tr>
+<tr>
+<td>场景截图</td>
+<td>3279 张 (~707MB)</td>
+</tr>
+<tr>
+<td>分析报告</td>
+<td>6.9KB Markdown</td>
+</tr>
+<tr>
+<td><strong>总耗时</strong></td>
+<td><strong>~40-50 分钟</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>环境要求</h2>
+<h3>硬件（已验证）</h3>
+<ul>
+<li>Apple M3 Max, 128GB RAM</li>
+<li>SSD 至少需要 ~2GB 临时空间（视频+音频+帧）</li>
+</ul>
+<h3>软件依赖</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Python 3.14 + video-tools-env 虚拟环境</span>
+pip<span class="w"> </span>install<span class="w"> </span>yt-dlp<span class="w"> </span>faster-whisper<span class="w"> </span>scenedetect<span class="o">[</span>opencv<span class="o">]</span>
+<span class="c1"># 系统依赖</span>
+brew<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">  </span><span class="c1"># macOS</span>
+</code></pre></div>
+
+<h3>存储规划</h3>
+<ul>
+<li>原始视频和帧数据保留在本地（reese），不上传服务器</li>
+<li>分析报告（KB级）可同步到知识库</li>
+<li>关键帧可按需上传（用于 AI 视觉分析）</li>
+</ul>
+<hr />
+<h2>应用场景</h2>
+<ol>
+<li><strong>竞品分析</strong>：分析竞品短剧/视频的节奏、叙事技巧、视觉风格</li>
+<li><strong>选题验证</strong>：分析爆款视频提取可复制的成功要素</li>
+<li><strong>剧本优化</strong>：量化分析自有作品的节奏和对白密度，对标爆款</li>
+<li><strong>素材库建设</strong>：从视频中提取关键帧作为参考图/分镜素材</li>
+</ol>
+<hr />
+<h2>与现有工具链的关系</h2>
+<ul>
+<li><a href="wiki-Concepts-MiniMax.html" class="wikilink">MiniMax</a> 负责<strong>生成</strong>（文生图/视频），本流水线负责<strong>分析</strong>（已有视频）</li>
+<li><a href="wiki-Concepts-faster-whisper.html" class="wikilink">faster-whisper</a> 已有 <a href="wiki-Concepts-Skill系统.html" class="wikilink">Skill系统</a> 中的 STT 技能封装</li>
+<li>视频热点调研（video_hot_investigate）侧重<strong>数据采集</strong>，本流水线侧重<strong>内容深度分析</strong></li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美伊套利监控系统架构 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="wiki-Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="wiki-Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="wiki-Knowledge-AI-Graphify-LLM知识图谱工具.html" class="nav-item">Graphify-LLM知识图谱工具</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki-方法论.html" class="nav-item">Karpathy-LLM-Wiki-方法论</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki深度解析.html" class="nav-item">Karpathy-LLM-Wiki深度解析</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki知识管理方法论.html" class="nav-item">Karpathy-LLM-Wiki知识管理方法论</a>
+<a href="wiki-Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="wiki-Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="wiki-Knowledge-AI-Obsidian-NotebookLM-Gemini学习压缩系统.html" class="nav-item">Obsidian-NotebookLM-Gemini学习压缩系统</a>
+<a href="wiki-Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="wiki-Knowledge-AI-OpenCLI-浏览器平台采集工具.html" class="nav-item">OpenCLI-浏览器平台采集工具</a>
+<a href="wiki-Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="wiki-Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="wiki-Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="wiki-Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="wiki-Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="wiki-Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="wiki-Knowledge-AI-知识库导航.html" class="nav-item">知识库导航</a>
+<a href="wiki-Knowledge-AI-视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen.html" class="nav-item">视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</a>
+<a href="wiki-Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="wiki-Knowledge-Business-AI企业服务-传统行业采购AI落地案例.html" class="nav-item">AI企业服务-传统行业采购AI落地案例</a>
+<a href="wiki-Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="wiki-Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="wiki-Knowledge-Business-ClawLabs战略复盘.html" class="nav-item">ClawLabs战略复盘</a>
+<a href="wiki-Knowledge-Business-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="wiki-Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="wiki-Knowledge-Business-dbetter个人画像与认知分析.html" class="nav-item">dbetter个人画像与认知分析</a>
+<a href="wiki-Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="wiki-Knowledge-Business-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="wiki-Knowledge-Business-产品方法论.html" class="nav-item">产品方法论</a>
+<a href="wiki-Knowledge-Business-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="wiki-Knowledge-Business-内容创业-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="wiki-Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="wiki-Knowledge-Business-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="wiki-Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="wiki-Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="wiki-Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="wiki-Concepts-Graphify.html" class="nav-item">Graphify</a>
+<a href="wiki-Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="wiki-Concepts-LLM-Wiki.html" class="nav-item">LLM-Wiki</a>
+<a href="wiki-Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="wiki-Concepts-NotebookLM.html" class="nav-item">NotebookLM</a>
+<a href="wiki-Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="wiki-Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="wiki-Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="wiki-Concepts-PySceneDetect.html" class="nav-item">PySceneDetect</a>
+<a href="wiki-Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="wiki-Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="wiki-Concepts-Tailscale.html" class="nav-item">Tailscale</a>
+<a href="wiki-Concepts-Termius.html" class="nav-item">Termius</a>
+<a href="wiki-Concepts-faster-whisper.html" class="nav-item">faster-whisper</a>
+<a href="wiki-Concepts-tmux.html" class="nav-item">tmux</a>
+<a href="wiki-Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="wiki-Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="wiki-Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="wiki-Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="wiki-Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="wiki-Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="wiki-Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="wiki-Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="wiki-Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="wiki-Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="wiki-Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="wiki-Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="wiki-Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="wiki-Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="wiki-Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="wiki-Knowledge-Tech-iPhone-Mac-远程命令行开发工作流.html" class="nav-item">iPhone-Mac-远程命令行开发工作流</a>
+<a href="wiki-Knowledge-Tech-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="wiki-Knowledge-Tech-技术架构模式.html" class="nav-item">技术架构模式</a>
+<a href="wiki-Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="wiki-Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="wiki-Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+<a href="wiki-Knowledge-Tech-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">wiki</div>
+<a href="wiki-index.html" class="nav-item">index</a>
+<a href="wiki-log.html" class="nav-item">log</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="wiki-Knowledge-投资-投资决策框架.html" class="nav-item">投资决策框架</a>
+<a href="wiki-Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="wiki-Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">美伊套利监控系统架构</span></div>
+  <div class="article-header">
+    
+    <h1>美伊套利监控系统架构</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags:
+  - stage:evergreen
+created: 2026-03-17
+updated: 2026-03-28</p>
+<hr />
+<h1>美伊套利监控系统架构</h1>
+<h2>背景</h2>
+<p>2026年3月，美伊战争期间，<a href="wiki-Concepts-Polymarket.html" class="wikilink">Polymarket</a> 上存在大量美伊相关预测市场（ceasefire/hormuz/military等）。项目目标：构建一套套利机会识别系统，通过程序化分析盘口定价的逻辑矛盾和单调性违反来发现alpha。</p>
+<h2>系统架构</h2>
+<div class="codehilite"><pre><span></span><code>Dashboard (port 1980)
+├── server.js（Express后端）
+│   ├── GET /api/iran-markets      → Polymarket Gamma API数据聚合
+│   ├── GET /api/iran-arbitrage    → 纯计算，套利机会分析
+│   └── GET /api/iran-rules        → Claude API语义解读（带1h缓存）
+│
+├── public/iran-arb.html（前端）
+│   ├── Section 1: 全盘口一览表（按事件组分组）
+│   ├── Section 2: 套利机会扫描（红色高亮卡片）
+│   ├── Section 3: LLM规则解读（手风琴折叠面板）
+│   └── Section 4: 信息源状态（IMF PortWatch / Exa API）
+│
+└── 自动刷新：每30秒
+</code></pre></div>
+
+<h2>后端API设计</h2>
+<h3>/api/iran-markets</h3>
+<p>数据源：<code>https://gamma-api.polymarket.com/events?active=true&amp;closed=false</code>（无需Auth）</p>
+<p>过滤条件：title/description 包含 <code>iran/ceasefire/hormuz/military</code></p>
+<p>返回结构：</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">    </span><span class="nt">&quot;slug&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;markets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">      </span><span class="nt">&quot;question&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;yes_price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.115</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;no_price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.885</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;volume&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;liquidity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;end_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-03-31&quot;</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="w">  </span><span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3>/api/iran-arbitrage</h3>
+<p><strong>套利识别逻辑（三种类型）</strong>：</p>
+<h4>1. 单调性检验（跨日期同系列）</h4>
+<div class="codehilite"><pre><span></span><code>同一事件组（如ceasefire）按截止日期排序：
+- Mar31停战概率 &lt; Apr30停战概率 &lt; May31停战概率（应递增）
+- 若Mar31(11.5%) &gt; Apr30(8%) → 违反单调性 → 套利机会
+</code></pre></div>
+
+<p>输出示例：</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;monotonicity_violation&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;market_a&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;slug&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mar31&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;yes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.115</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;market_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;slug&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Apr30&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;yes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;edge&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.035</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BUY Apr30 YES, SELL Mar31 YES&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HIGH&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4>2. 概率一致性检验</h4>
+<ul>
+<li>"宣布结束军事行动"概率 <strong>应 &gt;=</strong> "停战协议签署"概率（宽松条件 ≥ 严格条件）</li>
+<li>"美军进入伊朗领土"概率 与 "停战"概率 <strong>应负相关</strong></li>
+<li>违反以上逻辑关系 → <code>inconsistency_score</code> 高 → 套利机会</li>
+</ul>
+<h4>3. 价差套利</h4>
+<p>逻辑矛盾 + 价差足够大（edge &gt; 阈值）→ 具体操作建议</p>
+<h3>/api/iran-rules</h3>
+<p>使用 Claude API 对每个盘口进行语义解读，提取：
+- <code>trigger_conditions</code>：触发Yes的精确条件
+- <code>gray_areas</code>：歧义点/边缘案例
+- <code>logical_relation</code>：与其他盘口的逻辑关系
+- <code>resolution_risk</code>：官方认定标准的解析风险</p>
+<p><strong>缓存策略</strong>：结果缓存到 <code>/tmp/iran_rules_cache.json</code>，超过1小时才刷新</p>
+<p><strong>API Key读取</strong>（无dotenv）：</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">envContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;/root/.openclaw/.env&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">apiKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">envContent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/ANTHROPIC_API_KEY=(.+)/</span><span class="p">)</span><span class="o">?</span><span class="p">.[</span><span class="mf">1</span><span class="p">]</span><span class="o">?</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+</code></pre></div>
+
+<h2>Dashboard-MVP 项目结构</h2>
+<p>路径：<code>/root/.openclaw/workspace/dashboard-mvp/</code></p>
+<div class="codehilite"><pre><span></span><code><span class="nx">dashboard</span><span class="o">-</span><span class="nx">mvp</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">server</span><span class="p">.</span><span class="nx">js</span><span class="w">          </span><span class="err">#</span><span class="w"> </span><span class="nx">Express后端</span><span class="err">，</span><span class="nx">port</span><span class="w"> </span><span class="mi">1980</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">js</span><span class="w">              </span><span class="err">#</span><span class="w"> </span><span class="nx">better</span><span class="o">-</span><span class="nx">sqlite3封装</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">adapters</span><span class="p">.</span><span class="nx">js</span><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">项目任务数据适配器</span>
+<span class="err">├──</span><span class="w"> </span><span class="kn">package</span><span class="p">.</span><span class="nx">json</span><span class="w">       </span><span class="err">#</span><span class="w"> </span><span class="nx">依赖</span><span class="p">:</span><span class="w"> </span><span class="nx">express</span><span class="p">,</span><span class="w"> </span><span class="nx">better</span><span class="o">-</span><span class="nx">sqlite3</span>
+<span class="err">└──</span><span class="w"> </span><span class="nx">public</span><span class="o">/</span>
+<span class="w">    </span><span class="err">├──</span><span class="w"> </span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="nx">主页</span><span class="err">（</span><span class="nx">sidebar导航</span><span class="err">）</span>
+<span class="w">    </span><span class="err">├──</span><span class="w"> </span><span class="nx">macro</span><span class="p">.</span><span class="nx">html</span><span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="nx">霍尔木兹宏观引擎页面</span><span class="err">（</span><span class="nx">样式参考</span><span class="err">）</span>
+<span class="w">    </span><span class="err">└──</span><span class="w"> </span><span class="nx">iran</span><span class="o">-</span><span class="nx">arb</span><span class="p">.</span><span class="nx">html</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="nx">美伊套利监控页面</span>
+</code></pre></div>
+
+<p><strong>server.js 关键模式</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 静态文件服务</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;public&#39;</span><span class="p">)));</span>
+
+<span class="c1">// 页面路由</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/iran-arb&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="s1">&#39;public/iran-arb.html&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">root</span><span class="o">:</span><span class="w"> </span><span class="nx">__dirname</span><span class="p">}));</span>
+
+<span class="c1">// 运行时数据整合（cron状态+OpenViking健康+Poly宏观结果）</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/runtime&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">cron</span><span class="o">:</span><span class="w"> </span><span class="nx">getCronJobs</span><span class="p">(),</span><span class="w"> </span><span class="nx">openviking</span><span class="o">:</span><span class="w"> </span><span class="nx">getOVHealth</span><span class="p">(),</span><span class="w"> </span>
+<span class="w">             </span><span class="nx">poly_macro</span><span class="o">:</span><span class="w"> </span><span class="nx">getPolyMacroResult</span><span class="p">(),</span><span class="w"> </span><span class="nx">fiona_daemon</span><span class="o">:</span><span class="w"> </span><span class="nx">getFionaResult</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h2>信息源整合</h2>
+<table>
+<thead>
+<tr>
+<th>数据源</th>
+<th>用途</th>
+<th>接入方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Polymarket Gamma API</td>
+<td>盘口实时价格</td>
+<td>HTTPS GET，无需Auth</td>
+</tr>
+<tr>
+<td>IMF PortWatch</td>
+<td>霍尔木兹通行量</td>
+<td>poly_macro_engine.py输出 → /tmp/poly_macro_result.json</td>
+</tr>
+<tr>
+<td>Exa API</td>
+<td>新闻检索</td>
+<td>API Key，用于验证宏观事件</td>
+</tr>
+<tr>
+<td>Anthropic Claude</td>
+<td>盘口规则语义解读</td>
+<td>API Key from /root/.openclaw/.env</td>
+</tr>
+</tbody>
+</table>
+<h2>BABA研报生成流程（扩展场景）</h2>
+<p>同一套dashboard-mvp基础设施也支持BABA研报生成：</p>
+<ol>
+<li>拉取 BABA 最新财报数据</li>
+<li>Claude 生成中文研报文本（Markdown格式）</li>
+<li>写入 <code>/root/.openclaw/workspace/projects/digital-twin-advisor/content/</code></li>
+<li>可推送到微信公众号（push_draft_with_images.py）</li>
+</ol>
+<p>相关文件：
+- <code>projects/digital-twin-advisor/content/kazike_boss_wechat_article_v2.md</code>
+- <code>projects/digital-twin-advisor/content/payload_with_images.json</code>
+- <code>projects/digital-twin-advisor/content/push_draft_with_images.py</code></p>
+<h2>关键决策</h2>
+<ol>
+<li><strong>纯计算套利引擎</strong>：套利分析不调外部API，纯基于市场数据计算，延迟极低</li>
+<li><strong>前端自动刷新30秒</strong>：盘口价格实时性要求高，但不需要WebSocket，30秒轮询足够</li>
+<li><strong>LLM解读缓存1小时</strong>：盘口规则不会频繁变化，缓存大幅降低API成本</li>
+<li><strong>Express静态托管</strong>：前端直接放public/目录，无需单独前端构建流程</li>
+<li><strong>nodemon热重载</strong>：开发时server用nodemon，修改文件自动重载，无需手动重启</li>
+</ol>
+<h2>教训</h2>
+<ol>
+<li><strong>Polymarket API完全开放</strong>：无需注册API Key，gamma-api.polymarket.com直接请求即可</li>
+<li><strong>单调性检验是最可靠的套利信号</strong>：纯数学推理，不依赖主观判断</li>
+<li><strong>LLM适合做语义桥梁</strong>：把盘口英文description翻译成结构化trigger_conditions，是LLM的最强用途</li>
+<li><strong>大盘口 ≠ 好流动性</strong>：volume高但liquidity低的盘口，实际无法执行套利</li>
+<li><strong>时区问题</strong>：Polymarket end_date需要统一转换为UTC，否则跨日期比较出错</li>
+</ol>
+<h2>Tags</h2>
+<h1>Polymarket #套利 #美伊战争 #Dashboard #Express #LLM #霍尔木兹 #预测市场 #量化 #Node.js</h1>
+<h2>🔗 Related</h2>
+<ul>
+<li><a href="wiki-Knowledge-Crypto-Polymarket套利策略研究.html" class="wikilink">Polymarket套利策略研究</a></li>
+<li><a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="wikilink">Polymarket-Alpha轮循策略</a></li>
+<li><a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a></li>
+<li><a href="wiki-Knowledge-Tech-Claude-Code编程实践笔记.html" class="wikilink">Claude-Code编程实践笔记</a></li>
+<li><a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></li>
+<li><a href="wiki-Knowledge-Business-KOL数字分身项目.html" class="wikilink">KOL数字分身项目</a></li>
+</ul>
+<hr />
+<h2>2026-03-22 更新：clawlabs.top 域名上线</h2>
+<h3>背景</h3>
+<p>原来的研报/仪表板只能通过临时 Cloudflare Tunnel 链接访问，每次换 URL。今日完成了 <code>clawlabs.top</code> 域名绑定 + nginx 路径路由配置。</p>
+<h3>nginx 路径配置（已上线）</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># /etc/nginx/sites-available/clawlabs</span>
+<span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">clawlabs.top</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/dashboard</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kn">...</span><span class="w"> </span><span class="err">}</span>
+<span class="w">    </span><span class="s">location</span><span class="w"> </span><span class="s">/elon</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="kn">...</span><span class="w"> </span><span class="err">}</span>
+<span class="w">    </span><span class="s">location</span><span class="w"> </span><span class="s">/report</span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="kn">...</span><span class="w"> </span><span class="err">}</span>
+<span class="w">    </span><span class="s">location</span><span class="w"> </span><span class="s">/iran</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="kn">...</span><span class="w"> </span><span class="err">}</span>
+<span class="w">    </span><span class="s">location</span><span class="w"> </span><span class="s">/</span><span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="kn">...</span><span class="w"> </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+
+<p>访问地址：
+- <code>http://clawlabs.top</code> — 仪表板主页
+- <code>http://clawlabs.top/elon</code> — Elon Tracker
+- <code>http://clawlabs.top/report</code> — Opus 美伊研报
+- <code>http://clawlabs.top/iran</code> — 美伊战争仪表板</p>
+<h3>配置要点</h3>
+<ol>
+<li><strong>腾讯云安全组</strong> — 必须在云控制台手动开放 TCP 80/443，iptables 无效（云层拦截）</li>
+<li><strong>DNS记录</strong> — A记录已指向VPS，主域 + www 均已配置</li>
+<li><strong>扩展新路径</strong> — 只需在 nginx 加 <code>location /xxx</code> 块，无需改代码</li>
+<li><strong>HTTPS（待办）</strong> — Let's Encrypt 免费，一次配置永久续期，后续加</li>
+</ol>
+<h3>待办</h3>
+<ul>
+<li>[ ] 配置 Let's Encrypt SSL，链接变为 <code>https://clawlabs.top/xxx</code></li>
+<li>[ ] 研报需更新 Cloudflare Tunnel → 改为 <code>clawlabs.top/report</code> 永久链接</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

@@ -10,13 +10,12 @@ SITE_DIR = "/root/.openclaw/obsidian-vault-site"
 
 # Category mapping
 CATEGORIES = {
-    "Knowledge/AI": ("AI", 5),
-    "Knowledge/Crypto": ("Crypto", 4),
-    "Knowledge/Tech": ("Tech", 4),
-    "Knowledge/投资": ("投资", 2),
-    "Knowledge/Business": ("Business", 1),
-    "Projects": ("Projects", 4),
-    "Daily": ("Daily", 4),
+    "wiki/Knowledge/AI": ("AI", 5),
+    "wiki/Knowledge/Crypto": ("Crypto", 4),
+    "wiki/Knowledge/Tech": ("Tech", 4),
+    "wiki/Knowledge/投资": ("投资", 2),
+    "wiki/Knowledge/Business": ("Business", 1),
+    "wiki/Concepts": ("Concepts", 3),
 }
 
 def slugify(name):
@@ -25,28 +24,32 @@ def slugify(name):
 def get_all_md_files():
     files = []
     for root, dirs, filenames in os.walk(VAULT_DIR):
-        # Skip hidden dirs
-        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        # Skip hidden dirs and raw/
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d != 'raw']
         for f in filenames:
             if f.endswith('.md'):
                 full = os.path.join(root, f)
                 rel = os.path.relpath(full, VAULT_DIR)
+                # Skip CLAUDE.md at root
+                if rel == 'CLAUDE.md':
+                    continue
                 files.append((rel, full))
     return files
 
 def get_category_info(rel_path):
-    if is_moc_file(rel_path):
-        return "MOC", "MOC"
     parts = rel_path.split(os.sep)
-    if len(parts) >= 2 and parts[0] == "Knowledge":
-        return "Knowledge", parts[1]
+    # wiki/Knowledge/AI/xxx.md -> ("Knowledge", "AI")
+    if len(parts) >= 3 and parts[0] == "wiki" and parts[1] == "Knowledge":
+        return "Knowledge", parts[2]
+    # wiki/Concepts/xxx.md -> ("Concepts", "Concepts")
+    if len(parts) >= 2 and parts[0] == "wiki" and parts[1] == "Concepts":
+        return "Concepts", "Concepts"
+    # wiki/index.md, wiki/log.md -> ("wiki", "wiki")
+    if len(parts) >= 1 and parts[0] == "wiki":
+        return "wiki", "wiki"
     elif len(parts) >= 1:
         return parts[0], parts[0]
     return "Other", "Other"
-
-def is_moc_file(rel_path):
-    """Check if a file is a MOC (Map of Content) note."""
-    return rel_path.startswith("MOC/") or rel_path.startswith("MOC\\")
 
 # ── Wikilink resolution ────────────────────────────────────────────────────────
 # Build a lookup: note_name -> slug (for all notes in vault)
@@ -68,53 +71,37 @@ def resolve_wikilinks(content):
         return f'<span class="wikilink-missing" title="未找到笔记">{note_name}</span>'
     return re.sub(r'\[\[([^\]]+)\]\]', replacer, content)
 
-# ── MOC golden highlighting in nav ───────────────────────────────────────────
-MOC_ICON = "🗺️"
-MOC_STYLE = 'color: #ffd700; font-weight: bold;'   # golden
-
-def _moc_nav_item(title, rel):
-    href = slugify(rel.replace('.md', '')) + '.html'
-    return f'<a href="{href}" class="nav-item nav-moc" style="{MOC_STYLE}">{MOC_ICON} {title}</a>\n'
-
 def build_nav_html():
-    """Build left sidebar nav grouped by category. MOC notes get golden treatment."""
+    """Build left sidebar nav grouped by category."""
     groups = {}
-    moc_items = []
     for root, dirs, files in os.walk(VAULT_DIR):
-        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d != 'raw']
         for f in files:
             if not f.endswith('.md'):
                 continue
             full = os.path.join(root, f)
             rel = os.path.relpath(full, VAULT_DIR)
-            cat_folder, cat_name = get_category_info(rel)
-            
-            title = f.replace('.md', '')
-            if is_moc_file(rel):
-                moc_items.append((title, rel))
+            # Skip CLAUDE.md and raw/
+            if rel == 'CLAUDE.md' or rel.startswith('raw/'):
                 continue
-            
+            cat_folder, cat_name = get_category_info(rel)
+
+            title = f.replace('.md', '')
+
             if cat_folder == "Knowledge":
                 group_key = cat_name
                 group_label = cat_name
             else:
                 group_key = cat_folder
                 group_label = cat_folder
-            
+
             if group_label not in groups:
                 groups[group_label] = []
             groups[group_label].append((title, rel))
-    
+
     html = '<nav class="sidebar-nav">\n'
     html += f'<a href="index.html" class="nav-home">📚 知识库首页</a>\n'
-    
-    # MOC section first
-    if moc_items:
-        html += '<div class="nav-group"><div class="nav-group-title" style="color:#ffd700;">🗺️ MOC</div>\n'
-        for title, rel in sorted(moc_items):
-            html += _moc_nav_item(title, rel)
-        html += '</div>\n'
-    
+
     for group, items in sorted(groups.items()):
         html += f'<div class="nav-group"><div class="nav-group-title">{group}</div>\n'
         for title, rel in sorted(items):
@@ -325,15 +312,15 @@ __FILE_LIST__
     page = page.replace('__NAV__', nav_html)
     return page
 
-def generate_article(rel_path, full_path, is_moc=False):
+def generate_article(rel_path, full_path):
     with open(full_path, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     title = rel_path.replace('.md','').split('/')[-1]
     html_content = md_to_html(content)
     breadcrumb = build_breadcrumb(rel_path)
     nav_html = build_nav_html()
-    moc_badge = '<span class="moc-badge">🗺️ MOC</span>' if is_moc else ''
+    moc_badge = ''
     
     html = f"""<!DOCTYPE html>
 <html lang="zh">
@@ -535,8 +522,7 @@ def main():
     
     # Generate article pages
     for rel, full in files:
-        is_moc = is_moc_file(rel)
-        html = generate_article(rel, full, is_moc=is_moc)
+        html = generate_article(rel, full)
         out_name = slugify(rel.replace('.md', '')) + '.html'
         out_path = os.path.join(SITE_DIR, out_name)
         with open(out_path, 'w', encoding='utf-8') as f:

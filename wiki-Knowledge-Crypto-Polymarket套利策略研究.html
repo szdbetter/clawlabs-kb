@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymarket套利策略研究 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="wiki-Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="wiki-Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="wiki-Knowledge-AI-Graphify-LLM知识图谱工具.html" class="nav-item">Graphify-LLM知识图谱工具</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki-方法论.html" class="nav-item">Karpathy-LLM-Wiki-方法论</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki深度解析.html" class="nav-item">Karpathy-LLM-Wiki深度解析</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki知识管理方法论.html" class="nav-item">Karpathy-LLM-Wiki知识管理方法论</a>
+<a href="wiki-Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="wiki-Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="wiki-Knowledge-AI-Obsidian-NotebookLM-Gemini学习压缩系统.html" class="nav-item">Obsidian-NotebookLM-Gemini学习压缩系统</a>
+<a href="wiki-Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="wiki-Knowledge-AI-OpenCLI-浏览器平台采集工具.html" class="nav-item">OpenCLI-浏览器平台采集工具</a>
+<a href="wiki-Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="wiki-Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="wiki-Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="wiki-Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="wiki-Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="wiki-Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="wiki-Knowledge-AI-知识库导航.html" class="nav-item">知识库导航</a>
+<a href="wiki-Knowledge-AI-视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen.html" class="nav-item">视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</a>
+<a href="wiki-Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="wiki-Knowledge-Business-AI企业服务-传统行业采购AI落地案例.html" class="nav-item">AI企业服务-传统行业采购AI落地案例</a>
+<a href="wiki-Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="wiki-Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="wiki-Knowledge-Business-ClawLabs战略复盘.html" class="nav-item">ClawLabs战略复盘</a>
+<a href="wiki-Knowledge-Business-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="wiki-Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="wiki-Knowledge-Business-dbetter个人画像与认知分析.html" class="nav-item">dbetter个人画像与认知分析</a>
+<a href="wiki-Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="wiki-Knowledge-Business-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="wiki-Knowledge-Business-产品方法论.html" class="nav-item">产品方法论</a>
+<a href="wiki-Knowledge-Business-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="wiki-Knowledge-Business-内容创业-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="wiki-Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="wiki-Knowledge-Business-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="wiki-Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="wiki-Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="wiki-Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="wiki-Concepts-Graphify.html" class="nav-item">Graphify</a>
+<a href="wiki-Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="wiki-Concepts-LLM-Wiki.html" class="nav-item">LLM-Wiki</a>
+<a href="wiki-Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="wiki-Concepts-NotebookLM.html" class="nav-item">NotebookLM</a>
+<a href="wiki-Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="wiki-Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="wiki-Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="wiki-Concepts-PySceneDetect.html" class="nav-item">PySceneDetect</a>
+<a href="wiki-Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="wiki-Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="wiki-Concepts-Tailscale.html" class="nav-item">Tailscale</a>
+<a href="wiki-Concepts-Termius.html" class="nav-item">Termius</a>
+<a href="wiki-Concepts-faster-whisper.html" class="nav-item">faster-whisper</a>
+<a href="wiki-Concepts-tmux.html" class="nav-item">tmux</a>
+<a href="wiki-Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="wiki-Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="wiki-Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="wiki-Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="wiki-Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="wiki-Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="wiki-Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="wiki-Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="wiki-Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="wiki-Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="wiki-Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="wiki-Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="wiki-Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="wiki-Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="wiki-Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="wiki-Knowledge-Tech-iPhone-Mac-远程命令行开发工作流.html" class="nav-item">iPhone-Mac-远程命令行开发工作流</a>
+<a href="wiki-Knowledge-Tech-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="wiki-Knowledge-Tech-技术架构模式.html" class="nav-item">技术架构模式</a>
+<a href="wiki-Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="wiki-Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="wiki-Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+<a href="wiki-Knowledge-Tech-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">wiki</div>
+<a href="wiki-index.html" class="nav-item">index</a>
+<a href="wiki-log.html" class="nav-item">log</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="wiki-Knowledge-投资-投资决策框架.html" class="nav-item">投资决策框架</a>
+<a href="wiki-Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="wiki-Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Crypto.html">Crypto</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">Polymarket套利策略研究</span></div>
+  <div class="article-header">
+    
+    <h1>Polymarket套利策略研究</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags:
+  - stage:evergreen
+created: 2026-03-17
+updated: 2026-03-28</p>
+<hr />
+<h2>Polymarket 套利策略研究笔记</h2>
+<p><strong>时间跨度</strong>：2026-03-09 ~ 2026-03-20
+<strong>消息量</strong>：1342条</p>
+<h3>一、信息差三层理论</h3>
+<ol>
+<li><strong>数据速度差</strong>（低价值）：NOAA等公开数据，已被bot覆盖</li>
+<li><strong>数据组合差</strong>（中价值）：3-5个数据源组合算概率，少人做</li>
+<li><strong>规则理解差</strong>（高价值）：解读盘口resolution criteria，90%人不认真读</li>
+</ol>
+<h3>二、核心公式</h3>
+<p>期望收益 = <a href="wiki-Concepts-信息优势.html" class="wikilink">信息优势</a> × 市场低效程度 - 手续费</p>
+<h3>三、已验证策略方向</h3>
+<p><strong>天气市场</strong>：
+- gopfan2 用 NOAA 预报赚了 $2M+
+- 但红海已形成，bot密度高，优势被压缩
+- 标准2% taker费，可覆盖</p>
+<p><strong>BTC 5分钟快市</strong>：❌ 放弃
+- 10% taker费，信息优势2-5%根本覆盖不了</p>
+<p><strong>规则理解差策略</strong>（推荐）：
+- 批量拉取20000条活跃盘口description
+- LLM解析规则复杂度，11463条非体育盘口中3833条Score≥4
+- Top3推荐：March CPI（$122K流动性）、Fed Decision April（$1.95M）、Elon Net Worth（$51K）</p>
+<h3>四、赛道优先级</h3>
+<ul>
+<li>P0：EIA原油库存周报（每周三10:30ET，bot密度低）</li>
+<li>P1：经济数据CPI/NFP/Fed（Nowcast模型公开）</li>
+<li>P2：全球温度异常（ERA5可提前预测）</li>
+<li>P3：社交行为/体育/加密（暂不深入）</li>
+</ul>
+<h3>五、美伊监控系统</h3>
+<ul>
+<li><a href="wiki-Concepts-Fiona.html" class="wikilink">Fiona</a>节点运行宏观引擎，每日推送价格异动告警</li>
+<li>停战3月概率~7.5%，停战4月~33%</li>
+<li>霍尔木兹通行量监控+战争险变动</li>
+</ul>
+<h3>六、关键教训</h3>
+<ul>
+<li>天气市场已过度竞争，数据无独占性</li>
+<li>美伊策略问题：信息太公开，定价太快</li>
+<li>核心竞争力 = 规则理解 × 算法速度</li>
+</ul>
+<hr />
+<h2>🆕 2026-03-24 更新：Iran市场深度追踪 + Elon Poly系统</h2>
+<p>[来源: Discord#思过崖/Claude Code / Reese主会话]</p>
+<h3>Iran停战市场 — 时间结构分析</h3>
+<ul>
+<li>市场共7个到期日（March 31 ~ December 31），形成天然时间衰减曲线</li>
+<li>3/23极端行情：NO价从$0.935闪崩至$0.575，当日振幅34¢（年度最极端）</li>
+<li>3/24回稳至$0.865，说明事件冲击但不改趋势</li>
+<li><strong>市场定价错误发现</strong>：April7 NO=$0.71 &gt; April15 NO=$0.635（逻辑倒挂，套利机会）</li>
+<li>趋势：3/11 $0.695 → 3/21峰 $0.936 → 回撤，市场从乐观→悲观变化</li>
+</ul>
+<h3>Iran市场价格阈值框架</h3>
+<table>
+<thead>
+<tr>
+<th>区间</th>
+<th>含义</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$0.90+</td>
+<td>恐慌区（战争预期激增）</td>
+<td>NO观望/逢高建YES</td>
+</tr>
+<tr>
+<td>$0.80-$0.90</td>
+<td>基准区</td>
+<td>持仓</td>
+</tr>
+<tr>
+<td>$0.75</td>
+<td>乐观信号</td>
+<td>谨慎减NO仓</td>
+</tr>
+<tr>
+<td>&lt;$0.70</td>
+<td>重大利好消息</td>
+<td>快速减仓</td>
+</tr>
+</tbody>
+</table>
+<h3>Elon推文Polymarket系统（Day4状态）</h3>
+<ul>
+<li>累计推文161条，Day 3.7/7，速率递减（Day2=64 → Day3=51 → Day4=31）</li>
+<li>三因子模型：历史基率 + 速率动量 + 时间权重</li>
+<li>预测终点：~267条，最优bracket 240-259 (edge=+0.74)</li>
+<li>技术栈：negRisk下单已修复，待入金 $50-200 USDC</li>
+<li><strong>Day5（3/26）触发入场评估</strong>，edge ≥ 8% 时执行</li>
+</ul>
+<h3>数据管道架构更新</h3>
+<ul>
+<li>fiona-db-sync失效后，改用<a href="wiki-Concepts-Polymarket.html" class="wikilink">Polymarket</a>页面HTML抓取</li>
+<li>核心脚本：<code>services/poly_iran_scraper.py</code></li>
+<li>绕过fiona节点依赖，每5分钟Cron自动拉取</li>
+</ul>
+<hr />
+<h2>🆕 2026-03-26 更新：Elon Poly系统实盘Post-Mortem</h2>
+<p>[来源: workspace/projects/elon-poly/POST_MORTEM.md]</p>
+<h3>实盘结果（终局）</h3>
+<ul>
+<li>起始: $8.61 → 剩余: $3.18 → <strong>亏损: $5.43 (-63%)</strong></li>
+<li>市场结算: 2026-03-27 15:59 UTC</li>
+<li>剩余持仓: 260-279 NO × 3股 (~$1.17) + $2.01 USDC.e</li>
+</ul>
+<h3>失败根因分析</h3>
+<ol>
+<li><strong>持仓追踪断裂</strong>: positions.json为空{}，daemon不知道有持仓，止损永远不触发</li>
+<li><strong>过度交易</strong>: 220-239在5h内进出5次，摩擦消耗$3+，止损阈值过紧</li>
+<li><strong>策略cron有写权限</strong>: 可修改代码+重启daemon，引入不一致状态</li>
+<li><strong>监控≠干预</strong>: 每小时汇报但从不执行止损</li>
+</ol>
+<h3>⚠️ 铁律（下一个系统必须遵守）</h3>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>持仓状态从链上读取，不依赖本地文件</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>止损=独立进程，不嵌在策略引擎</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>低价bracket（$0.01-0.02）spread极高，最小持仓时间&gt;1小时</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>单笔止损-40%，单日熔断-30%，触发后全仓平仓+停止daemon</td>
+</tr>
+<tr>
+<td>L5</td>
+<td>分析cron只读权，交易daemon只执行预定义规则，策略修改需人工审批</td>
+</tr>
+<tr>
+<td>L6</td>
+<td>negRisk CLOB：BUY NO = 做空YES，裸SELL YES不支持</td>
+</tr>
+</tbody>
+</table>
+<p>Tags: #Polymarket #套利 #预测市场 #信息差 #投资 #Iran #Elon #PostMortem</p>
+<hr />
+<h2>🆕 2026-03-27 更新：Elon Research系统 — 跨周弱验证研究进展</h2>
+<p>[来源: workspace/projects/elon-poly/elon-research / Claude Code]</p>
+<h3>研究阶段总结</h3>
+<p>市场结算（15:59 UTC）后，开启了新研究系统 <code>elon-research/</code> 用于系统性回溯验证。</p>
+<p><strong>已完成工作（截至 2026-03-27 19:00 UTC）</strong>：
+- 接入8周真实Polymarket历史数据（事件 208544 ~ 278377）
+- 每周成交量修复：从固定截断 3500 → 实际 3710-5000 笔（修复分页Bug）
+- 跨周统一参数弱验证：<code>edge=0.05, slippage=100bps, top_brackets=3</code>
+  - <strong>8周均为0交易0收益</strong>（说明当前弱验证逻辑无法在历史上产生稳定信号）
+- 单周弱验证V2（278377事件，edge敏感性测试）：
+  - <code>edge=0.03</code>时：4笔交易，名义收益 $11.78（仅供参考，非跨周稳健）
+- 成交分布发现：51.9%成交集中在结算前2小时，流动性高度集中于高热bracket</p>
+<p><strong>推文侧数据来源评级</strong>：
+- A级（X API v2）：最可信但需付费权限
+- B级（twarc）：依赖X API
+- C级（Archive Team/snscrape）：辅助，不进主证据链
+- D级（xtracker当前项目已有）：仅周级摘要，用于弱验证标签</p>
+<p><strong>研究结论</strong>：
+1. 市场微结构可研究，但跨周强验证需X API历史权限
+2. 弱验证层面：当前参数设置无法在8周数据上稳定触发交易
+3. 下一步：事件窗口特征工程（5m/15m/1h/6h粒度）+ 分regime稳健性检验</p>
+<hr />
+<h2>🆕 2026-03-28 更新：跨周弱验证稳健性检验最终结论</h2>
+<p>[来源: workspace/projects/elon-poly/elon-research/datasets/reports / Claude Code]</p>
+<h3>稳健性检验结果（非重叠窗口+regime分层）</h3>
+<ul>
+<li>非重叠窗口事件：208544, 226986, 251243, 278377（4周）→ <strong>0交易</strong></li>
+<li>Regime分层（高/低推文活跃、高/低流动性）：<strong>全部0交易</strong></li>
+<li><strong>最终研究结论</strong>：弱标签（周总推文）精度不足以驱动稳定入场信号，在补齐逐条推文时间线（X API权限）和更细粒度特征之前，不进行策略筛选</li>
+</ul>
+<h3>市场微结构关键发现（event_278377）</h3>
+<ul>
+<li>标准化成交3500笔，价格点12494个，tracking推文269条</li>
+<li>成交Top括号：260-279（1341笔）、280-299（1253笔），与最终结算bracket完全一致</li>
+<li>验证意义：市场微结构在结算前已正确反映方向，可作为事件驱动研究的起点</li>
+</ul>
+<h2>🔗 Related</h2>
+<ul>
+<li><a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="wikilink">Polymarket-Alpha轮循策略</a></li>
+<li><a href="wiki-Knowledge-Tech-美伊套利监控系统架构.html" class="wikilink">美伊套利监控系统架构</a></li>
+<li><a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="wikilink">SmartMoney-Fiona监控系统</a></li>
+<li><a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="wikilink">投资综合讨论精华</a></li>
+<li><a href="wiki-Knowledge-Crypto-Cards-CryptoCollect项目.html" class="wikilink">Cards-CryptoCollect项目</a></li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI内容爆款选题库-2026-04 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="wiki-Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="wiki-Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="wiki-Knowledge-AI-Graphify-LLM知识图谱工具.html" class="nav-item">Graphify-LLM知识图谱工具</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki-方法论.html" class="nav-item">Karpathy-LLM-Wiki-方法论</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki深度解析.html" class="nav-item">Karpathy-LLM-Wiki深度解析</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki知识管理方法论.html" class="nav-item">Karpathy-LLM-Wiki知识管理方法论</a>
+<a href="wiki-Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="wiki-Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="wiki-Knowledge-AI-Obsidian-NotebookLM-Gemini学习压缩系统.html" class="nav-item">Obsidian-NotebookLM-Gemini学习压缩系统</a>
+<a href="wiki-Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="wiki-Knowledge-AI-OpenCLI-浏览器平台采集工具.html" class="nav-item">OpenCLI-浏览器平台采集工具</a>
+<a href="wiki-Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="wiki-Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="wiki-Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="wiki-Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="wiki-Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="wiki-Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="wiki-Knowledge-AI-知识库导航.html" class="nav-item">知识库导航</a>
+<a href="wiki-Knowledge-AI-视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen.html" class="nav-item">视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</a>
+<a href="wiki-Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="wiki-Knowledge-Business-AI企业服务-传统行业采购AI落地案例.html" class="nav-item">AI企业服务-传统行业采购AI落地案例</a>
+<a href="wiki-Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="wiki-Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="wiki-Knowledge-Business-ClawLabs战略复盘.html" class="nav-item">ClawLabs战略复盘</a>
+<a href="wiki-Knowledge-Business-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="wiki-Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="wiki-Knowledge-Business-dbetter个人画像与认知分析.html" class="nav-item">dbetter个人画像与认知分析</a>
+<a href="wiki-Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="wiki-Knowledge-Business-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="wiki-Knowledge-Business-产品方法论.html" class="nav-item">产品方法论</a>
+<a href="wiki-Knowledge-Business-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="wiki-Knowledge-Business-内容创业-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="wiki-Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="wiki-Knowledge-Business-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="wiki-Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="wiki-Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="wiki-Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="wiki-Concepts-Graphify.html" class="nav-item">Graphify</a>
+<a href="wiki-Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="wiki-Concepts-LLM-Wiki.html" class="nav-item">LLM-Wiki</a>
+<a href="wiki-Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="wiki-Concepts-NotebookLM.html" class="nav-item">NotebookLM</a>
+<a href="wiki-Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="wiki-Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="wiki-Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="wiki-Concepts-PySceneDetect.html" class="nav-item">PySceneDetect</a>
+<a href="wiki-Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="wiki-Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="wiki-Concepts-Tailscale.html" class="nav-item">Tailscale</a>
+<a href="wiki-Concepts-Termius.html" class="nav-item">Termius</a>
+<a href="wiki-Concepts-faster-whisper.html" class="nav-item">faster-whisper</a>
+<a href="wiki-Concepts-tmux.html" class="nav-item">tmux</a>
+<a href="wiki-Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="wiki-Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="wiki-Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="wiki-Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="wiki-Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="wiki-Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="wiki-Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="wiki-Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="wiki-Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="wiki-Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="wiki-Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="wiki-Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="wiki-Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="wiki-Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="wiki-Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="wiki-Knowledge-Tech-iPhone-Mac-远程命令行开发工作流.html" class="nav-item">iPhone-Mac-远程命令行开发工作流</a>
+<a href="wiki-Knowledge-Tech-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="wiki-Knowledge-Tech-技术架构模式.html" class="nav-item">技术架构模式</a>
+<a href="wiki-Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="wiki-Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="wiki-Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+<a href="wiki-Knowledge-Tech-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">wiki</div>
+<a href="wiki-index.html" class="nav-item">index</a>
+<a href="wiki-log.html" class="nav-item">log</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="wiki-Knowledge-投资-投资决策框架.html" class="nav-item">投资决策框架</a>
+<a href="wiki-Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="wiki-Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Business.html">Business</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Business-内容创业.html">内容创业</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">AI内容爆款选题库-2026-04</span></div>
+  <div class="article-header">
+    
+    <h1>AI内容爆款选题库-2026-04</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags:
+  - stage:evergreen
+created: 2026-03-17
+updated: 2026-03-28</p>
+<hr />
+<h1>AI内容爆款选题库（2026年4月）</h1>
+<blockquote>
+<p>创建: 2026-04-02 | 来源: clawlabs_dashboard/data/research 情报站日报</p>
+</blockquote>
+<h2>本月最大事件：Claude Code 源码泄露</h2>
+<p><strong>事件标签</strong>：#AI泄露 #Anthropic #ClaudeCode #技术民主化</p>
+<p><strong>情报摘要</strong>（2026-04-02 全天多批次监测）：
+- 小红书 + X 热度合计约 <strong>76,820+</strong>
+- X 标签：「BIGGEST AI LEAK OF 2026」病毒传播
+- 小红书：大量"连夜部署成功""文科生也能用""20分钟教程"降门槛内容涌现
+- Anthropic 同日发布 Claude Marketplace 企业版（X 热度 36,449），形成「民间狂欢 + 官方背书」共振</p>
+<p><strong>研判</strong>：中期趋势，技术民主化红利持续 <strong>3-6个月</strong>，第三方开发者将批量 fork 商业化</p>
+<hr />
+<h2>Top 10 爆款选题（带热度评分）</h2>
+<h3>🔥 最高分选题</h3>
+<table>
+<thead>
+<tr>
+<th>热度分</th>
+<th>标题</th>
+<th>平台</th>
+<th>核心逻辑</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>98</td>
+<td>被泄露的ClaudeCode完全部署成功了！！！</td>
+<td>小红书</td>
+<td>稀缺性+实操+紧迫感</td>
+</tr>
+<tr>
+<td>95</td>
+<td>BIGGEST AI LEAK OF 2026: Anthropic accidentally shipped Claude Code</td>
+<td>X</td>
+<td>安全焦虑+吃瓜情绪</td>
+</tr>
+<tr>
+<td>82</td>
+<td>烧了几千亿，AI巨头最终给苹果打工</td>
+<td>小红书</td>
+<td>反直觉+大厂对比</td>
+</tr>
+<tr>
+<td>78</td>
+<td>以太坊10年零宕机，Scalability的代价是什么</td>
+<td>Reddit</td>
+<td>认知差+争议性</td>
+</tr>
+<tr>
+<td>72</td>
+<td>Google量子计算警告：Crypto的生死倒计时？</td>
+<td>Reddit</td>
+<td>恐惧驱动+稀缺性</td>
+</tr>
+<tr>
+<td>68</td>
+<td>Claude Code泄露：第一个完整的AI Agent生产级蓝图</td>
+<td>Reddit</td>
+<td>信息差+时效性</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>内容爆款公式总结（方法论）</h2>
+<h3>公式一：泄露类内容</h3>
+<div class="codehilite"><pre><span></span><code>稀缺性（第一时间）+ 实操教程 + 标题制造紧迫感 → 高收藏率
+</code></pre></div>
+
+<p>示例：「被泄露的ClaudeCode连夜部署成功了」</p>
+<h3>公式二：顶流叙事</h3>
+<div class="codehilite"><pre><span></span><code>技术民主化（精英玩法）+ 身份焦虑（1% vs 99%）+ 行动指南 → 高点击+转发
+</code></pre></div>
+
+<p>示例：「Holy shit... 顶级1%的人怎么用Claude」</p>
+<h3>公式三：反直觉叙事</h3>
+<div class="codehilite"><pre><span></span><code>颠覆认知（&quot;最安全AI公司&quot;泄露）× 情绪煽动（几千亿打了水漂）× 大厂对比 → 评论爆发
+</code></pre></div>
+
+<h3>反向指标识别</h3>
+<ul>
+<li>多KOL同时给出高度一致的价格预测（BTC $200K/ETH $15K/SOL $1000）= <strong>情绪泡沫，非趋势</strong></li>
+<li>识别方法：预测高度一致时，真正行情需要等 ETF 增量资金 + 减半周期共振</li>
+</ul>
+<hr />
+<h2>跨平台分发策略</h2>
+<table>
+<thead>
+<tr>
+<th>内容类型</th>
+<th>小红书</th>
+<th>X/Twitter</th>
+<th>公众号</th>
+<th>短视频</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>技术泄露/突破</td>
+<td>实操教程</td>
+<td>观点短评</td>
+<td>深度分析</td>
+<td>演示对比</td>
+</tr>
+<tr>
+<td>加密市场预测</td>
+<td>数据可视化</td>
+<td>实时评论</td>
+<td>结构化分析</td>
+<td>热点追踪</td>
+</tr>
+<tr>
+<td>AI工具测评</td>
+<td>经验分享</td>
+<td>技术讨论</td>
+<td>深度长文</td>
+<td>演示</td>
+</tr>
+<tr>
+<td>AI替代叙事</td>
+<td>情绪煽动</td>
+<td>观点争鸣</td>
+<td>深度研报</td>
+<td>焦虑+解法</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>今日趋势信号（2026-04-02）</h2>
+<ol>
+<li><strong>Claude Code 源码泄露风暴</strong>：中期趋势，内容窗口期 3-6 个月</li>
+<li><strong>AI Agent替代打工人叙事</strong>：短期炒作+中期趋势，情绪高点约 2 周内</li>
+<li><strong>Claude Marketplace 发布</strong>：B端AI商业化里程碑，机构级信号</li>
+<li><strong>World Models叙事升级</strong>：中期趋势（6-18个月），下一轮融资窗口 2025 Q2-Q3</li>
+<li><strong>BTC超级周期预测轰炸</strong>：短期炒作反向指标，真正行情需 ETF+减半共振</li>
+</ol>
+<hr />
+<h2>🔗 Related</h2>
+<ul>
+<li><a href="wiki-Knowledge-Tech-ClawLabs情报站系统架构.html" class="wikilink">ClawLabs情报站系统架构</a></li>
+<li><a href="wiki-Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="wikilink">生财航海-2026-03月航海概览</a></li>
+<li><a href="wiki-Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="wikilink">YouTube-AI视频一年复盘-2025至2026</a></li>
+<li><a href="wiki-Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="wikilink">AI赚钱引擎-Sprint进度</a></li>
+</ul>
+<hr />
+<h2>2026-04-03 新增选题（来源: Discord#AI短视频 | clawlabs情报站）</h2>
+<h3>🔥 最高优先级：AI视频成本革命</h3>
+<ul>
+<li><strong>核心数据</strong>：Seedance 1.5-pro无声 = 0.16-0.24元/秒，人工成本100-500倍优势</li>
+<li><strong>适合角度</strong>：《AI短剧成本拆解：120元拍完128集，人工团队需要多少钱？》</li>
+<li><strong>平台</strong>：小红书+短视频（数字冲击型标题）</li>
+</ul>
+<h3>💡 本地推理vs云API选题</h3>
+<ul>
+<li><strong>核心冲突</strong>：本地CogVideoX跑通=边际成本0 vs 云端Seedance灵活便宜</li>
+<li><strong>适合角度</strong>：《做AI视频博主之前，必须搞懂这个成本公式》</li>
+<li><strong><span class="wikilink-missing" title="未找到笔记">AI视频成本测算</span></strong> ←详细数据见此</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>

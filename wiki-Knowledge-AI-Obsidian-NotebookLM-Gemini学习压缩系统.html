@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obsidian-NotebookLM-Gemini学习压缩系统 - ClawLabs KB</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #16162a;
+  border-right: 1px solid #2a2a4a;
+  padding: 20px 0;
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+}
+.nav-home {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 10px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-group-title {
+  padding: 8px 20px 4px;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.nav-item {
+  display: block;
+  padding: 6px 20px;
+  color: #c0c0d0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.nav-item:hover { background: #2a2a4a; color: #fff; }
+.main {
+  margin-left: 260px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 900px;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.breadcrumb a { color: #7fdbca; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #444; margin: 0 4px; }
+.breadcrumb-current { color: #aaa; }
+.article-header { margin-bottom: 30px; }
+.article-header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7fdbca;
+  text-decoration: none;
+  font-size: 13px;
+}
+.back-link:hover { text-decoration: underline; }
+.article-content {
+  line-height: 1.8;
+  font-size: 15px;
+}
+.article-content h1, .article-content h2, .article-content h3 {
+  color: #fff;
+  margin: 24px 0 12px;
+}
+.article-content h1 { font-size: 22px; }
+.article-content h2 { font-size: 18px; border-bottom: 1px solid #2a2a4a; padding-bottom: 6px; }
+.article-content h3 { font-size: 16px; color: #c0c0d0; }
+.article-content p { margin-bottom: 14px; }
+.article-content a { color: #7fdbca; }
+.article-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #f0c060;
+}
+.article-content pre {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.article-content pre code {
+  background: none;
+  color: #c0c0d0;
+  padding: 0;
+}
+.article-content ul, .article-content ol {
+  margin: 0 0 14px 24px;
+}
+.article-content li { margin-bottom: 6px; }
+.article-content blockquote {
+  border-left: 3px solid #7fdbca;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: #1e1e3a;
+  color: #c0c0d0;
+}
+.article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+.article-content th, .article-content td {
+  border: 1px solid #2a2a4a;
+  padding: 8px 12px;
+  text-align: left;
+}
+.article-content th { background: #1e1e3a; color: #fff; }
+.article-content tr:nth-child(even) { background: #1a1a30; }
+.article-content img { max-width: 100%; border-radius: 8px; margin: 12px 0; }
+.article-content hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
+.article-content .wikilink {
+  color: #7fdbca;
+  text-decoration: none;
+  border-bottom: 1px dashed #7fdbca;
+  padding-bottom: 1px;
+}
+.article-content .wikilink:hover { border-bottom: 1px solid #7fdbca; }
+.article-content .wikilink-missing {
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
+}
+/* MOC title highlight */
+.article-content .moc-badge {
+  display: inline-block;
+  background: #ffd700;
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <nav class="sidebar-nav">
+<a href="index.html" class="nav-home">📚 知识库首页</a>
+<div class="nav-group"><div class="nav-group-title">AI</div>
+<a href="wiki-Knowledge-AI-ClawLabs安全协议-Owner-Only.html" class="nav-item">ClawLabs安全协议-Owner-Only</a>
+<a href="wiki-Knowledge-AI-Gemma4-本地模型调研.html" class="nav-item">Gemma4-本地模型调研</a>
+<a href="wiki-Knowledge-AI-Graphify-LLM知识图谱工具.html" class="nav-item">Graphify-LLM知识图谱工具</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki-方法论.html" class="nav-item">Karpathy-LLM-Wiki-方法论</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki深度解析.html" class="nav-item">Karpathy-LLM-Wiki深度解析</a>
+<a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki知识管理方法论.html" class="nav-item">Karpathy-LLM-Wiki知识管理方法论</a>
+<a href="wiki-Knowledge-AI-LibTV-AI视频生成平台.html" class="nav-item">LibTV-AI视频生成平台</a>
+<a href="wiki-Knowledge-AI-MiniMax-AI内容生成工作流.html" class="nav-item">MiniMax-AI内容生成工作流</a>
+<a href="wiki-Knowledge-AI-Obsidian-NotebookLM-Gemini学习压缩系统.html" class="nav-item">Obsidian-NotebookLM-Gemini学习压缩系统</a>
+<a href="wiki-Knowledge-AI-Obsidian知识库管理.html" class="nav-item">Obsidian知识库管理</a>
+<a href="wiki-Knowledge-AI-OpenCLI-浏览器平台采集工具.html" class="nav-item">OpenCLI-浏览器平台采集工具</a>
+<a href="wiki-Knowledge-AI-OpenClaw使用笔记.html" class="nav-item">OpenClaw使用笔记</a>
+<a href="wiki-Knowledge-AI-OpenClaw版本更新-Unreleased.html" class="nav-item">OpenClaw版本更新-Unreleased</a>
+<a href="wiki-Knowledge-AI-OpenClaw课件与教程.html" class="nav-item">OpenClaw课件与教程</a>
+<a href="wiki-Knowledge-AI-企业AI-Agent框架全景研报.html" class="nav-item">企业AI-Agent框架全景研报</a>
+<a href="wiki-Knowledge-AI-工作体系与提示词工程.html" class="nav-item">工作体系与提示词工程</a>
+<a href="wiki-Knowledge-AI-数字分身PromptEngineering洞察.html" class="nav-item">数字分身PromptEngineering洞察</a>
+<a href="wiki-Knowledge-AI-知识库导航.html" class="nav-item">知识库导航</a>
+<a href="wiki-Knowledge-AI-视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen.html" class="nav-item">视频分析流水线-yt-dlp-Whisper-PySceneDetect-Qwen</a>
+<a href="wiki-Knowledge-AI-飞书小蓝Agent配置.html" class="nav-item">飞书小蓝Agent配置</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Business</div>
+<a href="wiki-Knowledge-Business-AI企业服务-传统行业采购AI落地案例.html" class="nav-item">AI企业服务-传统行业采购AI落地案例</a>
+<a href="wiki-Knowledge-Business-内容创业-AI内容爆款选题库-2026-04.html" class="nav-item">AI内容爆款选题库-2026-04</a>
+<a href="wiki-Knowledge-Business-AI赚钱引擎-Sprint进度.html" class="nav-item">AI赚钱引擎-Sprint进度</a>
+<a href="wiki-Knowledge-Business-ClawLabs战略复盘.html" class="nav-item">ClawLabs战略复盘</a>
+<a href="wiki-Knowledge-Business-KOL数字分身项目.html" class="nav-item">KOL数字分身项目</a>
+<a href="wiki-Knowledge-Business-内容创业-YouTube-AI视频一年复盘-2025至2026.html" class="nav-item">YouTube-AI视频一年复盘-2025至2026</a>
+<a href="wiki-Knowledge-Business-dbetter个人画像与认知分析.html" class="nav-item">dbetter个人画像与认知分析</a>
+<a href="wiki-Knowledge-Business-内容创业-三角洲风云-短剧制作圣经.html" class="nav-item">三角洲风云-短剧制作圣经</a>
+<a href="wiki-Knowledge-Business-中孚投资-企业AI操盘手.html" class="nav-item">中孚投资-企业AI操盘手</a>
+<a href="wiki-Knowledge-Business-产品方法论.html" class="nav-item">产品方法论</a>
+<a href="wiki-Knowledge-Business-企业AI顾问线索-中福投资.html" class="nav-item">企业AI顾问线索-中福投资</a>
+<a href="wiki-Knowledge-Business-内容创业-海外短剧数据抓取可行性报告-2026-04.html" class="nav-item">海外短剧数据抓取可行性报告-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-生财航海-2026-03月航海概览.html" class="nav-item">生财航海-2026-03月航海概览</a>
+<a href="wiki-Knowledge-Business-电商行业AI应用调研.html" class="nav-item">电商行业AI应用调研</a>
+<a href="wiki-Knowledge-Business-闲鱼电影票自动化项目.html" class="nav-item">闲鱼电影票自动化项目</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-ClawLabs-AI视频-2026-04.html" class="nav-item">飞书-ClawLabs-AI视频-2026-04</a>
+<a href="wiki-Knowledge-Business-内容创业-飞书-海外短剧选题策划-2026-04.html" class="nav-item">飞书-海外短剧选题策划-2026-04</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Concepts</div>
+<a href="wiki-Concepts-Claude-Code.html" class="nav-item">Claude-Code</a>
+<a href="wiki-Concepts-ClawLabs情报站.html" class="nav-item">ClawLabs情报站</a>
+<a href="wiki-Concepts-Fiona.html" class="nav-item">Fiona</a>
+<a href="wiki-Concepts-Graphify.html" class="nav-item">Graphify</a>
+<a href="wiki-Concepts-KOL数字分身.html" class="nav-item">KOL数字分身</a>
+<a href="wiki-Concepts-LLM-Wiki.html" class="nav-item">LLM-Wiki</a>
+<a href="wiki-Concepts-MiniMax.html" class="nav-item">MiniMax</a>
+<a href="wiki-Concepts-NotebookLM.html" class="nav-item">NotebookLM</a>
+<a href="wiki-Concepts-OpenClaw.html" class="nav-item">OpenClaw</a>
+<a href="wiki-Concepts-OpenViking.html" class="nav-item">OpenViking</a>
+<a href="wiki-Concepts-Polymarket.html" class="nav-item">Polymarket</a>
+<a href="wiki-Concepts-PySceneDetect.html" class="nav-item">PySceneDetect</a>
+<a href="wiki-Concepts-Skill系统.html" class="nav-item">Skill系统</a>
+<a href="wiki-Concepts-SmartMoney.html" class="nav-item">SmartMoney</a>
+<a href="wiki-Concepts-Tailscale.html" class="nav-item">Tailscale</a>
+<a href="wiki-Concepts-Termius.html" class="nav-item">Termius</a>
+<a href="wiki-Concepts-faster-whisper.html" class="nav-item">faster-whisper</a>
+<a href="wiki-Concepts-tmux.html" class="nav-item">tmux</a>
+<a href="wiki-Concepts-五大师框架.html" class="nav-item">五大师框架</a>
+<a href="wiki-Concepts-信息优势.html" class="nav-item">信息优势</a>
+<a href="wiki-Concepts-闲鱼自动化.html" class="nav-item">闲鱼自动化</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Crypto</div>
+<a href="wiki-Knowledge-Crypto-Cards-CryptoCollect项目.html" class="nav-item">Cards-CryptoCollect项目</a>
+<a href="wiki-Knowledge-Crypto-Elon-Poly-交易板进展.html" class="nav-item">Elon-Poly-交易板进展</a>
+<a href="wiki-Knowledge-Crypto-Luna-UST崩盘复盘与策略分析.html" class="nav-item">Luna-UST崩盘复盘与策略分析</a>
+<a href="wiki-Knowledge-Crypto-Polymarket-Alpha轮循策略.html" class="nav-item">Polymarket-Alpha轮循策略</a>
+<a href="wiki-Knowledge-Crypto-Polymarket套利策略研究.html" class="nav-item">Polymarket套利策略研究</a>
+<a href="wiki-Knowledge-Crypto-SmartMoney-Fiona监控系统.html" class="nav-item">SmartMoney-Fiona监控系统</a>
+<a href="wiki-Knowledge-Crypto-kch123-Polymarket研究报告.html" class="nav-item">kch123-Polymarket研究报告</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">Tech</div>
+<a href="wiki-Knowledge-Tech-Claude-Code-QA用户配置实践.html" class="nav-item">Claude-Code-QA用户配置实践</a>
+<a href="wiki-Knowledge-Tech-Claude-Code编程实践笔记.html" class="nav-item">Claude-Code编程实践笔记</a>
+<a href="wiki-Knowledge-Tech-ClawLabs情报站系统架构.html" class="nav-item">ClawLabs情报站系统架构</a>
+<a href="wiki-Knowledge-Tech-LibTV-AI视频生成.html" class="nav-item">LibTV-AI视频生成</a>
+<a href="wiki-Knowledge-Tech-MiniMax-API与模型策略.html" class="nav-item">MiniMax-API与模型策略</a>
+<a href="wiki-Knowledge-Tech-Obsidian知识库搭建复盘.html" class="nav-item">Obsidian知识库搭建复盘</a>
+<a href="wiki-Knowledge-Tech-SP-Skills-调试与开发规范.html" class="nav-item">SP-Skills-调试与开发规范</a>
+<a href="wiki-Knowledge-Tech-iPhone-Mac-远程命令行开发工作流.html" class="nav-item">iPhone-Mac-远程命令行开发工作流</a>
+<a href="wiki-Knowledge-Tech-zhima-agent-setup.html" class="nav-item">zhima-agent-setup</a>
+<a href="wiki-Knowledge-Tech-技术架构模式.html" class="nav-item">技术架构模式</a>
+<a href="wiki-Knowledge-Tech-电话通知能力调研.html" class="nav-item">电话通知能力调研</a>
+<a href="wiki-Knowledge-Tech-第二大脑系统建设笔记.html" class="nav-item">第二大脑系统建设笔记</a>
+<a href="wiki-Knowledge-Tech-美伊套利监控系统架构.html" class="nav-item">美伊套利监控系统架构</a>
+<a href="wiki-Knowledge-Tech-闲鱼系统技术演进.html" class="nav-item">闲鱼系统技术演进</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">wiki</div>
+<a href="wiki-index.html" class="nav-item">index</a>
+<a href="wiki-log.html" class="nav-item">log</a>
+</div>
+<div class="nav-group"><div class="nav-group-title">投资</div>
+<a href="wiki-Knowledge-投资-投资决策框架.html" class="nav-item">投资决策框架</a>
+<a href="wiki-Knowledge-投资-方法论-投资方法论-高精尖制造业分析框架.html" class="nav-item">投资方法论-高精尖制造业分析框架</a>
+<a href="wiki-Knowledge-投资-投资综合讨论精华.html" class="nav-item">投资综合讨论精华</a>
+<a href="wiki-Knowledge-投资-美股研究笔记.html" class="nav-item">美股研究笔记</a>
+</div>
+</nav>
+</div>
+<div class="main">
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-AI.html">AI</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">Obsidian-NotebookLM-Gemini学习压缩系统</span></div>
+  <div class="article-header">
+    
+    <h1>Obsidian-NotebookLM-Gemini学习压缩系统</h1>
+    <a href="index.html" class="back-link">← 返回首页</a>
+  </div>
+  <div class="article-content">
+    <hr />
+<p>tags: [Obsidian, NotebookLM, Gemini, 知识管理, 学习方法]
+stage: evergreen
+date: 2026-04-08
+source: "https://mp.weixin.qq.com/s/uCuEV6EpSYzZXDptU9MpCg"</p>
+<hr />
+<h1>Obsidian + NotebookLM + Gemini 学习压缩系统</h1>
+<h2>核心洞察</h2>
+<p>这套系统解决的核心问题：<strong>信息过载下的低效学习</strong>。收藏了大量视频、PDF、博客，但 80% 内容相互重复，真正有价值的新知识可能只有 10%-20%。</p>
+<p>核心理念是构建一台<strong>"学习压缩机"</strong>——把海量资料灌入系统，自动去重、过滤已知内容，只输出真正值得深度学习的增量知识。</p>
+<h2>三工具协同架构</h2>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>角色</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="wiki-Concepts-NotebookLM.html" class="wikilink">NotebookLM</a></td>
+<td>资料大脑</td>
+<td>统一存储和索引某主题下的所有源材料（视频、PDF、博客）</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td>压缩引擎</td>
+<td>连接 NotebookLM，执行交叉比对、去重、分层输出</td>
+</tr>
+<tr>
+<td><span class="wikilink-missing" title="未找到笔记">Obsidian知识库管理|Obsidian</span></td>
+<td>知识真相源</td>
+<td>唯一的长期知识存储，最终复习只看这里</td>
+</tr>
+</tbody>
+</table>
+<h2>关键流程（7 步循环）</h2>
+<ol>
+<li><strong>建资料仓库</strong>：在 NotebookLM 里为某主题创建笔记本，灌入所有原始资料</li>
+<li><strong>接入 Gemini</strong>：让 Gemini 直接读取 NotebookLM 中的资料（关键步骤，需验证连接）</li>
+<li><strong>Obsidian 装 Gemini 插件</strong>：通过 Gemini Scribe 插件，让 Obsidian 也能访问 Gemini + NotebookLM</li>
+<li><strong>设定压缩指令</strong>：用系统级 prompt 定义"学习压缩机"行为——合并重复、剥离已知、只输出新知</li>
+<li><strong>执行压缩</strong>：让 Gemini 对所有资料做交叉比对，输出"差异清单"（Section A 基础/Section B 进阶）</li>
+<li><strong>精华存入 Obsidian</strong>：手动粘贴或通过 Gemini Scribe 自动写入，格式化为 H2 + 短 bullet + backlink</li>
+<li><strong>形成"学习冲刺"循环</strong>：每周针对一个大主题跑一次，复习只看 Obsidian</li>
+</ol>
+<h2>深度分析</h2>
+<h3>与 <a href="wiki-Concepts-LLM-Wiki.html" class="wikilink">LLM-Wiki</a> 的关系</h3>
+<p>这套系统本质上是 <a href="wiki-Concepts-LLM-Wiki.html" class="wikilink">LLM-Wiki</a> "Ingest" 操作的一个具体实现方案：
+- <strong>Raw Sources 层</strong>：NotebookLM 充当原始资料的统一索引
+- <strong>Wiki 层</strong>：Obsidian 充当编译后的持久知识库
+- <strong>LLM 角色</strong>：Gemini 充当"编译器"，将原始资料编译为精炼知识</p>
+<p>不同之处在于：LLM-Wiki 强调 LLM 作为持续维护者，本方案更聚焦于<strong>单次学习冲刺</strong>中的信息压缩流程。</p>
+<h3>核心 Prompt 模式</h3>
+<p>文中给出了两个关键 prompt 模板：</p>
+<p><strong>压缩指令 prompt</strong>：定义 LLM 角色为 "learning compressor"，明确三个操作——合并重复、剥离已知、只输出高杠杆新知</p>
+<p><strong>执行压缩 prompt</strong>：四步结构化指令——识别重复 → 合并 → 分层（基础/进阶） → 只输出进阶部分</p>
+<h3>方法论启示</h3>
+<ul>
+<li><strong>"只看 Obsidian"原则</strong>：NotebookLM 和 Gemini 是后台引擎，Obsidian 才是唯一的知识真相源——与 <a href="wiki-Concepts-LLM-Wiki.html" class="wikilink">LLM-Wiki</a> 的"Wiki 即真相源"理念一致</li>
+<li><strong>增量学习</strong>：每次循环只处理"你还不知道的"，而非重新消化所有内容</li>
+<li><strong>验证优先</strong>：文中反复强调连接验证的重要性，不验证就不往下走</li>
+</ul>
+<h2>适用场景</h2>
+<ul>
+<li>短时间内需要消化某个新领域的大量资料</li>
+<li>多个信息源讲同一主题，需要快速提炼差异化知识</li>
+<li>建立系统化的学科知识库</li>
+</ul>
+<h2>相关页面</h2>
+<ul>
+<li><a href="wiki-Concepts-LLM-Wiki.html" class="wikilink">LLM-Wiki</a> — 底层方法论框架</li>
+<li><a href="wiki-Concepts-NotebookLM.html" class="wikilink">NotebookLM</a> — 资料索引工具</li>
+<li><a href="wiki-Knowledge-AI-Obsidian知识库管理.html" class="wikilink">Obsidian知识库管理</a> — Obsidian 工具实践</li>
+<li><a href="wiki-Knowledge-AI-Karpathy-LLM-Wiki-方法论.html" class="wikilink">Karpathy-LLM-Wiki-方法论</a> — Karpathy 三层架构原文</li>
+<li><a href="wiki-Knowledge-AI-Graphify-LLM知识图谱工具.html" class="wikilink">Graphify-LLM知识图谱工具</a> — 另一个 LLM-Wiki 工程化实现</li>
+</ul>
+  </div>
+</div>
+</body>
+</html>
