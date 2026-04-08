@@ -1,8 +1,9 @@
-# Session 2026-04-06 — 战略方向讨论与 AI 人生电影发现
+# Session 2026-04-06~08 — 战略方向讨论与 AI 人生电影发现
 
-> 日期：2026-04-06
+> 日期：2026-04-06 至 2026-04-08
 > 模型：Claude Opus 4.6
-> 时长：长 session，覆盖战略讨论 → 市场调研 → 技术方案 → 知识库同步
+> 环境：Claude 手机 App（云端沙盒，无法 SSH 到 VPS）
+> 时长：跨 3 天长 session，覆盖战略讨论 → 市场调研 → 技术方案 → 知识库同步 → Muse Bot 改进 → 项目命名
 
 ---
 
@@ -194,34 +195,152 @@ VPS vault ←(cron 10min)→ GitHub (private) ←(launchd 10min)→ Mac Obsidian
 
 ---
 
-## 九、待办事项（Next Actions）
+## 九、飞书 Muse Bot 记忆问题（2026-04-08 新增）
 
-### 立即（回到 iMac 后）
-- [ ] 整理家族群外婆照片和回忆文字
-- [ ] 用 VPS 上的 muse skill 开始制作外婆纪念视频
-- [ ] 安装 Claude Code CLI: `curl -fsSL https://claude.ai/install.sh | bash`
+### 问题描述
+母亲在飞书中使用 Muse bot（OpenClaw）收集外婆回忆时：
+- Bot 记不住之前说的话
+- 总结错乱，自由发挥（幻觉）
+- 底层使用 MiniMax 模型，忠实复述能力不够
 
-### 本周
-- [ ] 完成外婆纪念视频，交给母亲
-- [ ] 观察家族群反应和传播
-- [ ] 设置 Obsidian vault 双向同步（运行 vault-sync-setup.sh）
+### Muse Bot 代码路径
+`/root/.openclaw/workspace-muse`（VPS 上，本次沙盒环境无法访问）
 
-### 下周
-- [ ] 如有亲戚主动询问 → 提供服务收费 ¥99
-- [ ] 观察付费意愿和二次传播
+### 诊断分析
+3 层问题：
+1. **消息碎片化** — 母亲发很多条短消息，bot 每条当独立请求
+2. **MiniMax 模型局限** — 指令遵循和忠实复述能力不如 Claude
+3. **缺乏持久记忆** — 无 memory 机制，对话历史可能被截断
 
-### 环境准备
-- [ ] GitHub 创建私有 repo `szdbetter/obsidian-vault`
-- [ ] VPS 运行: `bash vault-sync-setup.sh vps`
-- [ ] Mac 运行: `bash vault-sync-setup.sh local`
+### 解决方案（待执行）
+
+**方案 A：累积式记忆文件（优先做）**
+- 每次收到消息 → 原话追加到 `memories/{user_id}.md`
+- 每次回复前 → 完整 memory 文件注入 system prompt
+- 不让模型总结，直接存原文
+
+```python
+# 核心逻辑
+MEMORY_FILE = f"memories/{user_id}.md"
+# 收到消息 → 原话追加
+with open(MEMORY_FILE, "a") as f:
+    f.write(f"\n[{datetime.now()}] {user_name}: {msg.text}\n")
+# 回复前 → 注入完整记忆
+memory = open(MEMORY_FILE).read()
+system_prompt = f"以下是用户已提供的所有内容...\n{memory}"
+```
+
+**方案 C：结构化引导问答**
+- Bot 主动按顺序问问题，而非让母亲自由发挥
+- 问题清单：基本信息 → 外貌特征 → 性格习惯 → 关键故事 → 家人关系 → 一句话总结
+- 每收到回答先确认（"我记下了：xxx，对吗？"），再问下一个
+
+### LLM 选型结论
+
+**推荐：Claude Sonnet 4.6 替换 MiniMax**
+
+| 模型 | 指令遵循 | 忠实复述 | 中文 | 成本 | 推荐 |
+|------|---------|---------|------|------|------|
+| Claude Sonnet 4.6 | 极强 | 极强 | 优秀 | $3/15 per M | ⭐⭐⭐⭐⭐ |
+| GPT 5.4 | 强 | 强 | 好 | 类似 | ⭐⭐⭐⭐ |
+| Gemini 3.1 Pro | 强 | 中等 | 好 | 便宜 | ⭐⭐⭐ |
+| MiniMax | 中等 | 弱 | 好 | 免费额度大 | ⭐⭐ |
+
+理由：母亲对话量不大（几十条消息），API 成本几毛钱。Claude 在"不编造、忠实引用"方面最强。
+
+**飞书接入 Claude 的方式**：
+- 飞书无官方 Claude 插件
+- 方案：现有飞书 bot 框架 → 后端 LLM 从 MiniMax 换成 Claude API
+- 或通过 OpenRouter 中转（如果 bot 用 OpenAI 兼容格式）
+
+### 待执行（需在 VPS 上操作）
+- [ ] 查看 `/root/.openclaw/workspace-muse` 代码结构
+- [ ] 找到 LLM 调用层，替换 MiniMax → Claude Sonnet API
+- [ ] 加入 memory.md 累积式记忆机制
+- [ ] 加入结构化引导 prompt
+- [ ] 测试后让母亲继续使用
 
 ---
 
-## 十、本 Session 产出的文件
+## 十、项目命名讨论（2026-04-08 新增）
+
+### 用户初始想法
+"人生电影"，英文 "Moment"
+
+### 分析
+- "Moment" 太通用，已被多个产品占用（Samsung、Twitter），且含义是"瞬间"而非"一生"，方向反了
+
+### 推荐命名
+
+| 名称 | 英文 | 理由 | 推荐 |
+|------|------|------|------|
+| **一生** | **LifeReel** | 人生+胶片，直觉清晰 | ⭐⭐⭐⭐⭐ |
+| 光影人生 | LifeFilm | 直白好理解 | ⭐⭐⭐⭐ |
+| 念 | Memoire | 法语"记忆"，高级感 | ⭐⭐⭐⭐ |
+| 时光机 | TimeCapsule | 时间胶囊概念 | ⭐⭐⭐ |
+| 家书 | DearFamily | 限制了非家族场景 | ⭐⭐⭐ |
+
+### 结论
+Phase 0 阶段命名不重要，先用朴素名字做出第一条片子，验证通过再定品牌。
+
+---
+
+## 十一、环境与工具链问题（2026-04-08 新增）
+
+### 当前环境
+- 本次 session 在 **Claude 手机 App** 中运行
+- 代码执行在 **云端 Linux 沙盒**（hostname: vm），不是本地 iMac
+- 沙盒无 ssh，无法访问 VPS
+
+### Claude Code 运行方式对比
+
+| 方式 | 执行环境 | 能 SSH? | 能访问本地文件? |
+|------|---------|---------|----------------|
+| 手机 App / Desktop Web (claude.ai/code) | 云端沙盒 VM | ❌ | ❌ |
+| **Desktop App 本地模式** | 本地 Mac | ✅ | ✅ |
+| **CLI** (`claude` 命令) | 本地 Mac | ✅ | ✅ |
+
+### 结论
+要操作 VPS（改 Muse bot 代码、部署 vault 同步等），必须在 **Desktop App 本地模式** 或 **CLI** 中运行。
+
+Desktop App 下载：https://claude.ai/download
+CLI 安装：`curl -fsSL https://claude.ai/install.sh | bash`
+
+---
+
+## 十二、待办事项汇总（Next Actions）
+
+### 🔴 紧急（回到 iMac 后立即做）
+- [ ] 安装 Claude Code CLI 或使用 Desktop App 本地模式
+- [ ] `git clone` 并切换到 `claude/人生电影项目` 分支
+- [ ] 整理家族群外婆照片和回忆文字
+
+### 🟡 本周
+- [ ] 改 Muse Bot：替换 MiniMax → Claude Sonnet API + 加记忆机制（VPS: `/root/.openclaw/workspace-muse`）
+- [ ] 用现有 skill 制作外婆纪念视频
+- [ ] 完成视频交给母亲，观察反应
+- [ ] 设置 Obsidian vault 双向同步
+
+### 🟢 下周
+- [ ] 如有亲戚询问 → 服务 + 收费 ¥99
+- [ ] 观察付费意愿和二次传播
+- [ ] Phase 0 结果评估
+
+### 🔧 环境准备
+- [ ] GitHub 创建私有 repo `szdbetter/obsidian-vault`
+- [ ] VPS 运行: `bash vault-sync-setup.sh vps`
+- [ ] Mac 运行: `bash vault-sync-setup.sh local`
+- [ ] 删除旧分支: `git push origin --delete claude/switch-opus-4.6-m4ZCq`
+
+---
+
+## 十三、本 Session 产出的文件
 
 | 文件 | 说明 | 状态 |
 |------|------|------|
 | `CLAUDE.md` | AI 协作协议 | ✅ 已提交 |
 | `scripts/vault-sync-setup.sh` | Obsidian 双向同步脚本 | ✅ 已提交 |
 | `docs/AI人生电影-市场调研报告.md` | 完整 9 章节市场调研 | ✅ 已提交 |
-| `docs/Session-2026-04-06-战略讨论与AI人生电影.md` | 本文件（session 全记录） | 本次提交 |
+| `docs/Session-2026-04-06-战略讨论与AI人生电影.md` | 本文件（session 全记录） | ✅ 已提交 |
+
+**所有文件在 `szdbetter/clawlabs-kb` repo，分支 `claude/人生电影项目`**
