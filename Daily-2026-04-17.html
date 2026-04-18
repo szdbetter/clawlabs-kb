@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>搜索能力统一路由架构 - ClawLabs KB</title>
+<title>2026-04-17 - ClawLabs KB</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -299,223 +299,120 @@ body {
 </nav>
 </div>
 <div class="main">
-  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">搜索能力统一路由架构</span></div>
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="Daily.html">Daily</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">2026-04-17</span></div>
   <div class="article-header">
     
-    <h1>搜索能力统一路由架构</h1>
+    <h1>2026-04-17</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
   <div class="article-content">
-    <hr />
-<p>tags:
-  - stage:budding
-  - domain:tech
-created: 2026-04-09
-updated: 2026-04-09</p>
-<hr />
-<h1>搜索能力统一路由架构</h1>
-<blockquote>
-<p>来源：[Discord] 搜索频道+基础频道 2026-04-06~09 对话沉淀
-频道ID：1472858439591002211, 1490682743464530051
-入库时间：2026-04-09</p>
-</blockquote>
-<h2>核心内容</h2>
-<h3>设计原则</h3>
-<p>一个入口，自动路由到最优搜索引擎。按查询类型、语言、平台自动选工具。</p>
-<h3>7 类意图路由</h3>
-<table>
-<thead>
-<tr>
-<th>意图</th>
-<th>触发特征</th>
-<th>首选 → 备选</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>实时 Web</td>
-<td>新闻/事件/实时</td>
-<td>WebSearch → Tavily → MiniMax(中文)</td>
-</tr>
-<tr>
-<td>社交媒体</td>
-<td>@用户/平台名/热门</td>
-<td>Twitter→Bird, Reddit→API, 小红书→mcporter</td>
-</tr>
-<tr>
-<td>视频</td>
-<td>YouTube/TikTok/B站</td>
-<td>YouTube→yt-dlp, TikTok→TikTok-Api+yt-dlp</td>
-</tr>
-<tr>
-<td>深度语义</td>
-<td>概念/方法论/模糊描述</td>
-<td>Exa 语义搜索 → QMD 本地知识库</td>
-</tr>
-<tr>
-<td>代码</td>
-<td>代码/GitHub/实现</td>
-<td>gh search → Exa code_context</td>
-</tr>
-<tr>
-<td>内容提取</td>
-<td>已知URL</td>
-<td>WebFetch → Jina → Playwright → curl+UA(微信)</td>
-</tr>
-<tr>
-<td>趋势</td>
-<td>近期/30天/热度</td>
-<td>/last30days Skill</td>
-</tr>
-</tbody>
-</table>
-<h3>API Key 库存</h3>
-<table>
-<thead>
-<tr>
-<th>Provider</th>
-<th>Key数</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Exa</td>
-<td>6个</td>
-<td>语义搜索（450 req/key）</td>
-</tr>
-<tr>
-<td>Tavily</td>
-<td>2个</td>
-<td>AI 研究搜索</td>
-</tr>
-<tr>
-<td>Brave</td>
-<td>1个</td>
-<td>通用搜索（1894/2000次/月）</td>
-</tr>
-<tr>
-<td>Jina</td>
-<td>2个</td>
-<td>网页阅读器</td>
-</tr>
-<tr>
-<td>FireCrawl</td>
-<td>2个</td>
-<td>网页抓取（1960 credits 剩余）</td>
-</tr>
-<tr>
-<td>MiniMax</td>
-<td>1个</td>
-<td>中文搜索 + 图片理解</td>
-</tr>
-<tr>
-<td>YouTube Data API v3</td>
-<td>1个</td>
-<td>播放数据（10,000单位/天）</td>
-</tr>
-</tbody>
-</table>
-<h3>各渠道能力矩阵</h3>
-<table>
-<thead>
-<tr>
-<th>渠道</th>
-<th>搜索</th>
-<th>抓取</th>
-<th>工具</th>
-<th>状态</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Web 通用</td>
-<td>✅</td>
-<td>✅</td>
-<td>WebSearch + MiniMax + Tavily + Exa</td>
-<td>4源可用</td>
-</tr>
-<tr>
-<td>微信公众号</td>
-<td>❌</td>
-<td>✅</td>
-<td>curl + 移动端 UA</td>
-<td>必须用移动端UA</td>
-</tr>
-<tr>
-<td>Twitter/X</td>
-<td>✅</td>
-<td>✅</td>
-<td>Bird GraphQL (无需API key)</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>Reddit</td>
-<td>✅</td>
-<td>✅</td>
-<td>agent-reach API</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>YouTube</td>
-<td>✅</td>
-<td>✅</td>
-<td>yt-dlp + Data API v3</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>小红书</td>
-<td>✅</td>
-<td>✅</td>
-<td>mcporter XiaoHongShu (localhost:18060)</td>
-<td>需Cookie</td>
-</tr>
-<tr>
-<td>TikTok</td>
-<td>⚠️</td>
-<td>✅</td>
-<td>TikTok-Api (搜用户) + yt-dlp (下载)</td>
-<td>有限</td>
-</tr>
-<tr>
-<td>B站</td>
-<td>⚠️</td>
-<td>✅</td>
-<td>yt-dlp</td>
-<td>可能需代理</td>
-</tr>
-<tr>
-<td>抖音</td>
-<td>⚠️</td>
-<td>-</td>
-<td>mcporter Douyin</td>
-<td>需验证</td>
-</tr>
-<tr>
-<td>GitHub</td>
-<td>✅</td>
-<td>✅</td>
-<td>gh CLI</td>
-<td>可用</td>
-</tr>
-</tbody>
-</table>
-<h3>关键教训</h3>
-<ol>
-<li><strong>微信公众号必须用移动端 UA</strong>：<code>mp.weixin.qq.com</code> 链接用 curl + 微信移动端 User-Agent，不要先试 WebFetch（会被反爬拦截）</li>
-<li><strong>中文查询优先 MiniMax web_search</strong>：中文搜索质量比 WebSearch 好</li>
-<li><strong>失败自动降级</strong>：每个引擎有主→备→兜底三级链</li>
-<li><strong>Cookie 管理是痛点</strong>：小红书/X 的 Cookie 容易过期，需要统一的注入和刷新机制</li>
-<li><strong>TikTok-Api 安全评估</strong>：davidteather/TikTok-Api (6K+ stars) 安全可用，依赖链透明（httpx, playwright, requests）</li>
-</ol>
-<h3>MemOS 评估结论</h3>
-<p><strong>不需要安装 MemOS</strong>。当前 <a href="wiki-Concepts-OpenViking.html" class="wikilink">OpenViking</a>（语义记忆+向量检索）+ LCM（上下文压缩）已覆盖 MemOS 的核心功能（向量数据库+语义检索+自动技能生成）。再装等于两套向量引擎跑同样的事。</p>
-<h2>相关概念</h2>
+    <h1>2026-04-17 每日知识沉淀</h1>
+<h2>系统健康状态</h2>
 <ul>
-<li><a href="wiki-Concepts-OpenClaw.html" class="wikilink">OpenClaw</a></li>
-<li><a href="wiki-Concepts-Claude-Code.html" class="wikilink">Claude-Code</a></li>
-<li><a href="wiki-Concepts-MiniMax.html" class="wikilink">MiniMax</a></li>
+<li>SSH: 0 | Load: 0.30 | Memory: 1.3GB available | Swap: 3.5Gi/8Gi | Disk: 11GB/83%</li>
+<li>状态：✅ 正常，无告警</li>
 </ul>
+<h2>新增知识沉淀</h2>
+<h3>1. OpenMontage — 零API Key开源AI视频制作工作室</h3>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">workspace/output/零 API Key也能制作视频，首个完整的开源智能化视频制作工作室</span></p>
+<p><strong>核心方法</strong>：
+- 把AI编程助手变成完整视频制作工作室（Claude Code/Cursor/Copilot等）
+- 支持图生视频和实拍视频（从免费素材库Archive.org构建素材）
+- 工作流：调研→脚本写作→素材生成→剪辑→合成</p>
+<p><strong>免费工具链</strong>：
+| 功能 | 工具 |
+|------|------|
+| 旁白 | Piper TTS（离线高品质） |
+| 开放素材 | Archive.org + NASA + Wikimedia |
+| 视频合成 | Remotion（图片动画+转场+字幕） |
+| 后期 | FFmpeg |
+| 字幕 | 内置逐词时间轴字幕 |</p>
+<p><strong>两条免费路线</strong>：
+1. 图片驱动：Piper旁白 + FLUX图片 + Remotion动画
+2. 真实素材蒙太奇：Archive档案构建 + "documentary montage" + "use real footage only"</p>
+<p><strong>关键链接</strong>：https://github.com/calesthio/OpenMontage</p>
+<hr />
+<h3>2. 短剧写作教程全套（docs/AI视频/创作/短剧写作教程/20260417/）</h3>
+<h4>2.1 导演分镜交材.md — 专业影视制作标准</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/导演分镜交材</span></p>
+<p><strong>核心方法论</strong>：
+- 大师级导演分镜交材 = 戏剧逻辑 + 视觉设计 + 调度逻辑 + 拍摄执行 + 部门协同 + 风险控制
+- 六大原则：戏剧先于镜头；空间先于剪辑；镜头组织注意力；每场戏有统一镜头策略；艺术表达+执行落地；给全组看而非自爽</p>
+<p><strong>必须包含的16个模块</strong>：
+1. 项目概述 2. 导演总阐述 3. 视觉风格总说明 4. 场次总览 5. 单场详细交材 6. 分镜镜头清单 7. 摄影专项 8. 灯光专项 9. 美术专项 10. 声音专项 11. VFX/特殊执行 12. 剪辑预想 13. 音乐预想 14. 风险与备选 15. 版本管理 16. 附录</p>
+<p><strong>镜头清单标准字段</strong>：镜号/场次/景别/机位/运镜/焦段/时长/画面内容/动作/台词/声音/转场/道具/特效/优先级/备注</p>
+<p><strong>优先级体系</strong>：A=必拍/B=安全/C=可删/D=补充</p>
+<hr />
+<h4>2.2 专业提示词教程.md — AI视频提示词工程</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/专业提示词教程</span></p>
+<p><strong>核心公式</strong>：</p>
+<blockquote>
+<p>主体 + 动作 + 场景 + 镜头 + 光线 + 质感 + 氛围 + 限制</p>
+</blockquote>
+<p><strong>五大等级</strong>：
+- 等级1：说明句（基础）
+- 等级2：画面句（有画面）
+- 等级3：镜头句（有镜头语言）
+- 等级4：电影句（有氛围）
+- 等级5：专业导演句（完整控制）</p>
+<p><strong>各平台差异化写法</strong>：
+| 平台 | 风格 | 重点 |
+|------|------|------|
+| 即梦 | 中文电影感连贯描述 | 氛围、光线、完整画面 |
+| 可灵 | 动作+镜头调度明确 | 动作、运镜、空间变化 |
+| Runway | 英文简洁结构 | 主体、动作、镜头、风格 |
+| Pika | 短句视觉导向 | 单镜头、直观动作 |</p>
+<p><strong>分镜写法核心原则</strong>：一镜一重点；镜头顺序=观众理解顺序；AI分镜需比真人更早拆细控节奏</p>
+<hr />
+<h4>2.3 美剧和Netflix爆款TOP 10分析</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/美剧和Netflix爆款TOP 10 及爆款原因深度分析</span></p>
+<p>（文件内容未完整读取，但从文件名推断为美剧/Netflix内容创作方法论分析）</p>
+<hr />
+<h4>2.4 我来自地球修改意见.md — 剧本开发评审</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/我来自地球修改意见</span></p>
+<p><strong>核心评审意见</strong>：
+- 概念大，想象力强，但主线太散（每5-10集像换了一部剧）
+- 男主人物弧线不稳定（废柴喜剧→谜团宿主→救世主）
+- 女性角色功能边界混乱（百合/翠花/叶子）
+- 赵天林体系过于复杂（1号/13号/49号/50号/潜意识/显化）
+- 类型调性失控（太空喜剧+低俗黄段子+身份悬疑混在一起）
+- 格式不是"可开发文档"而是"脑暴流水账"</p>
+<p><strong>流媒体开发核心问题</strong>：信息量过大、格式不统一、人物弧线混乱、叙事主线不够聚焦、类型调性失控、制作体量失衡、短视频逻辑与长剧逻辑混杂</p>
+<hr />
+<h4>2.5 Seedance2.0规则.md — 视频生成平台指南</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/Seedance2.0规则</span></p>
+<p><strong>2026更新版权重优先级</strong>：多模态参考＞动作细节＞稳定约束＞镜头语言＞画质风格</p>
+<p><strong>万能公式</strong>：@参考+主体+动作细节+场景环境+光影色彩+镜头语言+画面风格+画质标准+稳定约束+画幅时长+负面提示词</p>
+<p><strong>核心技巧</strong>：不写笼统动作写连续完整动作；优先平稳慢节奏运镜；参考文件与文字描述不能冲突</p>
+<hr />
+<h4>2.6 暖心治愈情感文案创作助手.md — 情感文案SOP</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/暖心治愈情感文案创作助手</span></p>
+<p><strong>5种写作风格</strong>：
+1. 温馨故事风格 2. 细腻感受风格 3. 治愈对话风格 4. 自然抚慰风格 5. 亲情回忆风格</p>
+<p><strong>5种句式</strong>：对称对比/情感反复/对比反思/丝理排比/简洁直白</p>
+<p><strong>工作流</strong>：目标观众→素材路径→写作风格选择→文案框架→创作</p>
+<hr />
+<h4>2.7 即梦700个神级指令合集.md</h4>
+<p><strong>来源</strong>: <span class="wikilink-missing" title="未找到笔记">docs/AI视频/创作/短剧写作教程/20260417/即梦700个神级指令合集</span></p>
+<p>（文件内容未完整读取）</p>
+<hr />
+<h2>无新增内容的数据源</h2>
+<ul>
+<li>飞书群（ClawLabs-AI视频/海外短剧选题策划/红盔甲）：过去24h无新消息</li>
+<li>REESE私聊：无新消息</li>
+<li>Claude Code/Codex会话：无新增session文件</li>
+<li>Discord threads：无活跃更新</li>
+</ul>
+<hr />
+<h2>认知沉淀</h2>
+<ol>
+<li><strong>AI视频制作民主化</strong>：OpenMontage证明了零API Key也能做完整视频工作室，核心是用好免费工具链（Piper TTS + Archive素材 + Remotion）</li>
+<li><strong>短剧写作专业化</strong>：导演分镜交材体系是短视频/短剧开发的核心文档，短视频逻辑≠长剧逻辑，不可混杂</li>
+<li><strong>平台差异化</strong>：不同AI视频平台有不同的提示词偏好，不可一刀切</li>
+<li><strong>剧本评估标准</strong>：创意大≠可开发，开发文档需要格式规范、主线清晰、类型统一</li>
+</ol>
+<hr />
+<p>标签：#daily #2026-04 #AI视频 #短剧 #提示词 #导演分镜 #OpenMontage #Seedance</p>
   </div>
 </div>
 </body>

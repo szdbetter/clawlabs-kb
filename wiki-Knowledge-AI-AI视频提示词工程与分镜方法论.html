@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>搜索能力统一路由架构 - ClawLabs KB</title>
+<title>AI视频提示词工程与分镜方法论 - ClawLabs KB</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -299,223 +299,178 @@ body {
 </nav>
 </div>
 <div class="main">
-  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">搜索能力统一路由架构</span></div>
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-AI.html">AI</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">AI视频提示词工程与分镜方法论</span></div>
   <div class="article-header">
     
-    <h1>搜索能力统一路由架构</h1>
+    <h1>AI视频提示词工程与分镜方法论</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
   <div class="article-content">
-    <hr />
-<p>tags:
-  - stage:budding
-  - domain:tech
-created: 2026-04-09
-updated: 2026-04-09</p>
+    <h1>AI视频提示词工程与分镜方法论</h1>
+<h2>来源</h2>
+<p>docs/AI视频/创作/短剧写作教程/20260417/</p>
 <hr />
-<h1>搜索能力统一路由架构</h1>
-<blockquote>
-<p>来源：[Discord] 搜索频道+基础频道 2026-04-06~09 对话沉淀
-频道ID：1472858439591002211, 1490682743464530051
-入库时间：2026-04-09</p>
-</blockquote>
-<h2>核心内容</h2>
-<h3>设计原则</h3>
-<p>一个入口，自动路由到最优搜索引擎。按查询类型、语言、平台自动选工具。</p>
-<h3>7 类意图路由</h3>
-<table>
-<thead>
-<tr>
-<th>意图</th>
-<th>触发特征</th>
-<th>首选 → 备选</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>实时 Web</td>
-<td>新闻/事件/实时</td>
-<td>WebSearch → Tavily → MiniMax(中文)</td>
-</tr>
-<tr>
-<td>社交媒体</td>
-<td>@用户/平台名/热门</td>
-<td>Twitter→Bird, Reddit→API, 小红书→mcporter</td>
-</tr>
-<tr>
-<td>视频</td>
-<td>YouTube/TikTok/B站</td>
-<td>YouTube→yt-dlp, TikTok→TikTok-Api+yt-dlp</td>
-</tr>
-<tr>
-<td>深度语义</td>
-<td>概念/方法论/模糊描述</td>
-<td>Exa 语义搜索 → QMD 本地知识库</td>
-</tr>
-<tr>
-<td>代码</td>
-<td>代码/GitHub/实现</td>
-<td>gh search → Exa code_context</td>
-</tr>
-<tr>
-<td>内容提取</td>
-<td>已知URL</td>
-<td>WebFetch → Jina → Playwright → curl+UA(微信)</td>
-</tr>
-<tr>
-<td>趋势</td>
-<td>近期/30天/热度</td>
-<td>/last30days Skill</td>
-</tr>
-</tbody>
-</table>
-<h3>API Key 库存</h3>
-<table>
-<thead>
-<tr>
-<th>Provider</th>
-<th>Key数</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Exa</td>
-<td>6个</td>
-<td>语义搜索（450 req/key）</td>
-</tr>
-<tr>
-<td>Tavily</td>
-<td>2个</td>
-<td>AI 研究搜索</td>
-</tr>
-<tr>
-<td>Brave</td>
-<td>1个</td>
-<td>通用搜索（1894/2000次/月）</td>
-</tr>
-<tr>
-<td>Jina</td>
-<td>2个</td>
-<td>网页阅读器</td>
-</tr>
-<tr>
-<td>FireCrawl</td>
-<td>2个</td>
-<td>网页抓取（1960 credits 剩余）</td>
-</tr>
-<tr>
-<td>MiniMax</td>
-<td>1个</td>
-<td>中文搜索 + 图片理解</td>
-</tr>
-<tr>
-<td>YouTube Data API v3</td>
-<td>1个</td>
-<td>播放数据（10,000单位/天）</td>
-</tr>
-</tbody>
-</table>
-<h3>各渠道能力矩阵</h3>
-<table>
-<thead>
-<tr>
-<th>渠道</th>
-<th>搜索</th>
-<th>抓取</th>
-<th>工具</th>
-<th>状态</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Web 通用</td>
-<td>✅</td>
-<td>✅</td>
-<td>WebSearch + MiniMax + Tavily + Exa</td>
-<td>4源可用</td>
-</tr>
-<tr>
-<td>微信公众号</td>
-<td>❌</td>
-<td>✅</td>
-<td>curl + 移动端 UA</td>
-<td>必须用移动端UA</td>
-</tr>
-<tr>
-<td>Twitter/X</td>
-<td>✅</td>
-<td>✅</td>
-<td>Bird GraphQL (无需API key)</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>Reddit</td>
-<td>✅</td>
-<td>✅</td>
-<td>agent-reach API</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>YouTube</td>
-<td>✅</td>
-<td>✅</td>
-<td>yt-dlp + Data API v3</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>小红书</td>
-<td>✅</td>
-<td>✅</td>
-<td>mcporter XiaoHongShu (localhost:18060)</td>
-<td>需Cookie</td>
-</tr>
-<tr>
-<td>TikTok</td>
-<td>⚠️</td>
-<td>✅</td>
-<td>TikTok-Api (搜用户) + yt-dlp (下载)</td>
-<td>有限</td>
-</tr>
-<tr>
-<td>B站</td>
-<td>⚠️</td>
-<td>✅</td>
-<td>yt-dlp</td>
-<td>可能需代理</td>
-</tr>
-<tr>
-<td>抖音</td>
-<td>⚠️</td>
-<td>-</td>
-<td>mcporter Douyin</td>
-<td>需验证</td>
-</tr>
-<tr>
-<td>GitHub</td>
-<td>✅</td>
-<td>✅</td>
-<td>gh CLI</td>
-<td>可用</td>
-</tr>
-</tbody>
-</table>
-<h3>关键教训</h3>
-<ol>
-<li><strong>微信公众号必须用移动端 UA</strong>：<code>mp.weixin.qq.com</code> 链接用 curl + 微信移动端 User-Agent，不要先试 WebFetch（会被反爬拦截）</li>
-<li><strong>中文查询优先 MiniMax web_search</strong>：中文搜索质量比 WebSearch 好</li>
-<li><strong>失败自动降级</strong>：每个引擎有主→备→兜底三级链</li>
-<li><strong>Cookie 管理是痛点</strong>：小红书/X 的 Cookie 容易过期，需要统一的注入和刷新机制</li>
-<li><strong>TikTok-Api 安全评估</strong>：davidteather/TikTok-Api (6K+ stars) 安全可用，依赖链透明（httpx, playwright, requests）</li>
-</ol>
-<h3>MemOS 评估结论</h3>
-<p><strong>不需要安装 MemOS</strong>。当前 <a href="wiki-Concepts-OpenViking.html" class="wikilink">OpenViking</a>（语义记忆+向量检索）+ LCM（上下文压缩）已覆盖 MemOS 的核心功能（向量数据库+语义检索+自动技能生成）。再装等于两套向量引擎跑同样的事。</p>
-<h2>相关概念</h2>
+<h2>一、提示词核心公式</h2>
+<p><strong>主体 + 动作 + 场景 + 镜头 + 光线 + 质感 + 氛围 + 限制</strong></p>
+<h3>五大量化等级</h3>
 <ul>
-<li><a href="wiki-Concepts-OpenClaw.html" class="wikilink">OpenClaw</a></li>
-<li><a href="wiki-Concepts-Claude-Code.html" class="wikilink">Claude-Code</a></li>
-<li><a href="wiki-Concepts-MiniMax.html" class="wikilink">MiniMax</a></li>
+<li><strong>等级1（说明句）</strong>：一个女生在街上走</li>
+<li><strong>等级2（画面句）</strong>：一个穿红裙子的女人在夜晚街头行走，路灯昏黄</li>
+<li><strong>等级3（镜头句）</strong>：中景从背后轻微手持跟拍，潮湿地面反射灯光</li>
+<li><strong>等级4（电影句）</strong>：低饱和，胶片颗粒，压抑而孤独的电影氛围</li>
+<li><strong>等级5（专业导演句）</strong>：完整约束 + 负面限制词</li>
 </ul>
+<hr />
+<h2>二、提示词分层结构</h2>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>内容</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>层1</td>
+<td>主体</td>
+<td>谁？年龄/性别/穿着/状态</td>
+</tr>
+<tr>
+<td>层2</td>
+<td>动作</td>
+<td>在干嘛？可视化动词</td>
+</tr>
+<tr>
+<td>层3</td>
+<td>空间</td>
+<td>在哪儿？地点+时间+天气+空间特征</td>
+</tr>
+<tr>
+<td>层4</td>
+<td>镜头</td>
+<td>怎么拍？景别+运镜+机位</td>
+</tr>
+<tr>
+<td>层5</td>
+<td>光线</td>
+<td>光源位置+颜色+强度+效果</td>
+</tr>
+<tr>
+<td>层6</td>
+<td>质感</td>
+<td>胶片/数字/写实/动漫/梦境</td>
+</tr>
+<tr>
+<td>层7</td>
+<td>情绪</td>
+<td>少而准，如"孤独而安静"</td>
+</tr>
+<tr>
+<td>层8</td>
+<td>限制</td>
+<td>不要什么？畸形手/水印/卡通风</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>三、分镜写法核心原则</h2>
+<ol>
+<li><strong>一镜一重点</strong>：一条提示词只解决一个主要任务</li>
+<li><strong>镜头顺序=观众理解顺序</strong>：先知道什么后知道什么</li>
+<li><strong>镜头变化要有层次</strong>：空间/行动/关系/情绪/细节/转场</li>
+<li><strong>每个镜头都要可生成</strong>：AI最怕复杂动作、多角色、长时间变化</li>
+</ol>
+<hr />
+<h2>四、各平台差异化写法</h2>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>风格</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>即梦</strong></td>
+<td>中文电影感连贯描述</td>
+<td>氛围、光线、完整画面</td>
+</tr>
+<tr>
+<td><strong>可灵</strong></td>
+<td>动作+镜头调度明确</td>
+<td>动作、运镜、空间变化</td>
+</tr>
+<tr>
+<td><strong>Runway</strong></td>
+<td>英文简洁结构</td>
+<td>主体、动作、镜头、风格</td>
+</tr>
+<tr>
+<td><strong>Pika</strong></td>
+<td>短句视觉导向</td>
+<td>单镜头、直观动作</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>五、专业提示词检查表</h2>
+<ul>
+<li>[ ] 主体是谁，够清楚吗？</li>
+<li>[ ] 动作是可视化的吗？</li>
+<li>[ ] 场景有空间信息吗？</li>
+<li>[ ] 镜头语言明确吗？</li>
+<li>[ ] 光线来源清楚吗？</li>
+<li>[ ] 质感词具体吗？</li>
+<li>[ ] 情绪词是否过多？</li>
+<li>[ ] 有没有负面限制？</li>
+<li>[ ] 有没有相互矛盾？</li>
+<li>[ ] 这条更像导演指令而不是散文？</li>
+</ul>
+<hr />
+<h2>六、Seedance 2.0 万能公式（2026更新版）</h2>
+<p><strong>@参考 + 主体 + 动作细节 + 场景环境 + 光影色彩 + 镜头语言 + 画面风格 + 画质标准 + 稳定约束 + 画幅时长 + 负面提示词</strong></p>
+<h3>2026更新版权重优先级</h3>
+<p>多模态参考 ＞ 动作细节 ＞ 稳定约束 ＞ 镜头语言 ＞ 画质风格</p>
+<h3>动作核心技巧</h3>
+<ul>
+<li>不写笼统动作，写连续、有起止、慢节奏、有细节的完整动作</li>
+<li>优先修饰词：缓慢、轻柔、连贯、自然、流畅、平稳、不僵硬、匀速、无顿挫</li>
+</ul>
+<h3>运镜稳定要求</h3>
+<p>手持稳定、无抖动、丝滑流畅、无卡顿、画面匀速运动、无忽快忽慢</p>
+<h3>分镜写法</h3>
+<p>按时间顺序用【镜头X 时长Xs】标记，单条视频镜头不超过4个</p>
+<hr />
+<h2>七、导演分镜交材体系（专业版）</h2>
+<h3>必须包含的16个模块</h3>
+<ol>
+<li>项目概述 2. 导演总阐述 3. 视觉风格总说明 4. 场次总览</li>
+<li>单场详细交材 6. 分镜镜头清单 7. 摄影专项 8. 灯光专项</li>
+<li>美术专项 10. 声音专项 11. VFX/特殊执行 12. 剪辑预想</li>
+<li>音乐预想 14. 风险与备选 15. 版本管理 16. 附录</li>
+</ol>
+<h3>镜头清单标准字段</h3>
+<p>镜号/场次/景别/机位/运镜/焦段/时长/画面内容/动作/台词/声音/转场/道具/特效/优先级/备注</p>
+<h3>优先级体系</h3>
+<ul>
+<li><strong>A类</strong>：必拍镜头（剧情核心，不拍就没法剪）</li>
+<li><strong>B类</strong>：安全镜头（保证剪辑成立）</li>
+<li><strong>C类</strong>：可删镜头（时间不够时可牺牲）</li>
+<li><strong>D类</strong>：补充镜头（氛围/细节/转场）</li>
+</ul>
+<h3>六大原则</h3>
+<ol>
+<li>戏剧先于镜头</li>
+<li>空间先于剪辑</li>
+<li>镜头不是记录动作，而是组织注意力</li>
+<li>每场戏都要有"镜头策略"</li>
+<li>兼顾艺术表达和执行落地</li>
+<li>导演交材是"给全组看"的</li>
+</ol>
+<hr />
+<p>标签：#AI视频 #提示词 #分镜 #导演 #短剧 #Seedance #即梦 #可灵</p>
   </div>
 </div>
 </body>

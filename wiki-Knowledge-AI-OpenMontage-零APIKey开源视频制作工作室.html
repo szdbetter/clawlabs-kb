@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>搜索能力统一路由架构 - ClawLabs KB</title>
+<title>OpenMontage-零APIKey开源视频制作工作室 - ClawLabs KB</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -299,223 +299,93 @@ body {
 </nav>
 </div>
 <div class="main">
-  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-Tech.html">Tech</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">搜索能力统一路由架构</span></div>
+  <div class="breadcrumb"><a href="index.html">首页</a> <span class="breadcrumb-sep">›</span> <a href="wiki.html">wiki</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge.html">Knowledge</a> <span class="breadcrumb-sep">›</span> <a href="wiki-Knowledge-AI.html">AI</a> <span class="breadcrumb-sep">›</span> <span class="breadcrumb-current">OpenMontage-零APIKey开源视频制作工作室</span></div>
   <div class="article-header">
     
-    <h1>搜索能力统一路由架构</h1>
+    <h1>OpenMontage-零APIKey开源视频制作工作室</h1>
     <a href="index.html" class="back-link">← 返回首页</a>
   </div>
   <div class="article-content">
-    <hr />
-<p>tags:
-  - stage:budding
-  - domain:tech
-created: 2026-04-09
-updated: 2026-04-09</p>
-<hr />
-<h1>搜索能力统一路由架构</h1>
-<blockquote>
-<p>来源：[Discord] 搜索频道+基础频道 2026-04-06~09 对话沉淀
-频道ID：1472858439591002211, 1490682743464530051
-入库时间：2026-04-09</p>
-</blockquote>
-<h2>核心内容</h2>
-<h3>设计原则</h3>
-<p>一个入口，自动路由到最优搜索引擎。按查询类型、语言、平台自动选工具。</p>
-<h3>7 类意图路由</h3>
-<table>
-<thead>
-<tr>
-<th>意图</th>
-<th>触发特征</th>
-<th>首选 → 备选</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>实时 Web</td>
-<td>新闻/事件/实时</td>
-<td>WebSearch → Tavily → MiniMax(中文)</td>
-</tr>
-<tr>
-<td>社交媒体</td>
-<td>@用户/平台名/热门</td>
-<td>Twitter→Bird, Reddit→API, 小红书→mcporter</td>
-</tr>
-<tr>
-<td>视频</td>
-<td>YouTube/TikTok/B站</td>
-<td>YouTube→yt-dlp, TikTok→TikTok-Api+yt-dlp</td>
-</tr>
-<tr>
-<td>深度语义</td>
-<td>概念/方法论/模糊描述</td>
-<td>Exa 语义搜索 → QMD 本地知识库</td>
-</tr>
-<tr>
-<td>代码</td>
-<td>代码/GitHub/实现</td>
-<td>gh search → Exa code_context</td>
-</tr>
-<tr>
-<td>内容提取</td>
-<td>已知URL</td>
-<td>WebFetch → Jina → Playwright → curl+UA(微信)</td>
-</tr>
-<tr>
-<td>趋势</td>
-<td>近期/30天/热度</td>
-<td>/last30days Skill</td>
-</tr>
-</tbody>
-</table>
-<h3>API Key 库存</h3>
-<table>
-<thead>
-<tr>
-<th>Provider</th>
-<th>Key数</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Exa</td>
-<td>6个</td>
-<td>语义搜索（450 req/key）</td>
-</tr>
-<tr>
-<td>Tavily</td>
-<td>2个</td>
-<td>AI 研究搜索</td>
-</tr>
-<tr>
-<td>Brave</td>
-<td>1个</td>
-<td>通用搜索（1894/2000次/月）</td>
-</tr>
-<tr>
-<td>Jina</td>
-<td>2个</td>
-<td>网页阅读器</td>
-</tr>
-<tr>
-<td>FireCrawl</td>
-<td>2个</td>
-<td>网页抓取（1960 credits 剩余）</td>
-</tr>
-<tr>
-<td>MiniMax</td>
-<td>1个</td>
-<td>中文搜索 + 图片理解</td>
-</tr>
-<tr>
-<td>YouTube Data API v3</td>
-<td>1个</td>
-<td>播放数据（10,000单位/天）</td>
-</tr>
-</tbody>
-</table>
-<h3>各渠道能力矩阵</h3>
-<table>
-<thead>
-<tr>
-<th>渠道</th>
-<th>搜索</th>
-<th>抓取</th>
-<th>工具</th>
-<th>状态</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Web 通用</td>
-<td>✅</td>
-<td>✅</td>
-<td>WebSearch + MiniMax + Tavily + Exa</td>
-<td>4源可用</td>
-</tr>
-<tr>
-<td>微信公众号</td>
-<td>❌</td>
-<td>✅</td>
-<td>curl + 移动端 UA</td>
-<td>必须用移动端UA</td>
-</tr>
-<tr>
-<td>Twitter/X</td>
-<td>✅</td>
-<td>✅</td>
-<td>Bird GraphQL (无需API key)</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>Reddit</td>
-<td>✅</td>
-<td>✅</td>
-<td>agent-reach API</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>YouTube</td>
-<td>✅</td>
-<td>✅</td>
-<td>yt-dlp + Data API v3</td>
-<td>可用</td>
-</tr>
-<tr>
-<td>小红书</td>
-<td>✅</td>
-<td>✅</td>
-<td>mcporter XiaoHongShu (localhost:18060)</td>
-<td>需Cookie</td>
-</tr>
-<tr>
-<td>TikTok</td>
-<td>⚠️</td>
-<td>✅</td>
-<td>TikTok-Api (搜用户) + yt-dlp (下载)</td>
-<td>有限</td>
-</tr>
-<tr>
-<td>B站</td>
-<td>⚠️</td>
-<td>✅</td>
-<td>yt-dlp</td>
-<td>可能需代理</td>
-</tr>
-<tr>
-<td>抖音</td>
-<td>⚠️</td>
-<td>-</td>
-<td>mcporter Douyin</td>
-<td>需验证</td>
-</tr>
-<tr>
-<td>GitHub</td>
-<td>✅</td>
-<td>✅</td>
-<td>gh CLI</td>
-<td>可用</td>
-</tr>
-</tbody>
-</table>
-<h3>关键教训</h3>
-<ol>
-<li><strong>微信公众号必须用移动端 UA</strong>：<code>mp.weixin.qq.com</code> 链接用 curl + 微信移动端 User-Agent，不要先试 WebFetch（会被反爬拦截）</li>
-<li><strong>中文查询优先 MiniMax web_search</strong>：中文搜索质量比 WebSearch 好</li>
-<li><strong>失败自动降级</strong>：每个引擎有主→备→兜底三级链</li>
-<li><strong>Cookie 管理是痛点</strong>：小红书/X 的 Cookie 容易过期，需要统一的注入和刷新机制</li>
-<li><strong>TikTok-Api 安全评估</strong>：davidteather/TikTok-Api (6K+ stars) 安全可用，依赖链透明（httpx, playwright, requests）</li>
-</ol>
-<h3>MemOS 评估结论</h3>
-<p><strong>不需要安装 MemOS</strong>。当前 <a href="wiki-Concepts-OpenViking.html" class="wikilink">OpenViking</a>（语义记忆+向量检索）+ LCM（上下文压缩）已覆盖 MemOS 的核心功能（向量数据库+语义检索+自动技能生成）。再装等于两套向量引擎跑同样的事。</p>
-<h2>相关概念</h2>
+    <h1>OpenMontage — 零API Key开源AI视频制作工作室</h1>
+<h2>概述</h2>
+<p>把AI编程助手变成完整的视频制作工作室。用自然语言描述需求，智能体负责调研、脚本写作、素材生成、剪辑和最终合成。</p>
+<p><strong>GitHub</strong>: https://github.com/calesthio/OpenMontage</p>
+<h2>核心特点</h2>
 <ul>
-<li><a href="wiki-Concepts-OpenClaw.html" class="wikilink">OpenClaw</a></li>
-<li><a href="wiki-Concepts-Claude-Code.html" class="wikilink">Claude-Code</a></li>
-<li><a href="wiki-Concepts-MiniMax.html" class="wikilink">MiniMax</a></li>
+<li>不仅能做图生视频，还能做<strong>真实素材视频</strong>（free/open-source流程）</li>
+<li>从免费素材库和开放档案中构建素材库，检索真实运动片段，剪辑成时间线，最终渲染成完整作品</li>
 </ul>
+<h2>工具链（全部免费）</h2>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>工具</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>旁白</td>
+<td>Piper TTS</td>
+<td>离线高品质文本转语音</td>
+</tr>
+<tr>
+<td>开放素材</td>
+<td>Archive.org + NASA + Wikimedia</td>
+<td>免费档案 footage</td>
+</tr>
+<tr>
+<td>额外素材</td>
+<td>Pexels / Unsplash / Pixabay</td>
+<td>免费图库（开发者Key免费申请）</td>
+</tr>
+<tr>
+<td>视频合成</td>
+<td>Remotion</td>
+<td>把图片变成带物理动画、转场、字幕的视频</td>
+</tr>
+<tr>
+<td>后期</td>
+<td>FFmpeg</td>
+<td>编码、字幕烧录、混音、调色</td>
+</tr>
+<tr>
+<td>字幕</td>
+<td>内置</td>
+<td>自动逐词时间轴字幕</td>
+</tr>
+</tbody>
+</table>
+<h2>两条免费路线</h2>
+<ol>
+<li><strong>图片驱动视频</strong>：Piper旁白 + FLUX等图片 + Remotion动画</li>
+<li><strong>真实素材蒙太奇</strong>：从开放档案构建素材库，剪辑真实运动镜头（提示时说 "documentary montage" + "use real footage only"）</li>
+</ol>
+<h2>安装运行</h2>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/calesthio/OpenMontage.git
+<span class="nb">cd</span><span class="w"> </span>OpenMontage
+make<span class="w"> </span>setup
+</code></pre></div>
+
+<p>然后在AI编程助手里输入需求即可。</p>
+<h2>示例案例</h2>
+<p>《THE LAST BANANA》— 60秒皮克斯风格动画短片讲述一只孤独香蕉和猕猴桃成为朋友的故事。
+- 使用6段Kling v3运动片段（fal.ai）
+- Google Chirp3-HD旁白
+- 免版税钢琴音乐
+- TikTok式逐词字幕 + Remotion合成
+- <strong>总成本：1.33美元</strong></p>
+<h2>适用场景</h2>
+<ul>
+<li>自然语言视频生成（"做一个60秒关于神经网络如何学习的动画讲解视频"）</li>
+<li>真实素材蒙太奇（"做一个75秒关于雨天城市生活的纪录片蒙太奇，只用真实素材"）</li>
+<li>参考视频改写（粘贴YouTube视频，生成类似主题的内容）</li>
+</ul>
+<h2>与传统AI视频的区别</h2>
+<p>不是"生成几张图片再动画化"的常规把戏，而是真正从素材库构建、检索真实运动片段、剪辑成时间线。</p>
+<hr />
+<p>标签：#AI视频 #开源 #制作工作流 #Remotion #PiperTTS #素材库</p>
   </div>
 </div>
 </body>
